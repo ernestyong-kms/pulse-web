@@ -336,7 +336,7 @@ h2::after {
 .center-nav a:hover { opacity: 1; color: var(--primary); }
 
 /* =========================================
-   MODE 1: DESKTOP SIDEBAR - FLUID HEIGHT
+   MODE 1: DESKTOP SIDEBAR - FLUID & CORRECTED COLORS
    ========================================= */
 body:not(.mobile-view) .global-nav {
   top: 0; left: 0; 
@@ -353,42 +353,94 @@ body:not(.mobile-view) .global-nav {
   position: fixed;
   z-index: 1000;
   overflow: hidden; 
+  background: rgba(255, 255, 255, 0.95); /* Ensure white background */
 }
 
-/* FLUID LOGO */
+/* 1. FLUID LOGO */
 body:not(.mobile-view) .nav-logo { 
-  font-size: clamp(24px, 2.5vw, 32px); 
-  margin-bottom: 4vh;   /* Gap scales with height */
+  font-size: clamp(28px, 3vw, 36px); 
+  margin-bottom: 2vh;   
   padding-left: 20px;
   font-weight: 800;
+  color: #1a1a1a;       /* Fixed Color */
+  text-decoration: none;
 }
 
-/* FLUID NAV CONTAINER - Fills empty space */
 body:not(.mobile-view) .nav-content {
   flex-direction: column; align-items: flex-start; height: 100%; padding: 0 20px; gap: 0;
 }
 
+/* 2. FLUID MIDDLE NAV - FIXED CONGESTION */
 body:not(.mobile-view) .center-nav { 
   display: flex; 
   flex-direction: column; 
-  justify-content: center; /* Centers links vertically in the available space */
-  gap: clamp(10px, 2vh, 25px); 
+  
+  /* CHANGED: 'flex-start' stops them from bunching in the middle */
+  justify-content: flex-start; 
+  
+  /* CHANGED: Dynamic Gap. On big screens, gaps get huge. On laptops, they shrink. */
+  gap: clamp(15px, 4vh, 50px); 
+  
+  padding-top: 4vh; /* Push down from logo */
   width: 100%; 
-  flex-grow: 1; /* Grow to fill space */
+  flex-grow: 1; 
 }
 
-/* FLUID BOTTOM SECTION */
+/* 3. RESTORED LINK STYLES (Fixes the purple/font issue) */
+body:not(.mobile-view) .center-nav a {
+  font-size: clamp(15px, 1.2vw, 18px); /* Responsive Font Size */
+  font-weight: 500;                    /* Restore Boldness */
+  padding: 10px 15px;
+  border-radius: 10px; 
+  color: var(--text-main);             /* RESTORE BLACK TEXT */
+  text-decoration: none;
+  display: flex; 
+  align-items: center; 
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+/* Hover State */
+body:not(.mobile-view) .center-nav a:hover {
+  background: rgba(141, 8, 1, 0.05); 
+  color: var(--primary);               /* RED ON HOVER */
+  transform: translateX(5px);
+}
+
+/* 4. FLUID BOTTOM SECTION */
 body:not(.mobile-view) .right-actions {
   margin-top: auto; 
   display: flex; 
   flex-direction: column; 
-  gap: 1.5vh;           /* Dynamic gap */
+  gap: 1.5vh;           
   width: 100%; 
   padding-top: 2vh; 
-  padding-bottom: 1vh;  
+  padding-bottom: 2vh;  
   border-top: 1px solid rgba(0,0,0,0.05);
 }
 
+/* Restore Bottom Link Styles */
+body:not(.mobile-view) .desktop-links a {
+    font-size: 14px; 
+    padding: 8px 15px; 
+    border-radius: 8px;
+    display: flex; align-items: center; gap: 10px; 
+    color: #0071e3;    /* Blue for Profile/Logout actions */
+    font-weight: 600;
+    text-decoration: none;
+}
+body:not(.mobile-view) .desktop-links a:hover { 
+    background: #f0f0f0; 
+}
+
+/* Restore SVG Icons Color */
+body:not(.mobile-view) .global-nav a svg { 
+    stroke-width: 2; 
+    width: 20px; 
+    height: 20px; 
+    transition: stroke 0.2s; 
+    stroke: currentColor; /* Matches the text color */
+}
 body:not(.mobile-view) .desktop-links { display: flex; flex-direction: column; gap: 8px; width: 100%; }
 body:not(.mobile-view) .desktop-links a {
     font-size: 14px; padding: 8px 15px; border-radius: 8px;
