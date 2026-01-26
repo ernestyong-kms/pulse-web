@@ -2785,3 +2785,55 @@ body.mobile-view .cal-day-cell {
     }
 }
 
+/* =========================================
+   MOBILE POLISH: 2-COLUMN GRID & COMPACT
+   ========================================= */
+@media (max-width: 768px) {
+    
+    /* 1. Fix the "Wide" Container */
+    /* Adds a nice gap on the sides so it looks like a card, not a banner */
+    body.mobile-view main {
+        padding: 15px !important; 
+        background: #f4f4f5; /* Light gray background to show card edges */
+    }
+
+    /* 2. Turn Vertical Button Stack into 2x2 GRID */
+    body.mobile-view .quick-actions-sidebar {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important; /* Two equal columns */
+        gap: 12px !important;
+        flex-direction: unset !important; /* Disable the old row/column rules */
+    }
+
+    /* 3. Make Buttons Taller & squarer (App-like) */
+    body.mobile-view .action-tile {
+        min-height: 110px !important; /* Taller touch target */
+        flex-direction: column !important; /* Icon on top, Text on bottom */
+        justify-content: center !important;
+        text-align: center !important;
+        padding: 15px !important;
+        border-radius: 16px !important;
+    }
+
+    /* 4. Center the Text & Icons inside the tile */
+    body.mobile-view .tile-info {
+        align-items: center !important; 
+        margin-top: 10px;
+    }
+    
+    /* Hide the arrow on mobile (cleaner) */
+    body.mobile-view .tile-arrow { display: none !important; }
+
+    /* 5. Compact Hero Section */
+    /* Stops the top red banner from being huge */
+    body.mobile-view .hero-card {
+        min-height: auto !important;
+        padding: 20px !important;
+        margin-bottom: 10px !important;
+    }
+    
+    body.mobile-view .hero-content h1 {
+        font-size: 24px !important; /* Smaller Title */
+    }
+}
+

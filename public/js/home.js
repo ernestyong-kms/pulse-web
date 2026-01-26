@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         } catch (err) { console.error(err); }
     }
 
-  // --- UPDATED: TODAY'S EVENT & RATING LOGIC ---
+  // --- UPDATED: TODAY'S EVENT & RATING LOGIC (NO STARS) ---
     async function initTodaysEvent(user) {
         try {
             const [eventsRes, regRes] = await Promise.all([
@@ -187,10 +187,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             const now = new Date();
             const todayStr = now.toLocaleDateString();
 
-            // 1. Initial Filter: Get events from Today OR Recent Past (48h)
             const activeEvents = events.filter(e => {
                 const eventDate = new Date(e.date);
-                const timeDiff = now - eventDate; // Positive if past, Negative if future
+                const timeDiff = now - eventDate; 
                 const hoursSince = timeDiff / (1000 * 60 * 60);
                 
                 const isToday = eventDate.toLocaleDateString() === todayStr;
@@ -202,14 +201,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             const section = document.getElementById('todaysEventSection');
             if (!section) return;
 
-            // Clear previous content
             section.innerHTML = '';
             let hasVisibleEvents = false;
 
             for (const event of activeEvents) {
                 const isRegistered = userRegistrations.includes(event.id);
-                
-                // Check In & Rating Status
                 let isCheckedIn = false;
                 let hasRated = false;
 
@@ -228,25 +224,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const isToday = eventDate.toLocaleDateString() === todayStr;
                 const eventImg = event.photo_url || '/uploads/default_event.jpg';
 
-                // --- FILTERING LOGIC ---
-                // If it's a PAST event (not today), strictly filter it:
-                if (!isToday) {
-                    // If user didn't go (not checked in) OR already rated it, HIDE it.
-                    if (!isCheckedIn || hasRated) continue;
-                }
+                // Filter: Hide past events if not checked in or already rated
+                if (!isToday && (!isCheckedIn || hasRated)) continue;
 
-                // If we reached here, we are showing the card.
                 hasVisibleEvents = true;
 
-                // --- UI BUILDER ---
                 let badgeHTML = '';
                 let actionHTML = '';
 
-                // Clean SVGs
+                // Icons (Star removed from usage below)
                 const iconCheck = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
                 const iconMap = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`; 
                 const iconQR = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>`;
-                const iconStar = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`;
                 const iconClock = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`;
 
                 if (isToday) {
@@ -260,31 +249,28 @@ document.addEventListener("DOMContentLoaded", async () => {
                     } else {
                         actionHTML = `<button id="btnViewQR_${event.id}" class="btn-qr-view">${iconQR}<span>View QR</span></button><div class="status-checked">${iconCheck} Checked In</div>`;
                         if (!hasRated) {
-                            // Optional: Allow rating today if they already checked in
-                            actionHTML += `<button onclick="window.openFeedbackModal(${event.id})" class="btn-rate" style="margin-top:10px;">${iconStar} Rate</button>`;
+                            // Removed star here too for consistency if you prefer cleaner look
+                            actionHTML += `<button onclick="window.openFeedbackModal(${event.id})" class="btn-rate" style="margin-top:10px;">Rate Event</button>`;
                         }
                     }
                 } else {
                     // CASE 2: PAST EVENT (NEEDS RATING)
-                    // We already filtered out people who rated or didn't attend above.
-                    badgeHTML = `<div class="live-badge" style="background: #8338ec; color:white;">${iconStar} Rate This Event</div>`;
+                    // Removed star icon from badge and button text
+                    badgeHTML = `<div class="live-badge" style="background: #8338ec; color:white;">Rate This Event</div>`;
                     
                     actionHTML = `
                         <p style="font-size:12px; color:white; margin-bottom:10px; opacity:0.9;">How was the experience?</p>
-                        <button onclick="window.openFeedbackModal(${event.id})" class="btn-rate" style="width:100%; justify-content:center;">${iconStar} Give Feedback</button>
+                        <button onclick="window.openFeedbackModal(${event.id})" class="btn-rate" style="width:100%; justify-content:center;">Give Feedback</button>
                     `;
                 }
 
-                // --- HTML CARD CONSTRUCTION ---
                 const card = document.createElement('div');
                 card.className = 'todays-event-card';
 
                 card.innerHTML = `
                     <div class="t-card-bg" style="background-image: url('${eventImg}');"></div>
                     <div class="t-card-overlay"></div>
-                    
                     ${badgeHTML}
-
                     <div class="t-card-content">
                         <div class="t-event-info">
                             <h3 class="t-event-title">${event.name}</h3>
@@ -293,16 +279,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 <div class="t-meta-item">${iconMap}<span>${event.location}</span></div>
                             </div>
                         </div>
-
-                        <div class="t-card-actions">
-                            ${actionHTML}
-                        </div>
+                        <div class="t-card-actions">${actionHTML}</div>
                     </div>
                 `;
 
                 section.appendChild(card);
 
-                // --- BIND CLICKS (Check-in & QR) ---
+                // Re-bind clicks for today's dynamic buttons
                 if(isToday) {
                     const checkInBtn = document.getElementById(`btnCheckIn_${event.id}`);
                     if (checkInBtn) {
@@ -336,7 +319,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             }
 
-            // Final Display Check
             if (hasVisibleEvents) {
                 section.style.display = 'grid'; 
                 section.style.gap = '20px';
