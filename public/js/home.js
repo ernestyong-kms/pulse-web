@@ -173,181 +173,179 @@ document.addEventListener("DOMContentLoaded", async () => {
         } catch (err) { console.error(err); }
     }
 
-  // --- TODAY'S EVENT LOGIC (UPDATED VISUALS & LOGIC) ---
-  async function initTodaysEvent(user) {
-    try {
-        const [eventsRes, regRes] = await Promise.all([
-            fetch('/getEvents'),
-            fetch(`/getUserRegistrations/${user.username}`)
-        ]);
+  // --- UPDATED: TODAY'S EVENT & RATING LOGIC ---
+    async function initTodaysEvent(user) {
+        try {
+            const [eventsRes, regRes] = await Promise.all([
+                fetch('/getEvents'),
+                fetch(`/getUserRegistrations/${user.username}`)
+            ]);
 
-        const events = await eventsRes.json();
-        const userRegistrations = await regRes.json(); 
-        
-        const now = new Date();
-        const todayStr = now.toLocaleDateString();
-
-        const activeEvents = events.filter(e => {
-            const eventDate = new Date(e.date);
-            const timeDiff = now - eventDate;
-            const hoursSince = timeDiff / (1000 * 60 * 60);
-            const isToday = eventDate.toLocaleDateString() === todayStr;
-            const isRecent = hoursSince > 0 && hoursSince < 48; 
-            return isToday || isRecent;
-        });
-
-        const section = document.getElementById('todaysEventSection');
-        if (!section) return;
-
-        if (activeEvents.length === 0) {
-            section.style.display = 'none';
-            return;
-        }
-        
-        section.style.display = 'grid'; 
-        section.style.gap = '20px';
-        section.innerHTML = '';
-
-        for (const event of activeEvents) {
-            const isRegistered = userRegistrations.includes(event.id);
+            const events = await eventsRes.json();
+            const userRegistrations = await regRes.json(); 
             
-            // Check In & Rating Status
-            let isCheckedIn = false;
-            let hasRated = false;
+            const now = new Date();
+            const todayStr = now.toLocaleDateString();
 
-            if (isRegistered) {
-                const [checkRes, rateRes] = await Promise.all([
-                    fetch(`/api/checkin/status/${user.username}/${event.id}`),
-                    fetch(`/api/feedback/status/${user.username}/${event.id}`)
-                ]);
-                const checkData = await checkRes.json();
-                const rateData = await rateRes.json();
-                isCheckedIn = checkData.checkedIn;
-                hasRated = rateData.submitted;
-            }
+            // 1. Initial Filter: Get events from Today OR Recent Past (48h)
+            const activeEvents = events.filter(e => {
+                const eventDate = new Date(e.date);
+                const timeDiff = now - eventDate; // Positive if past, Negative if future
+                const hoursSince = timeDiff / (1000 * 60 * 60);
+                
+                const isToday = eventDate.toLocaleDateString() === todayStr;
+                const isRecentPast = hoursSince > 0 && hoursSince < 48; 
+                
+                return isToday || isRecentPast;
+            });
 
-            const eventDate = new Date(event.date);
-            const hoursSince = (now - eventDate) / (1000 * 60 * 60);
-            const isEventOver = hoursSince > 0;
-            const eventImg = event.photo_url || '/uploads/default_event.jpg';
+            const section = document.getElementById('todaysEventSection');
+            if (!section) return;
 
-            // --- BUILD ACTION BUTTONS ---
-            let actionHTML = '';
+            // Clear previous content
+            section.innerHTML = '';
+            let hasVisibleEvents = false;
 
-            // Clean SVGs
-            const iconCheck = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
-            const iconMap = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`; 
-            const iconQR = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>`;
-            const iconStar = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`;
-            const iconClock = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`;
+            for (const event of activeEvents) {
+                const isRegistered = userRegistrations.includes(event.id);
+                
+                // Check In & Rating Status
+                let isCheckedIn = false;
+                let hasRated = false;
 
-            if (!isRegistered) {
-                // Not Registered -> Register Button
-                actionHTML = `
-                    <button onclick="window.location.href='events.html'" class="btn-checkin" style="background: white; color: black; box-shadow:none;">
-                        Register Now
-                    </button>`;
-            } 
-            else if (!isEventOver || hoursSince < 48) { 
-                if (!isCheckedIn) {
-                    // Registered, Not Checked In -> Check In Button
-                    actionHTML = `
-                        <button id="btnCheckIn_${event.id}" class="btn-checkin">
-                            ${iconMap}
-                            <span>Check In</span>
-                        </button>`;
+                if (isRegistered) {
+                    const [checkRes, rateRes] = await Promise.all([
+                        fetch(`/api/checkin/status/${user.username}/${event.id}`),
+                        fetch(`/api/feedback/status/${user.username}/${event.id}`)
+                    ]);
+                    const checkData = await checkRes.json();
+                    const rateData = await rateRes.json();
+                    isCheckedIn = checkData.checkedIn;
+                    hasRated = rateData.submitted;
+                }
+
+                const eventDate = new Date(event.date);
+                const isToday = eventDate.toLocaleDateString() === todayStr;
+                const eventImg = event.photo_url || '/uploads/default_event.jpg';
+
+                // --- FILTERING LOGIC ---
+                // If it's a PAST event (not today), strictly filter it:
+                if (!isToday) {
+                    // If user didn't go (not checked in) OR already rated it, HIDE it.
+                    if (!isCheckedIn || hasRated) continue;
+                }
+
+                // If we reached here, we are showing the card.
+                hasVisibleEvents = true;
+
+                // --- UI BUILDER ---
+                let badgeHTML = '';
+                let actionHTML = '';
+
+                // Clean SVGs
+                const iconCheck = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                const iconMap = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`; 
+                const iconQR = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>`;
+                const iconStar = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`;
+                const iconClock = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`;
+
+                if (isToday) {
+                    // CASE 1: HAPPENING TODAY
+                    badgeHTML = `<div class="live-badge"><div class="live-dot"></div> Happening Today</div>`;
+                    
+                    if (!isRegistered) {
+                        actionHTML = `<button onclick="window.location.href='events.html'" class="btn-checkin" style="background: white; color: black; box-shadow:none;">Register Now</button>`;
+                    } else if (!isCheckedIn) {
+                        actionHTML = `<button id="btnCheckIn_${event.id}" class="btn-checkin">${iconMap}<span>Check In</span></button>`;
+                    } else {
+                        actionHTML = `<button id="btnViewQR_${event.id}" class="btn-qr-view">${iconQR}<span>View QR</span></button><div class="status-checked">${iconCheck} Checked In</div>`;
+                        if (!hasRated) {
+                            // Optional: Allow rating today if they already checked in
+                            actionHTML += `<button onclick="window.openFeedbackModal(${event.id})" class="btn-rate" style="margin-top:10px;">${iconStar} Rate</button>`;
+                        }
+                    }
                 } else {
-                    // Checked In -> View QR + Status
+                    // CASE 2: PAST EVENT (NEEDS RATING)
+                    // We already filtered out people who rated or didn't attend above.
+                    badgeHTML = `<div class="live-badge" style="background: #8338ec; color:white;">${iconStar} Rate This Event</div>`;
+                    
                     actionHTML = `
-                        <button id="btnViewQR_${event.id}" class="btn-qr-view">
-                            ${iconQR}
-                            <span>View QR</span>
-                        </button>
-                        <div class="status-checked">
-                            ${iconCheck} Checked In
-                        </div>`;
+                        <p style="font-size:12px; color:white; margin-bottom:10px; opacity:0.9;">How was the experience?</p>
+                        <button onclick="window.openFeedbackModal(${event.id})" class="btn-rate" style="width:100%; justify-content:center;">${iconStar} Give Feedback</button>
+                    `;
+                }
+
+                // --- HTML CARD CONSTRUCTION ---
+                const card = document.createElement('div');
+                card.className = 'todays-event-card';
+
+                card.innerHTML = `
+                    <div class="t-card-bg" style="background-image: url('${eventImg}');"></div>
+                    <div class="t-card-overlay"></div>
+                    
+                    ${badgeHTML}
+
+                    <div class="t-card-content">
+                        <div class="t-event-info">
+                            <h3 class="t-event-title">${event.name}</h3>
+                            <div class="t-event-meta">
+                                <div class="t-meta-item">${iconClock}<span>${isToday ? event.time : 'Event Ended'}</span></div>
+                                <div class="t-meta-item">${iconMap}<span>${event.location}</span></div>
+                            </div>
+                        </div>
+
+                        <div class="t-card-actions">
+                            ${actionHTML}
+                        </div>
+                    </div>
+                `;
+
+                section.appendChild(card);
+
+                // --- BIND CLICKS (Check-in & QR) ---
+                if(isToday) {
+                    const checkInBtn = document.getElementById(`btnCheckIn_${event.id}`);
+                    if (checkInBtn) {
+                        checkInBtn.onclick = async () => {
+                            const originalHTML = checkInBtn.innerHTML;
+                            checkInBtn.innerHTML = "<span>Processing...</span>";
+                            checkInBtn.style.opacity = "0.7";
+                            try {
+                                const res = await fetch('/api/checkin', {
+                                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ username: user.username, event_id: event.id })
+                                });
+                                const data = await res.json();
+                                if (data.success) initTodaysEvent(user);
+                                else { alert(data.message); checkInBtn.innerHTML = originalHTML; checkInBtn.style.opacity = "1"; }
+                            } catch (e) { console.error(e); }
+                        };
+                    }
+                    const qrBtn = document.getElementById(`btnViewQR_${event.id}`);
+                    if (qrBtn) {
+                        qrBtn.onclick = async () => {
+                            try {
+                                const res = await fetch(`/getRegistration/${user.username}/${event.id}`);
+                                const data = await res.json();
+                                if (data.qrToken && window.RegistrationModule) {
+                                    window.RegistrationModule.showQRModal(data.qrToken);
+                                }
+                            } catch(e) {}
+                        };
+                    }
                 }
             }
 
-            // Rating Button (Only if checked in & not rated)
-            // Note: We use window.openFeedbackModal explicitly
-            if (isCheckedIn && !hasRated) {
-                actionHTML += `
-                    <button onclick="window.openFeedbackModal(${event.id})" class="btn-rate">
-                        ${iconStar} Rate
-                    </button>`;
+            // Final Display Check
+            if (hasVisibleEvents) {
+                section.style.display = 'grid'; 
+                section.style.gap = '20px';
+            } else {
+                section.style.display = 'none';
             }
 
-            // --- HTML STRUCTURE (Cinematic) ---
-            const card = document.createElement('div');
-            card.className = 'todays-event-card';
-
-            card.innerHTML = `
-                <div class="t-card-bg" style="background-image: url('${eventImg}');"></div>
-                <div class="t-card-overlay"></div>
-                
-                <div class="live-badge">
-                    <div class="live-dot"></div> happening today                </div>
-
-                <div class="t-card-content">
-                    <div class="t-event-info">
-                        <h3 class="t-event-title">${event.name}</h3>
-                        <div class="t-event-meta">
-                            <div class="t-meta-item">
-                                ${iconClock}
-                                <span>${event.time}</span>
-                            </div>
-                            <div class="t-meta-item">
-                                ${iconMap}
-                                <span>${event.location}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="t-card-actions">
-                        ${actionHTML}
-                    </div>
-                </div>
-            `;
-
-            section.appendChild(card);
-
-            // --- BIND CLICKS ---
-            const checkInBtn = document.getElementById(`btnCheckIn_${event.id}`);
-            if (checkInBtn) {
-                checkInBtn.onclick = async () => {
-                    const originalHTML = checkInBtn.innerHTML;
-                    checkInBtn.innerHTML = "<span>Processing...</span>";
-                    checkInBtn.style.opacity = "0.7";
-                    try {
-                        const res = await fetch('/api/checkin', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ username: user.username, event_id: event.id })
-                        });
-                        const data = await res.json();
-                        if (data.success) initTodaysEvent(user);
-                        else { alert(data.message); checkInBtn.innerHTML = originalHTML; checkInBtn.style.opacity = "1"; }
-                    } catch (e) { console.error(e); }
-                };
-            }
-
-            const qrBtn = document.getElementById(`btnViewQR_${event.id}`);
-            if (qrBtn) {
-                qrBtn.onclick = async () => {
-                    try {
-                        const res = await fetch(`/getRegistration/${user.username}/${event.id}`);
-                        const data = await res.json();
-                        if (data.qrToken && window.RegistrationModule) {
-                            window.RegistrationModule.showQRModal(data.qrToken);
-                        }
-                    } catch(e) {}
-                };
-            }
-        }
-
-    } catch (e) { console.error("Todays Event Error:", e); }
-  }
+        } catch (e) { console.error("Todays Event Error:", e); }
+    }
 
   // Feedback Submission
   const submitFeedbackBtn = document.getElementById("submitFeedbackBtn");
