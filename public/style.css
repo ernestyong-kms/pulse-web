@@ -66,11 +66,10 @@ body {
    DASHBOARD & LAYOUT
    ========================================= */
 main { 
-  max-width: 1600px; /* Increased for big monitors */
-  width: 90%;        /* Allows it to be flexible */
-  margin: 0 auto 40px auto; 
-  padding: 20px; 
-  text-align: left; 
+  max-width: 95vw;    /* Takes up 95% of the viewport width */
+  width: 95%;         /* Fallback for older browsers */
+  margin: 0 auto;     /* Centers the content */
+  padding: 40px 2%;   /* Responsive horizontal padding */
 }
 
 h2 {
@@ -87,7 +86,10 @@ h2::after {
    ========================================= */
 .action-grid, #eventContainer, #viewedList {
   display: grid;
-  gap: 20px;
+  /* Automatically adds as many columns as will fit (min 300px wide) */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+  gap: 25px;
+  width: 100%;
 }
 
 .action-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 50px; }
@@ -338,32 +340,30 @@ h2::after {
    ========================================= */
 body:not(.mobile-view) .global-nav {
   top: 0; left: 0; 
-  width: 18vw;        /* Takes up 18% of the screen width */
-  min-width: 260px;   /* Won't get too skinny on smaller laptops */
-  max-width: 350px;   /* Won't get too fat on giant monitors */
+  width: 22vw;        /* Increased thickness */
+  min-width: 280px;   
+  max-width: 400px;   /* Allows it to get wider on your big monitor */
   height: 100vh;
   border-right: 1px solid rgba(0,0,0,0.1); 
-  padding: 30px 0;
+  padding: 40px 0;    /* More breathing room */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Thiers fixes the gap between help and profile! */
 }
+
 body:not(.mobile-view) .nav-content {
   flex-direction: column; align-items: flex-start; height: 100%; padding: 0 20px; gap: 30px;
 }
 body:not(.mobile-view) .nav-logo { 
-  font-size: clamp(32px, 2.5vw, 42px); /* Scales from 32px up to 42px */
-  margin-bottom: 40px; 
-  padding-left: 15px;
-  font-weight: 800; /* Extra bold for impact */
+  font-size: clamp(32px, 3vw, 48px); /* Scales with screen size */
+  margin-bottom: 50px; 
+  padding-left: 20px;
+  font-weight: 800;
 }
 
-/* Desktop Navigation Links */
-body:not(.mobile-view) .center-nav { 
-  display: flex; 
-  flex-direction: column; 
-  gap: clamp(10px, 2vh, 25px); /* Grows vertically based on screen height */
-  width: 100%; 
-}
 body:not(.mobile-view) .center-nav a {
-  font-size: clamp(15px, 1.2vw, 20px);
+  font-size: clamp(16px, 1.2vw, 22px);
+  padding: 15px 20px;
   font-weight: 500; padding: 10px 15px;
   border-radius: 10px; opacity: 1; color: var(--text-main);
   display: flex; align-items: center; gap: 12px;
@@ -394,10 +394,10 @@ body:not(.mobile-view) .desktop-links .active-profile-link {
 /* Icons */
 body:not(.mobile-view) .global-nav a svg { stroke-width: 2; width: 18px; height: 18px; transition: stroke 0.2s; }
 body:not(.mobile-view) main { 
-  margin-left: 18vw;          /* Matches the 18vw sidebar width */
-  width: calc(100% - 18vw);   /* Fills exactly the remaining space */
+  margin-left: 22vw;         /* Matches the new sidebar thickness */
+  width: calc(100% - 22vw);  /* Fills the rest of the screen exactly */
   max-width: 100% !important; 
-  padding: 40px 5%;           /* Responsive padding */
+  padding: 60px 5vw;         /* Responsive padding for a premium feel */
 }
 
 /* Admin Theme (Dark Mode) */
