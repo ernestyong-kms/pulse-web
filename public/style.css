@@ -1043,6 +1043,228 @@ body:not(.mobile-view) .save-bar { left: calc(50% + 120px); }
     }
 }
 
+/* =========================================
+   MODE 2: MOBILE VIEW SIMULATION
+   ========================================= */
+body.mobile-view {
+  position: relative; max-width: 414px; margin: 0 auto;
+  border-left: 1px solid #ddd; border-right: 1px solid #ddd;
+  min-height: 100vh; overflow-x: hidden;
+  box-shadow: 0 0 50px rgba(0,0,0,0.1); background-color: #f5f5f7;
+  padding-top: 60px;
+}
+/* Mobile Top Navbar */
+body.mobile-view .global-nav {
+  top: 0; left: 0; width: 100%; height: 60px;
+  border-bottom: 1px solid rgba(0,0,0,0.1); border-right: none; padding: 0;
+  background: rgba(255, 255, 255, 0.95); position: absolute; max-width: 414px;
+}
+body.mobile-view .nav-content {
+  flex-direction: row !important; justify-content: space-between !important;
+  align-items: center !important; width: 100%; height: 100%; padding: 0 20px; gap: 0;
+}
+body.mobile-view .center-nav, body.mobile-view .desktop-links { display: none !important; }
+body.mobile-view .right-actions {
+  display: flex !important; flex-direction: row !important; align-items: center !important;
+  width: auto !important; margin-top: 0 !important; border-top: none !important; padding-top: 0 !important; gap: 15px;
+}
+body.mobile-view .hamburger-icon { display: flex !important; flex-direction: column; gap: 5px; cursor: pointer; }
+body.mobile-view .hamburger-icon span { width: 22px; height: 2px; background: #333; border-radius: 2px; }
+
+/* Mobile Dropdown Menu */
+.mobile-menu-dropdown {
+  display: none; position: absolute; top: 70px; right: 20px; width: 200px;
+  background: white; border-radius: 12px; flex-direction: column; padding: 8px 0;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15); border: 1px solid #eee; z-index: 2000;
+}
+.mobile-menu-dropdown[style*="display: flex"] { display: flex !important; }
+.mobile-menu-dropdown a {
+  padding: 10px 20px; text-decoration: none; color: #333; font-size: 14px; font-weight: 500;
+  display: block; transition: background 0.2s;
+}
+.mobile-menu-dropdown a:hover { background-color: #f5f5f7; color: var(--primary); }
+.mobile-menu-dropdown div[style*="border-bottom"] { border-bottom: 1px solid #f0f0f0 !important; }
+
+/* Switch for Mobile View */
+.switch { position: relative; display: inline-block; width: 36px; height: 20px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.switch .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+.switch .knob { position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+.switch input:checked + .slider { background-color: var(--primary); }
+.switch input:checked + .slider + .knob { transform: translateX(14px); }
+
+/* STRICT LAYOUT & WIDTH FIXES */
+body.mobile-view main {
+    width: 100% !important; max-width: 100% !important;
+    padding: 15px !important; box-sizing: border-box !important;
+    overflow-x: hidden !important; margin: 0 auto !important;
+}
+body.mobile-view .dashboard-grid { display: flex !important; flex-direction: column !important; gap: 15px !important; }
+body.mobile-view .hero-card { width: 100% !important; min-height: 180px; }
+body.mobile-view .quick-actions-sidebar { display: flex !important; flex-direction: row !important; gap: 10px !important; width: 100% !important; }
+body.mobile-view .action-tile {
+    flex: 1 !important; min-height: 85px !important; padding: 0 12px !important; gap: 8px !important;
+}
+body.mobile-view .tile-arrow { display: none !important; }
+body.mobile-view .tile-info h3 { font-size: 15px !important; }
+body.mobile-view .tile-info span { font-size: 11px !important; }
+
+/* HERO BANNER MOBILE FIXES */
+body.mobile-view .visual-hero-banner {
+    flex-direction: column !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 40px 20px !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+body.mobile-view .hero-content-wrapper {
+    max-width: 100% !important;
+    width: 100% !important;
+    text-align: center !important;
+    z-index: 10 !important;
+    position: relative !important;
+}
+body.mobile-view .hero-actions {
+    justify-content: center !important;
+}
+body.mobile-view .hero-visual-abstract {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) scale(0.7) !important;
+    margin: 0 !important;
+    opacity: 0.25 !important;
+    z-index: 1 !important;
+    width: 300px !important;
+    pointer-events: none !important;
+}
+
+/* PROFILE PAGE MOBILE */
+body.mobile-view #profileForm { width: 100% !important; display: flex !important; flex-direction: column !important; gap: 20px !important; }
+body.mobile-view .profile-header { text-align: center !important; margin-bottom: 20px !important; width: 100% !important; }
+body.mobile-view .profile-card { width: 100% !important; margin-bottom: 15px !important; box-sizing: border-box !important; }
+body.mobile-view .form-grid { display: flex !important; flex-direction: column !important; gap: 15px !important; }
+body.mobile-view .input-wrapper, body.mobile-view .input-group { width: 100% !important; max-width: 100% !important; margin-right: 0 !important; }
+body.mobile-view .full-width { grid-column: auto !important; width: 100% !important; }
+body.mobile-view .save-bar {
+    position: fixed !important; bottom: 30px !important; left: 50% !important;
+    transform: translateX(-50%) !important; width: auto !important; max-width: 380px !important; z-index: 1000 !important;
+}
+body.mobile-view .save-btn {
+    width: auto !important; padding: 12px 30px !important; display: flex !important;
+    justify-content: center !important; white-space: nowrap !important; box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+}
+
+/* NETWORK & EVENTS MOBILE FIXES */
+body.mobile-view .network-grid, body.mobile-view .events-grid, body.mobile-view #eventsGridContainer, body.mobile-view #eventContainer {
+    display: flex !important; flex-direction: column !important; width: 100% !important; gap: 15px !important; box-sizing: border-box !important;
+}
+body.mobile-view .network-card, body.mobile-view .grid-event-card, body.mobile-view .event-card {
+    width: 100% !important; margin: 0 !important; box-sizing: border-box !important; min-width: 0 !important;
+}
+body.mobile-view .network-hero {
+    flex-direction: column !important; align-items: flex-start !important; padding: 20px !important; gap: 15px !important; border-radius: 16px !important;
+}
+body.mobile-view .network-search-container, body.mobile-view .events-search-bar { width: 100% !important; display: flex !important; box-sizing: border-box !important; margin-bottom: 15px !important; max-width: 100% !important; }
+body.mobile-view .network-search-input, body.mobile-view .events-search-bar input {
+    width: 0 !important; flex-grow: 1 !important; min-width: 0 !important; font-size: 14px !important;
+}
+body.mobile-view .events-filter-row, body.mobile-view .events-category-row {
+    display: flex !important; flex-wrap: nowrap !important; overflow-x: auto !important;
+    width: 100% !important; gap: 10px !important; padding-bottom: 10px !important;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+}
+body.mobile-view .events-filter-row::-webkit-scrollbar, body.mobile-view .events-category-row::-webkit-scrollbar { display: none; }
+body.mobile-view .filter-btn, body.mobile-view .cat-pill { flex: 0 0 auto !important; white-space: nowrap !important; }
+
+/* SCAN PAGE MOBILE */
+body.mobile-view .scan-card-container { background: transparent; box-shadow: none; padding: 0; margin-top: 10px; }
+body.mobile-view .scan-options { grid-template-columns: 1fr; gap: 20px; }
+body.mobile-view .scan-page-tile {
+    min-height: 160px; flex-direction: row; padding: 0 30px !important; justify-content: flex-start; gap: 20px; text-align: left;
+}
+body.mobile-view .scan-page-tile .tile-icon-bubble { margin-bottom: 0; width: 60px; height: 60px; }
+body.mobile-view .scan-page-tile .tile-info { align-items: flex-start; margin-top: 0; }
+
+/* MODALS ON MOBILE */
+body.mobile-view .modal, body.mobile-view #popupForm, body.mobile-view #createEventPopup, body.mobile-view #registerFormPopup,
+body.mobile-view #attendeesPopup, body.mobile-view #noteModal, body.mobile-view #scannedProfileModal,
+body.mobile-view #attendeeInfoPopup, body.mobile-view #qrPopup, body.mobile-view #feedbackModal {
+    display: none !important; opacity: 0 !important; pointer-events: none !important; z-index: -1 !important;
+}
+body.mobile-view .modal[style*="flex"], body.mobile-view .modal[style*="block"],
+body.mobile-view #popupForm[style*="flex"], body.mobile-view #popupForm[style*="block"],
+body.mobile-view #createEventPopup[style*="flex"], body.mobile-view #createEventPopup[style*="block"],
+body.mobile-view #registerFormPopup[style*="flex"], body.mobile-view #registerFormPopup[style*="block"],
+body.mobile-view #attendeesPopup[style*="flex"], body.mobile-view #attendeesPopup[style*="block"],
+body.mobile-view #noteModal[style*="flex"], body.mobile-view #noteModal[style*="block"],
+body.mobile-view #scannedProfileModal[style*="flex"], body.mobile-view #scannedProfileModal[style*="block"],
+body.mobile-view #attendeeInfoPopup[style*="flex"], body.mobile-view #attendeeInfoPopup[style*="block"],
+body.mobile-view #qrPopup[style*="flex"], body.mobile-view #qrPopup[style*="block"],
+body.mobile-view #feedbackModal[style*="flex"], body.mobile-view #feedbackModal[style*="block"] {
+    position: fixed !important; top: 0 !important; left: 50% !important; transform: translateX(-50%) !important;
+    width: 100% !important; max-width: 414px !important; height: 100% !important;
+    z-index: 20000 !important; background: rgba(0,0,0,0.85) !important;
+    display: flex !important; justify-content: center !important; align-items: center !important;
+    opacity: 1 !important; pointer-events: auto !important;
+}
+body.mobile-view .popup-content, body.mobile-view .modal-content, body.mobile-view .bomb-modal {
+    width: 85% !important; max-width: 340px !important; max-height: 80vh !important;
+    margin: 0 !important; position: relative !important; overflow-y: auto !important;
+    z-index: 20001 !important; top: auto !important; left: auto !important;
+}
+body.mobile-view .popup-content button, body.mobile-view .modal-content button, body.mobile-view .bomb-modal button,
+body.mobile-view .close-btn, body.mobile-view #closeInfoBtn, body.mobile-view #closeQR, body.mobile-view #closeScannedModal {
+    cursor: pointer !important; pointer-events: auto !important; position: relative !important; z-index: 20005 !important;
+}
+body.mobile-view .dashboard-grid button, body.mobile-view .action-tile, body.mobile-view .event-card button {
+    z-index: 1 !important; position: relative !important;
+}
+body.mobile-view #scannedProfileModal[style*="flex"], body.mobile-view #scannedProfileModal[style*="block"],
+body.mobile-view #attendeeInfoPopup[style*="flex"], body.mobile-view #attendeeInfoPopup[style*="block"],
+body.mobile-view #registerFormPopup[style*="flex"], body.mobile-view #registerFormPopup[style*="block"],
+body.mobile-view #eventDetailsPopup[style*="flex"], body.mobile-view #eventDetailsPopup[style*="block"],
+body.mobile-view #feedbackModal[style*="flex"], body.mobile-view #feedbackModal[style*="block"] {
+    align-items: flex-start !important; padding-top: 40px !important; padding-bottom: 40px !important; overflow-y: auto !important;
+}
+body.mobile-view #attendeeInfoPopup .popup-content, body.mobile-view #eventDetailsPopup .details-card, body.mobile-view #registerFormPopup .bomb-modal, body.mobile-view #scannedProfileModal .popup-content, body.mobile-view #feedbackModal .popup-content {
+    margin: 0 auto !important; top: 0 !important; transform: none !important;
+}
+
+/* Create Event Mobile Btn */
+body.mobile-view #createEventBtn {
+    right: auto !important; left: 50% !important; margin-left: 140px !important;
+    bottom: 30px !important; width: 56px !important; height: 56px !important;
+    padding: 0 !important; border-radius: 50% !important; justify-content: center !important; gap: 0 !important;
+}
+body.mobile-view #createEventBtn span { display: none !important; }
+body.mobile-view #createEventBtn svg { margin: 0 !important; width: 24px !important; height: 24px !important; }
+
+/* Login Page Mobile Strip */
+body.login-page.mobile-view {
+  width: 100%; max-width: 414px !important; margin: 0 auto !important; min-height: 100vh;
+  box-shadow: 0 0 0 100vw #f4f4f5, 0 0 50px rgba(0,0,0,0.2) !important;
+  background: linear-gradient(135deg, #370617 0%, #6a040f 50%, #d90429 100%) !important;
+  display: flex !important; flex-direction: column; justify-content: center; align-items: center;
+  padding: 20px !important; position: relative !important; top: auto !important; left: auto !important; transform: none !important;
+}
+body.login-page.mobile-view .login-card { width: 100% !important; max-width: 100% !important; padding: 30px 20px !important; box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important; }
+body.login-page.mobile-view #view-toggle-btn {
+  position: fixed !important; bottom: 30px !important; left: 50% !important; transform: translateX(-50%) !important;
+  z-index: 1000; border: 2px solid white !important; box-shadow: 0 5px 15px rgba(0,0,0,0.3) !important;
+}
+
+/* Admin Mode Mobile */
+body.admin-mode .global-nav { background: #111 !important; border-right: 1px solid #333 !important; }
+body.admin-mode .nav-logo { color: white !important; }
+body.admin-mode .center-nav a, body.admin-mode .desktop-links a { color: #aaa !important; }
+body.admin-mode .dashboard-grid, body.admin-mode #viewedProfilesSection, body.admin-mode #qr-reader-container { display: none !important; }
+body.admin-mode #adminStatsGrid { display: grid !important; }
+body.mobile-view .global-nav.admin-theme { background: #111; border-bottom: 1px solid #333; }
+body.mobile-view.admin-mode #adminStatsGrid { display: flex !important; flex-direction: column !important; width: 100% !important; gap: 15px !important; }
+body.mobile-view:not(.admin-mode) #adminStatsGrid { display: none !important; }
+body.mobile-view #adminStatsGrid .action-card { width: 100% !important; margin: 0 !important; }
 
 /* =========================================
    UPDATED INTRO ANIMATION (DARKER & ALIVE)
@@ -2644,70 +2866,5 @@ body.mobile-view .cal-day-cell {
         padding: 8px 15px !important;
         font-size: 12px !important;
         height: 36px !important;
-    }
-}
-
-/* =========================================
-   EMERGENCY MOBILE NAV FIX
-   ========================================= */
-@media (max-width: 768px) {
-    
-    /* 1. Turn Sidebar back into a Top Bar */
-    body.mobile-view .global-nav, 
-    .global-nav {
-        width: 100% !important;
-        height: 60px !important;
-        position: fixed !important;
-        top: 0 !important; left: 0 !important;
-        flex-direction: row !important; /* Horizontal, not vertical */
-        padding: 0 !important;
-        border-right: none !important;
-        border-bottom: 1px solid #eee !important;
-        background: white !important;
-        z-index: 1000 !important;
-    }
-
-    /* 2. Align Logo and Hamburger Horizontally */
-    body.mobile-view .nav-content,
-    .nav-content {
-        flex-direction: row !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        width: 100% !important;
-        height: 100% !important;
-        padding: 0 20px !important;
-        gap: 0 !important;
-    }
-
-    /* 3. HIDE the Desktop Links (Events, Schedule, etc.) */
-    /* This removes the "broken list" cluttering your screen */
-    body.mobile-view .center-nav,
-    body.mobile-view .desktop-links,
-    .center-nav, 
-    .desktop-links {
-        display: none !important;
-    }
-
-    /* 4. Show the Hamburger Menu */
-    body.mobile-view .right-actions,
-    .right-actions {
-        display: flex !important;
-        flex-direction: row !important;
-        width: auto !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border: none !important;
-    }
-    
-    .hamburger-icon {
-        display: flex !important;
-    }
-
-    /* 5. Fix Logo Size */
-    body.mobile-view .nav-logo,
-    .nav-logo {
-        font-size: 20px !important;
-        margin: 0 !important;
-        padding: 0 !important;
     }
 }
