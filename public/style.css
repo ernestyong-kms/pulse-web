@@ -66,10 +66,10 @@ body {
    DASHBOARD & LAYOUT
    ========================================= */
 main { 
-  max-width: 95vw;    /* Takes up 95% of the viewport width */
-  width: 95%;         /* Fallback for older browsers */
-  margin: 0 auto;     /* Centers the content */
-  padding: 40px 2%;   /* Responsive horizontal padding */
+  max-width: 1000px; 
+  margin: 0 auto 40px auto; 
+  padding: 20px; 
+  text-align: left; 
 }
 
 h2 {
@@ -86,10 +86,7 @@ h2::after {
    ========================================= */
 .action-grid, #eventContainer, #viewedList {
   display: grid;
-  /* Automatically adds as many columns as will fit (min 300px wide) */
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-  gap: 25px;
-  width: 100%;
+  gap: 20px;
 }
 
 .action-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 50px; }
@@ -336,94 +333,33 @@ h2::after {
 .center-nav a:hover { opacity: 1; color: var(--primary); }
 
 /* =========================================
-   THE FINAL SIDEBAR FIX (Fixed Width + Scroll)
+   MODE 1: DESKTOP SIDEBAR 
    ========================================= */
-
-/* 1. The Sidebar Container - Fixed 280px Width */
 body:not(.mobile-view) .global-nav {
-  position: fixed;
-  top: 0; left: 0; 
-  width: 280px !important;  /* Never skinny, never changing */
-  min-width: 280px !important;
-  height: 100vh;            /* Full height of screen */
-  padding: 0;               /* Reset padding */
-  
-  /* Flexbox Vertical Stack */
-  display: flex;
-  flex-direction: column;
-  
-  background: #ffffff;
-  border-right: 1px solid rgba(0,0,0,0.1); 
-  z-index: 1000;
+  top: 0; left: 0; width: 240px; height: 100vh;
+  border-right: 1px solid rgba(0,0,0,0.1); padding: 30px 0;
 }
-
-/* 2. Top Logo - Pinned (Won't move) */
-body:not(.mobile-view) .nav-logo { 
-  flex-shrink: 0; /* Prevents squishing */
-  padding: 40px 30px 20px 30px;
-  font-size: 32px; 
-  font-weight: 800;
-  color: var(--text-main);
-  margin: 0;
-  display: block;
+body:not(.mobile-view) .nav-content {
+  flex-direction: column; align-items: flex-start; height: 100%; padding: 0 20px; gap: 30px;
 }
+body:not(.mobile-view) .nav-logo { font-size: 26px; margin-bottom: 20px; }
 
-/* 3. Middle Links - SCROLLABLE (The "Laptop Fix") */
-body:not(.mobile-view) .center-nav { 
-  flex-grow: 1;      /* Fills all available empty space */
-  overflow-y: auto;  /* SCROLLS if the screen is too short */
-  min-height: 0;     /* Critical fix for flexbox scrolling */
-  padding: 10px 20px;
-  margin: 0;
-  
-  display: flex; 
-  flex-direction: column; 
-  gap: 12px; 
-  width: 100%;
-}
-
-/* Hide the scrollbar but keep functionality */
-body:not(.mobile-view) .center-nav::-webkit-scrollbar { width: 6px; }
-body:not(.mobile-view) .center-nav::-webkit-scrollbar-thumb { background: #eee; border-radius: 3px; }
-
-/* Link Styling */
+/* Desktop Navigation Links */
+body:not(.mobile-view) .center-nav { display: flex; flex-direction: column; gap: 5px; width: 100%; }
 body:not(.mobile-view) .center-nav a {
-  font-size: 16px; 
-  font-weight: 500; 
-  padding: 14px 20px;
-  border-radius: 12px;
-  color: var(--text-light);
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  transition: all 0.2s ease;
-  text-decoration: none;
-  flex-shrink: 0; /* Ensures buttons don't get crushed */
+  font-size: 15px; font-weight: 500; padding: 10px 15px;
+  border-radius: 10px; opacity: 1; color: var(--text-main);
+  display: flex; align-items: center; gap: 12px;
 }
-
 body:not(.mobile-view) .center-nav a:hover {
-  background: rgba(217, 4, 41, 0.05); 
-  color: var(--primary); 
-  transform: translateX(5px);
+  background: rgba(141, 8, 1, 0.05); color: var(--primary); transform: translateX(3px);
 }
 
-body:not(.mobile-view) .center-nav a svg {
-  width: 20px; height: 20px; stroke-width: 2;
-}
-
-/* 4. Bottom Profile - Pinned (Won't move) */
+/* Bottom Actions (Profile/Logout) */
 body:not(.mobile-view) .right-actions {
-  flex-shrink: 0; /* Prevents squishing */
-  display: flex; 
-  flex-direction: column; 
-  gap: 10px;
-  width: 100%; 
-  padding: 20px 30px 30px 30px; 
-  border-top: 1px solid rgba(0,0,0,0.05);
-  background: #fff; 
-  margin-top: auto; /* Ensures it sits at bottom even on big screens */
+  margin-top: auto; display: flex; flex-direction: column; gap: 15px;
+  width: 100%; padding-top: 20px; border-top: 1px solid #eee;
 }
-
 body:not(.mobile-view) .desktop-links { display: flex; flex-direction: column; gap: 8px; width: 100%; }
 body:not(.mobile-view) .desktop-links a {
     font-size: 14px; padding: 8px 15px; border-radius: 8px;
@@ -435,12 +371,8 @@ body:not(.mobile-view) .desktop-links .active-profile-link {
 }
 /* Icons */
 body:not(.mobile-view) .global-nav a svg { stroke-width: 2; width: 18px; height: 18px; transition: stroke 0.2s; }
-body:not(.mobile-view) main { 
-  margin-left: 280px !important; 
-  width: calc(100% - 280px) !important;
-  max-width: 100% !important;
-  padding: 40px 5%;   
-}
+/* Content Offset */
+body:not(.mobile-view) main { margin-left: 260px; max-width: 1000px; padding-top: 20px; }
 
 /* Admin Theme (Dark Mode) */
 body:not(.mobile-view) .global-nav.admin-theme { background: #111; border-right: 1px solid #333; }
