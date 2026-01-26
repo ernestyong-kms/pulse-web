@@ -1,5 +1,3 @@
-// js/admin-user-analytics.js
-
 document.addEventListener("DOMContentLoaded", async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const targetUser = urlParams.get('user');
@@ -9,11 +7,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    // 1. Sync Styling Defaults with User Analytics
+    // ==========================================
+    //      1. SYNCE STYLING WITH U ANALYTICS
+    // ==========================================
     Chart.defaults.font.family = "'Poppins', sans-serif";
     Chart.defaults.color = '#666';
 
-    // 2. Load Dashboard Components
+    // ==========================================
+    //      2. LOAD DASHBOARD
+    // ==========================================
     loadKPIs(targetUser);
     loadGrowthChart(targetUser);
     loadSkillChart(targetUser); 
@@ -21,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadImpactChart(targetUser);
 });
 
-// --- 1. KPI LOGIC (Sync with user_analytics.js) ---
+// KPI LOGIC
 async function loadKPIs(username) {
     try {
         const res = await fetch(`/api/stats/summary/${username}`);
@@ -29,7 +31,7 @@ async function loadKPIs(username) {
         const rankRes = await fetch(`/api/stats/rank/${username}`);
         const rankData = await rankRes.json();
 
-        // Update standard IDs
+        
         document.getElementById("kpiPoints").textContent = data.points;
         document.getElementById("kpiConnections").textContent = data.connections;
         document.getElementById("kpiEvents").textContent = data.events_attended;
@@ -45,7 +47,7 @@ async function loadKPIs(username) {
     } catch(e) { console.error("KPI Error:", e); }
 }
 
-// --- 2. GROWTH CHART (FIXED DATES & 30-DAY WINDOW) ---
+// GROWTH CHART
 async function loadGrowthChart(username) {
     const ctx = document.getElementById('growthChart');
     if(!ctx) return;
@@ -53,15 +55,15 @@ async function loadGrowthChart(username) {
         const res = await fetch(`/api/stats/growth/${username}`);
         let data = await res.json();
         
-        // 🔥 FIX 1: Filter out future dummy data
+       
         const today = new Date();
         today.setHours(23, 59, 59, 999);
         data = data.filter(d => new Date(d.date) <= today);
         
-        // 🔥 FIX 2: Restrict to last 30 entries
+  
         if (data.length > 30) data = data.slice(data.length - 30);
         
-        // 🔥 FIX 3: Clean Date Formatting (Removes 16:00:000)
+       
         const labels = data.map(d => new Date(d.date).toLocaleDateString(undefined, {month:'short', day:'numeric'}));
         const values = data.map(d => d.daily_count);
         
@@ -96,7 +98,7 @@ async function loadGrowthChart(username) {
     } catch(e) { console.error(e); }
 }
 
-// --- 3. EVENT IMPACT MATRIX (YOU VS CROWD BUBBLES) ---
+// EVENT IMPACT MATRIX
 async function loadImpactChart(username) {
     try {
         const res = await fetch(`/api/stats/event-impact/${username}`);
@@ -107,7 +109,6 @@ async function loadImpactChart(username) {
         const ctx = document.getElementById('impactChart').getContext('2d');
         const scaleFactor = 6; 
         
-        // Sync with user_analytics.js multi-bubble logic
         const myData = data.map((d, index) => ({ x: index, y: d.my_connections, r: Math.max(4, Math.sqrt(d.my_connections) * scaleFactor), eventName: d.name }));
         const crowdData = data.map((d, index) => ({ x: index, y: d.my_connections, r: (Math.sqrt(d.total_attendees) * scaleFactor) + 6, eventName: d.name }));
 
@@ -135,7 +136,7 @@ async function loadImpactChart(username) {
     } catch(e) { console.error(e); }
 }
 
-// --- 4. INTEREST PROFILE (NESTED DOUBLE DONUT) ---
+// INTEREST PROFIle
 async function loadCategoryChart(username) {
     try {
         const res = await fetch(`/api/stats/radar/${username}`);
@@ -165,14 +166,14 @@ async function loadCategoryChart(username) {
                         backgroundColor: ['#d90429', '#3a86ff', '#8338ec', '#ff006e', '#fb5607'], 
                         borderRadius: 20, 
                         spacing: 3, 
-                        weight: 2 // Outer ring
+                        weight: 2 
                     }, 
                     { 
                         label: 'Avg', 
                         data: top5.map(d => d.avgPct), 
                         backgroundColor: ['rgba(217,4,41,0.2)', 'rgba(58,134,255,0.2)', 'rgba(131,56,236,0.2)', 'rgba(255,0,110,0.2)', 'rgba(251,86,7,0.2)'], 
                         borderRadius: 10, 
-                        weight: 1 // Inner ring
+                        weight: 1 
                     }
                 ] 
             },
@@ -184,7 +185,7 @@ async function loadCategoryChart(username) {
     } catch(e) { console.error(e); }
 }
 
-// --- 5. NETWORK EXPERTISE (BAR CHART) ---
+// NETWORK EXPERTISE
 async function loadSkillChart(username) {
     const ctx = document.getElementById('skillChart');
     if(!ctx) return; 

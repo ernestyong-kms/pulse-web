@@ -632,7 +632,7 @@ async function loadRegistrationChart() {
 }
 
 // =========================================================
-//  9. SATISFACTION CHART & EXPLORER (STARS 0-5, AI 0-10)
+//  9. SATISFACTION CHART & EXPLORER 
 // =========================================================
 
 // --- A. DASHBOARD WIDGET (Limit 4 Active) ---
