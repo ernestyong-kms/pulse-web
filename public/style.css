@@ -348,10 +348,20 @@ body:not(.mobile-view) .global-nav {
 body:not(.mobile-view) .nav-content {
   flex-direction: column; align-items: flex-start; height: 100%; padding: 0 20px; gap: 30px;
 }
-body:not(.mobile-view) .nav-logo { font-size: 26px; margin-bottom: 20px; }
+body:not(.mobile-view) .nav-logo { 
+  font-size: clamp(32px, 2.5vw, 42px); /* Scales from 32px up to 42px */
+  margin-bottom: 40px; 
+  padding-left: 15px;
+  font-weight: 800; /* Extra bold for impact */
+}
 
 /* Desktop Navigation Links */
-body:not(.mobile-view) .center-nav { display: flex; flex-direction: column; gap: 5px; width: 100%; }
+body:not(.mobile-view) .center-nav { 
+  display: flex; 
+  flex-direction: column; 
+  gap: clamp(10px, 2vh, 25px); /* Grows vertically based on screen height */
+  width: 100%; 
+}
 body:not(.mobile-view) .center-nav a {
   font-size: clamp(15px, 1.2vw, 20px);
   font-weight: 500; padding: 10px 15px;
@@ -362,10 +372,15 @@ body:not(.mobile-view) .center-nav a:hover {
   background: rgba(141, 8, 1, 0.05); color: var(--primary); transform: translateX(3px);
 }
 
-/* Bottom Actions (Profile/Logout) */
 body:not(.mobile-view) .right-actions {
-  margin-top: auto; display: flex; flex-direction: column; gap: 15px;
-  width: 100%; padding-top: 20px; border-top: 1px solid #eee;
+  margin-top: auto; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 20px;
+  width: 100%; 
+  padding-top: 30px; 
+  border-top: 1px solid rgba(0,0,0,0.05); /* Softer line */
+  padding-bottom: 20px; /* Keeps it from touching the very bottom edge */
 }
 body:not(.mobile-view) .desktop-links { display: flex; flex-direction: column; gap: 8px; width: 100%; }
 body:not(.mobile-view) .desktop-links a {
