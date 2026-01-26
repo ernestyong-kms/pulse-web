@@ -336,30 +336,30 @@ h2::after {
 .center-nav a:hover { opacity: 1; color: var(--primary); }
 
 /* =========================================
-   MODE 1: DESKTOP SIDEBAR 
+   THE FINAL SIDEBAR FIX (Fixed Width + Scroll)
    ========================================= */
-/* REPLACE ONLY THIS BLOCK */
+
+/* 1. The Sidebar Container - Fixed 280px Width */
 body:not(.mobile-view) .global-nav {
   position: fixed;
   top: 0; left: 0; 
-  /* 1. FORCE WIDTH: No variables, no clamp. Just 280px. */
-  width: 280px !important; 
+  width: 280px !important;  /* Never skinny, never changing */
   min-width: 280px !important;
+  height: 100vh;            /* Full height of screen */
+  padding: 0;               /* Reset padding */
   
-  /* 2. FORCE HEIGHT & SCROLLING */
-  height: 100vh;
-  padding: 0; 
-  
+  /* Flexbox Vertical Stack */
   display: flex;
   flex-direction: column;
+  
   background: #ffffff;
   border-right: 1px solid rgba(0,0,0,0.1); 
   z-index: 1000;
 }
 
-/* Logo stays pinned at the top */
+/* 2. Top Logo - Pinned (Won't move) */
 body:not(.mobile-view) .nav-logo { 
-  flex-shrink: 0; 
+  flex-shrink: 0; /* Prevents squishing */
   padding: 40px 30px 20px 30px;
   font-size: 32px; 
   font-weight: 800;
@@ -368,21 +368,52 @@ body:not(.mobile-view) .nav-logo {
   display: block;
 }
 
-/* Links scroll if the screen is too short */
+/* 3. Middle Links - SCROLLABLE (The "Laptop Fix") */
 body:not(.mobile-view) .center-nav { 
-  flex: 1; 
-  overflow-y: auto; /* <--- THIS FIXES THE MISSING LOGOUT BUTTON */
+  flex-grow: 1;      /* Fills all available empty space */
+  overflow-y: auto;  /* SCROLLS if the screen is too short */
+  min-height: 0;     /* Critical fix for flexbox scrolling */
   padding: 10px 20px;
   margin: 0;
+  
   display: flex; 
   flex-direction: column; 
   gap: 12px; 
   width: 100%;
 }
 
-/* Logout/Profile stays pinned at the bottom */
+/* Hide the scrollbar but keep functionality */
+body:not(.mobile-view) .center-nav::-webkit-scrollbar { width: 6px; }
+body:not(.mobile-view) .center-nav::-webkit-scrollbar-thumb { background: #eee; border-radius: 3px; }
+
+/* Link Styling */
+body:not(.mobile-view) .center-nav a {
+  font-size: 16px; 
+  font-weight: 500; 
+  padding: 14px 20px;
+  border-radius: 12px;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  flex-shrink: 0; /* Ensures buttons don't get crushed */
+}
+
+body:not(.mobile-view) .center-nav a:hover {
+  background: rgba(217, 4, 41, 0.05); 
+  color: var(--primary); 
+  transform: translateX(5px);
+}
+
+body:not(.mobile-view) .center-nav a svg {
+  width: 20px; height: 20px; stroke-width: 2;
+}
+
+/* 4. Bottom Profile - Pinned (Won't move) */
 body:not(.mobile-view) .right-actions {
-  flex-shrink: 0; 
+  flex-shrink: 0; /* Prevents squishing */
   display: flex; 
   flex-direction: column; 
   gap: 10px;
@@ -390,29 +421,9 @@ body:not(.mobile-view) .right-actions {
   padding: 20px 30px 30px 30px; 
   border-top: 1px solid rgba(0,0,0,0.05);
   background: #fff; 
+  margin-top: auto; /* Ensures it sits at bottom even on big screens */
 }
 
-body:not(.mobile-view) .center-nav a {
-  font-size: clamp(16px, 1.2vw, 22px);
-  padding: 15px 20px;
-  font-weight: 500; padding: 10px 15px;
-  border-radius: 10px; opacity: 1; color: var(--text-main);
-  display: flex; align-items: center; gap: 12px;
-}
-body:not(.mobile-view) .center-nav a:hover {
-  background: rgba(141, 8, 1, 0.05); color: var(--primary); transform: translateX(3px);
-}
-
-body:not(.mobile-view) .right-actions {
-  margin-top: auto; 
-  display: flex; 
-  flex-direction: column; 
-  gap: 20px;
-  width: 100%; 
-  padding-top: 30px; 
-  border-top: 1px solid rgba(0,0,0,0.05); /* Softer line */
-  padding-bottom: 20px; /* Keeps it from touching the very bottom edge */
-}
 body:not(.mobile-view) .desktop-links { display: flex; flex-direction: column; gap: 8px; width: 100%; }
 body:not(.mobile-view) .desktop-links a {
     font-size: 14px; padding: 8px 15px; border-radius: 8px;
