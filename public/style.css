@@ -371,14 +371,16 @@ body:not(.mobile-view) .nav-logo {
 }
 
 /* 2. LINKS: Remove 'flex-grow' so they don't float in the middle */
+/* REPLACE YOUR EXISTING 'body:not(.mobile-view) .center-nav' BLOCK WITH THIS */
 body:not(.mobile-view) .center-nav { 
   display: flex; 
   flex-direction: column; 
-  gap: 15px;           /* Tighter spacing between buttons */
+  gap: 15px; 
   width: 100%;
   padding: 0 20px;
-  flex-grow: 0;        /* STOP growing to fill space */
-  margin-bottom: auto; /* This pushes the Profile section to the bottom */
+  
+  /* THIS IS THE KEY FIX FOR CLUMPING */
+  margin-bottom: auto; /* Pushes everything else to the bottom */
 }
 
 /* 3. PROFILE: Stays at the bottom */
@@ -424,11 +426,12 @@ body:not(.mobile-view) .desktop-links .active-profile-link {
 }
 /* Icons */
 body:not(.mobile-view) .global-nav a svg { stroke-width: 2; width: 18px; height: 18px; transition: stroke 0.2s; }
+/* REPLACE YOUR EXISTING 'body:not(.mobile-view) main' BLOCK WITH THIS */
 body:not(.mobile-view) main { 
-  margin-left: 22vw;         /* Matches the new sidebar thickness */
-  width: calc(100% - 22vw);  /* Fills the rest of the screen exactly */
-  max-width: 100% !important; 
-  padding: 60px 5vw;         /* Responsive padding for a premium feel */
+  margin-left: 280px;         /* Must match the 280px sidebar width */
+  width: calc(100% - 280px);  /* Fills the rest of the screen */
+  max-width: 100%;            /* Unlocks the width for big screens */
+  padding: 40px 5%;   
 }
 
 /* Admin Theme (Dark Mode) */
