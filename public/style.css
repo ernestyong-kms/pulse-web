@@ -66,10 +66,11 @@ body {
    DASHBOARD & LAYOUT
    ========================================= */
 main { 
-  max-width: 1400px; /* Increased from 1000px */
-  width: 90%;        /* Allows it to shrink on smaller screens */
+  max-width: 1600px; /* Increased for big monitors */
+  width: 90%;        /* Allows it to be flexible */
   margin: 0 auto 40px auto; 
   padding: 20px; 
+  text-align: left; 
 }
 
 h2 {
@@ -335,8 +336,9 @@ h2::after {
 /* =========================================
    MODE 1: DESKTOP SIDEBAR 
    ========================================= */
+/* Sidebar Width - Increased to 300px */
 body:not(.mobile-view) .global-nav {
-  top: 0; left: 0; width: 240px; height: 100vh;
+  top: 0; left: 0; width: 300px; height: 100vh;
   border-right: 1px solid rgba(0,0,0,0.1); padding: 30px 0;
 }
 body:not(.mobile-view) .nav-content {
@@ -371,11 +373,11 @@ body:not(.mobile-view) .desktop-links .active-profile-link {
 }
 /* Icons */
 body:not(.mobile-view) .global-nav a svg { stroke-width: 2; width: 18px; height: 18px; transition: stroke 0.2s; }
-/* Content Offset */
+/* Content Offset - Adjusted to match the wider sidebar */
 body:not(.mobile-view) main { 
-  margin-left: 260px; 
-  max-width: 1400px; /* Match the width above */
-  width: calc(100% - 300px); /* Fill the remaining space minus the sidebar */
+  margin-left: 320px; /* Pushes content 320px from the left */
+  max-width: 1600px;  /* Matches your new main width */
+  width: calc(100% - 350px); /* Fills the rest of the screen */
   padding-top: 20px; 
 }
 
