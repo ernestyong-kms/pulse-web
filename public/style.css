@@ -2734,27 +2734,53 @@ body.mobile-view .cal-day-cell {
    ========================================= */
 @media (max-width: 1366px) and (min-width: 901px) {
     
-    /* 1. Shrink Sidebar to give content more room */
+    /* 1. FORCE COMPACT SIDEBAR (Overrides the 60px lift) */
     body:not(.mobile-view) .global-nav {
         width: 220px; 
+        padding: 15px 0 !important; /* !important stops the big padding */
     }
     
-    /* 2. Adjust Main Content to match thinner sidebar */
+    /* 2. FORCE SMALLER LOGO */
+    body:not(.mobile-view) .nav-logo { 
+        font-size: 24px !important; 
+        margin-bottom: 20px !important; 
+        padding-left: 20px;
+    }
+
+    /* 3. FORCE TIGHTER GAPS (Overrides the 18px desktop gap) */
+    body:not(.mobile-view) .center-nav {
+        gap: 8px !important;  /* Keeps links close together */
+    }
+
+    /* 4. FORCE SMALLER TEXT (Overrides the 17px desktop font) */
+    body:not(.mobile-view) .center-nav a {
+        font-size: 14px !important;      
+        padding: 8px 12px !important;    
+        gap: 10px !important;
+    }
+
+    /* 5. FORCE BOTTOM BUTTONS DOWN (Overrides the lift) */
+    body:not(.mobile-view) .right-actions {
+        padding-top: 10px !important;
+        padding-bottom: 10px !important; /* Keeps them at bottom */
+        gap: 8px !important;
+    }
+    
+    body:not(.mobile-view) .desktop-links a {
+        font-size: 13px !important;
+        padding: 6px 15px !important;
+    }
+
+    /* 6. Main Content & Grid Fixes (Unchanged) */
     body:not(.mobile-view) main,
     .inbox-main {
         margin-left: 220px !important;
         width: calc(100% - 220px) !important;
-        padding: 25px; /* Slightly less padding on laptop */
+        padding: 20px; 
     }
 
-    /* 3. Make Nav Links slightly smaller to fit */
-    body:not(.mobile-view) .nav-logo { font-size: 28px; margin-bottom: 30px; }
-    body:not(.mobile-view) .center-nav a { font-size: 14px; padding: 8px 12px; }
-
-    /* 4. Fix Dashboard Grid Squeeze */
-    /* If the grid gets too tight, drop the sidebar column to the bottom */
     .dashboard-grid {
-        grid-template-columns: 1fr; /* Stack them */
+        grid-template-columns: 1fr;
         gap: 20px;
     }
 }
