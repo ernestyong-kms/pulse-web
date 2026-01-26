@@ -15,7 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
     loadFeedbackChart(); 
 });
 
-// --- 0. SMART DATA GROUPING ENGINE ---
+// ==========================================
+//      0. SMART DATA GROUPING ENGINE 
+// ==========================================
 function normalizeAndAggregate(rawData) {
     const grouped = {};
     rawData.forEach(item => {
@@ -36,7 +38,9 @@ function normalizeAndAggregate(rawData) {
     return Object.keys(grouped).map(key => ({ position: key, count: grouped[key] })).sort((a, b) => b.count - a.count);
 }
 
-// --- 1. KPI LOADER ---
+// ==========================================
+//      1. KPI LOADER
+// ==========================================
 async function loadAdminKPIs() {
     try {
         const res = await fetch('/api/admin/stats');
@@ -53,7 +57,9 @@ async function loadAdminKPIs() {
     } catch(e) { console.error("KPI Error:", e); }
 }
 
-// --- 2. COMMUNITY DENSITY CHART (WIDGET) ---
+// ==========================================
+//      2. COMMUNITY DENSITY CHART
+// ==========================================
 let densityChartInstance = null;
 async function loadNetworkDensityChart(days = 30) {
     try {
@@ -159,7 +165,9 @@ async function loadNetworkDensityChart(days = 30) {
     } catch (e) { console.error("Density Load Error:", e); }
 }
 
-// --- 3. AUDIENCE MIX CHART ---
+// ==========================================
+//      3. AUDIENCE MIX CHART
+// ==========================================
 let jobChartInstance = null;
 async function loadRealJobChart() {
     try {
@@ -237,7 +245,9 @@ async function loadRealJobChart() {
     } catch (e) { console.error("Job Chart Error:", e); }
 }
 
-// --- 4. AUDIENCE EXPLORER ---
+// ==========================================
+//      4. AUDIENCE EXPLORERR
+// ==========================================
 let audienceExplorerInstance = null;
 window.openAudienceExplorer = async function() {
     const modal = document.getElementById('audienceExplorerModal');
@@ -317,7 +327,9 @@ window.closeAudienceExplorer = function() {
     document.getElementById('audienceExplorerModal').style.display = 'none';
 }
 
-// --- 5. CONNECTIVITY MATRIX (Dashboard Top 5) ---
+// ==========================================
+//      4. CONNECTIVITY MATRIX
+// ==========================================
 async function loadConnectionMatrix() {
     try {
         const [rolesRes] = await Promise.all([fetch('/api/admin/roles')]);
@@ -327,7 +339,9 @@ async function loadConnectionMatrix() {
     } catch (e) { console.error("Matrix Error:", e); }
 }
 
-// --- 6. MATRIX EXPLORER (Full View - Top 15) ---
+// ==========================================
+//      6. MATRIX EXPLORER
+// ==========================================
 window.openMatrixExplorer = function() {
     const modal = document.getElementById('matrixExplorerModal');
     if (!modal) return;
@@ -395,7 +409,9 @@ function renderMatrix(rolesData, containerId) {
     });
 }
 
-// --- 7. DENSITY EXPLORER (The Expanded View) ---
+// ==========================================
+//      7. DENSITY EXPLORER
+// ==========================================
 let explorerChartInstance = null;
 
 // 🔥 RESTORED MISSING FUNCTION
@@ -515,7 +531,9 @@ window.updateExplorerChart = async function(days) {
     } catch (e) { console.error("Explorer Chart Error:", e); }
 };
 
-// --- 8. REGISTRATION VS CHECK-IN CHART ---
+// ==========================================
+//      8. REGISTRATION VS CHECK IN
+// ==========================================
 async function loadRegistrationChart() {
     try {
         const res = await fetch('/api/admin/event-stats?limit=4');
@@ -866,7 +884,7 @@ function animateValue(id, start, end, duration) {
 }
 
 // ==========================================
-//      10. TURNOUT EXPLORER (NEW)
+//      10. TURNOUT EXPLORER 
 // ==========================================
 let turnoutExplorerInstance = null;
 
