@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Manage Events</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div id="navPlaceholder"></div>
+
+  <main>
+    <div id="adminHeaderContainer" style="margin-bottom:30px;">
+        <h1 style="font-size:32px; font-weight:700; margin:0 0 5px 0;">Manage Events</h1>
+        <p style="margin:0; color:#666;">View, create, and delete events.</p>
+    </div>
+
+    <div class="auth-card" style="padding:0; max-width: 1000px; margin: 0 auto;">
+        
+        <div class="admin-mobile-stack" style="background: linear-gradient(135deg, var(--primary), #8d0801); padding: 40px; color: white; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <h2 style="margin:0; color:white; font-size: 28px;">Events List</h2>
+              <p style="margin:5px 0 0; opacity: 0.9;">Manage your sessions</p>
+            </div>
+            
+            <button id="openCreateEvent" style="background: white; color: var(--primary); border: none; padding: 12px 25px; border-radius: 30px; font-weight: 700; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: 0.2s; display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 20px; line-height: 0;">+</span> New Event
+            </button>
+        </div>
+
+        <div style="padding: 30px;">
+            <div id="eventContainer">Loading events...</div>
+        </div>
+
+    </div>
+  </main>
+
+  <div id="createEventPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); backdrop-filter:blur(5px); justify-content:center; align-items:center; z-index:999;">
+    <div class="popup-content" style="width: 90%; max-width: 700px; max-height: 90vh; overflow-y: auto;">
+      <h3 style="margin-bottom: 25px; font-size: 24px; color: var(--primary-dark); text-align: center;">Create New Event</h3>
+      <form id="createEventForm">
+        <div style="margin-bottom: 20px; text-align: center;">
+            <label for="eventPhotoInput" style="cursor: pointer; display: block;">
+                <div id="eventPhotoPreview" style="width: 100%; height: 180px; background: #f8f9fa; border: 2px dashed #ddd; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #888; overflow: hidden; position: relative;">
+                    <span style="font-size: 24px; margin-bottom: 5px;">📷</span>
+                    <span style="font-size: 12px; font-weight: 500;">Click to upload event banner</span>
+                    <img id="previewImg" src="" style="width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top:0; left:0;">
+                </div>
+            </label>
+            <input type="file" id="eventPhotoInput" accept="image/*" style="display: none;">
+        </div>
+        <div style="display: grid; grid-template-columns: 2fr 1.2fr 1fr 1fr; gap: 15px;">
+            <div class="input-group"><label style="font-size: 12px; color: #666; font-weight: 600; margin-bottom: 5px; display: block;">Event Name</label><input type="text" id="eventName" placeholder="e.g. AI Seminar" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;"></div>
+            <div class="input-group"><label style="font-size: 12px; color: #666; font-weight: 600; margin-bottom: 5px; display: block;">Date</label><input type="date" id="eventDate" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;"></div>
+            <div class="input-group"><label style="font-size: 12px; color: #666; font-weight: 600; margin-bottom: 5px; display: block;">Start Time</label><input type="time" id="eventTime" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;"></div>
+            <div class="input-group"><label style="font-size: 12px; color: #666; font-weight: 600; margin-bottom: 5px; display: block;">End Time</label><input type="time" id="eventEndTime" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;"></div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+            <div class="input-group"><label style="font-size: 12px; color: #666; font-weight: 600; margin-bottom: 5px; display: block;">Location</label><input type="text" id="eventLocation" placeholder="e.g. Auditorium A" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;"></div>
+            <div class="input-group"><label style="font-size: 12px; color: #666; font-weight: 600; margin-bottom: 5px; display: block;">Category</label><select id="eventCategory" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; background: white;"><option value="General">General</option><option value="Tech">Tech</option><option value="Workshop">Workshop</option><option value="Social">Social</option><option value="Networking">Networking</option><option value="Seminar">Seminar</option><option value="Arts">Arts</option></select></div>
+        </div>
+        <div class="input-group" style="margin-top: 15px;"><label style="font-size: 12px; color: #666; font-weight: 600; margin-bottom: 5px; display: block;">Description</label><textarea id="eventDescription" placeholder="What is this event about?" required style="width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 14px; min-height: 100px; resize: vertical; box-sizing: border-box; background: #fdfdfd;"></textarea></div>
+        <div style="display: flex; gap: 15px; margin-top: 25px;">
+            <button type="button" id="cancelEvent" style="flex: 1; background: #f0f2f5; color: #333; padding: 12px; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.2s;">Cancel</button>
+            <button type="submit" class="btn-primary" style="flex: 1; margin: 0; box-shadow: 0 5px 15px rgba(217, 4, 41, 0.3);">Create Event</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="attendeesPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); backdrop-filter:blur(5px); justify-content:center; align-items:center; z-index:9999;">
+    <div class="popup-content" style="width: 95%; max-width: 900px; height: 85vh; display: flex; flex-direction: column; padding: 0; overflow: hidden; background: white; border-radius: 16px;">
+      <div style="padding: 25px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: white;">
+        <h2 style="margin:0; color:var(--primary-dark); font-size: 24px;">Event Attendees</h2>
+        <button id="closeAttendees" style="background:transparent; border:none; font-size: 28px; color: #999; cursor: pointer;">&times;</button>
+      </div>
+      <div style="flex: 1; overflow-y: auto; padding: 0;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead style="background: #f8f9fa; position: sticky; top: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                <tr style="text-align: left; color: #666; font-size: 13px; text-transform: uppercase;"><th style="padding: 15px 25px;">Name</th><th style="padding: 15px 25px;">Role</th><th style="padding: 15px 25px;">Company</th><th style="padding: 15px 25px;">Actions</th></tr>
+            </thead>
+            <tbody id="attendeeList"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div id="attendeeInfoPopup"></div>
+
+  <script src="js/navLoader.js"></script>
+  <script src="js/toggle.js"></script>
+  <script src="js/registrationHandler.js?v=8"></script>
+  <script src="js/events.js?v=40000"></script> 
+  <script src="js/admin.js"></script>
+
+</body>
+</html>

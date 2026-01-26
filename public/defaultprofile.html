@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Pulse</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div id="navPlaceholder"></div> 
+
+  <main>
+    <form id="profileForm" enctype="multipart/form-data">
+        
+        <div class="profile-header">
+            <div class="photo-wrapper">
+                <img id="photoPreview" src="images/default-user.png" 
+                    onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'" 
+                    class="profile-img" alt="Profile">
+                    
+                <label for="profile_pic" class="camera-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                        <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                </label>
+                <input type="file" id="profile_pic" name="profile_pic" accept="image/*" class="hidden-input" onchange="previewImage(event)">
+            </div>
+            <h1>Main Profile</h1>
+            <p>This data will auto-fill whenever you register for an event.</p>
+        </div>
+
+        <div class="profile-card">
+            <div class="section-title">Personal Details</div>
+            <div class="form-grid">
+                <div class="input-wrapper">
+                    <label>Full Name</label>
+                    <input type="text" id="name" name="name" required placeholder="John Doe">
+                </div>
+                <div class="input-wrapper">
+                    <label>Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="john@example.com">
+                </div>
+                <div class="input-wrapper">
+                    <label>Phone Number</label>
+                    <input type="text" id="phone" name="phone_number" placeholder="+65 9123 4567">
+                </div>
+                <div class="input-wrapper">
+                    <label>LinkedIn URL <span class="optional-text">(Optional)</span></label>
+                    <input type="text" id="linkedin" name="linkedin_url" placeholder="www.linkedin.com/in/...">
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-card">
+            <div class="section-title">Professional Info</div>
+            
+            <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                <input type="checkbox" id="unemployedCheck" style="width: auto; height: 18px; width: 18px; cursor: pointer; accent-color: var(--primary);">
+                <label for="unemployedCheck" style="font-size: 14px; color: #555; cursor: pointer; font-weight: 500;">
+                    I am currently not working or studying
+                </label>
+            </div>
+
+            <div class="form-grid">
+                <div class="input-wrapper">
+                    <label>Company / School</label>
+                    <input type="text" id="company" name="company" list="org-suggestions" placeholder="Start typing..." autocomplete="off">
+                    
+                    <datalist id="org-suggestions">
+                        </datalist>
+                </div>
+                <div class="input-wrapper">
+                    <label>Position / Course</label>
+                    <input type="text" id="position" name="position" placeholder="Student">
+                </div>
+
+                <div class="input-wrapper full-width">
+                    <label>Qualifications / Previous Roles <span class="optional-text">(Optional)</span></label>
+                    <textarea id="qualifications" name="qualifications" placeholder="E.g. Diploma in IT, Ex-Intern at Google, AWS Certified..."></textarea>
+                </div>
+
+                <div class="input-wrapper full-width">
+                    <label>Top Skills <span class="optional-text">(Optional)</span></label>
+                    <textarea id="skills" name="skills" placeholder="E.g. Python, Public Speaking, Data Analytics..."></textarea>
+                </div>
+
+                <div class="input-wrapper full-width">
+                    <label>Special Interests <span class="optional-text">(Optional)</span></label>
+                    <textarea id="interests" name="special_interests" placeholder="E.g. Football, Sustainability, AI..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="save-bar">
+            <button type="submit" class="save-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                Save Changes
+            </button>
+        </div>
+    </form>
+  </main>
+
+  <script src="js/navLoader.js"></script> 
+  <script src="js/toggle.js"></script>
+  <script src="js/profile.js"></script>
+
+  <script>
+      const check = document.getElementById("unemployedCheck");
+      const companyInput = document.getElementById("company");
+      const positionInput = document.getElementById("position");
+
+      check.addEventListener("change", function() {
+          if (this.checked) {
+              // Disable and Clear
+              companyInput.value = "";
+              positionInput.value = "";
+              companyInput.disabled = true;
+              positionInput.disabled = true;
+              companyInput.style.backgroundColor = "#f0f0f0";
+              positionInput.style.backgroundColor = "#f0f0f0";
+              companyInput.placeholder = "Not Applicable";
+              positionInput.placeholder = "Not Applicable";
+          } else {
+              // Enable
+              companyInput.disabled = false;
+              positionInput.disabled = false;
+              companyInput.style.backgroundColor = "#fdfdfd";
+              positionInput.style.backgroundColor = "#fdfdfd";
+              companyInput.placeholder = "Temasek Polytechnic";
+              positionInput.placeholder = "Student";
+          }
+      });
+  </script>
+
+</body>
+</html>

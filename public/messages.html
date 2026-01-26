@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Pulse</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div id="navPlaceholder"></div> 
+
+  <main class="inbox-main">
+    
+    <div class="inbox-container">
+        
+        <div class="inbox-sidebar" id="inboxSidebar">
+            <div class="inbox-header">
+                <h2>Messages</h2>
+            </div>
+            <div id="conversationList" class="conversation-list">
+                <p style="padding:20px; color:#999; font-size:13px;">Loading chats...</p>
+            </div>
+        </div>
+
+        <div class="inbox-chat-area" id="inboxChatArea">
+            
+            <div id="emptyState" style="text-align: center; margin: auto;">
+                <div style="width: 80px; height: 80px; background: #f0f0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto;">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                </div>
+                <h3 style="color:#333;">Your Messages</h3>
+                <p style="color:#888; font-size:14px;">Select a conversation to start chatting.</p>
+            </div>
+
+            <div id="activeChatContainer" style="display: none; flex-direction: column; height: 100%;">
+                
+                <div class="chat-header-bar">
+                    <button id="backToInbox" class="mobile-only-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                    </button>
+                    <img id="chatHeaderPhoto" src="" alt="">
+                    <div style="display:flex; flex-direction:column;">
+                        <span id="chatHeaderName" style="font-weight:700; font-size:15px; color:#111;">User</span>
+                       
+                    </div>
+                </div>
+
+                <div id="chatMessagesArea" class="messages-scroll"></div>
+
+                <div class="chat-input-bar">
+                    <input type="text" id="inboxInput" placeholder="Type a message...">
+                    <button id="inboxSendBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+  </main>
+
+  <script src="js/navLoader.js"></script>
+  <script src="js/toggle.js"></script>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        const user = JSON.parse(localStorage.getItem("loggedInUser"));
+        if (!user) window.location.href = "index.html";
+
+        const conversationList = document.getElementById("conversationList");
+        const messagesArea = document.getElementById("chatMessagesArea");
+        const emptyState = document.getElementById("emptyState");
+        const activeContainer = document.getElementById("activeChatContainer");
+        const chatInput = document.getElementById("inboxInput");
+        
+        let currentChatUser = null;
+        let chatPollInterval = null;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const startChatUser = urlParams.get('chatWith');
+
+        // 1. Load Sidebar (With Red Dots)
+        async function loadConversations() {
+            try {
+                const res = await fetch(`/api/conversations?username=${user.username}`);
+                const chats = await res.json();
+                
+                conversationList.innerHTML = "";
+                
+                if(chats.length === 0) {
+                    conversationList.innerHTML = `<p style="padding:20px; color:#999; font-size:13px; text-align:center;">No messages yet.</p>`;
+                    return;
+                }
+
+                chats.forEach(chat => {
+                    const isActive = currentChatUser && currentChatUser.username === chat.username;
+                    const unreadCount = chat.unreadCount || 0;
+                    
+                    // Create Item
+                    const item = document.createElement("div");
+                    item.className = `conv-item ${isActive ? 'active' : ''}`;
+                    
+                    // 🔥 UNREAD STYLING
+                    const boldClass = unreadCount > 0 ? "font-weight: 700; color: #000;" : "";
+                    const badgeHtml = unreadCount > 0 
+                        ? `<div style="background:#ef4444; color:white; font-size:10px; font-weight:bold; padding:2px 6px; border-radius:10px; margin-left:auto;">${unreadCount}</div>` 
+                        : `<span class="conv-time">${new Date(chat.timestamp).toLocaleDateString()}</span>`;
+
+                    item.innerHTML = `
+                        <div style="position:relative;">
+                            <img src="${chat.photo || 'https://cdn-icons-png.flaticon.com/512/847/847969.png'}" class="conv-photo">
+                        </div>
+                        <div class="conv-info">
+                            <div class="conv-top">
+                                <span class="conv-name" style="${boldClass}">${chat.name}</span>
+                                ${badgeHtml}
+                            </div>
+                            <div class="conv-preview" style="${boldClass}">
+                                ${chat.sender_username === user.username ? 'You: ' : ''}${chat.lastMessage}
+                            </div>
+                        </div>
+                    `;
+                    item.onclick = () => loadChat(chat);
+                    conversationList.appendChild(item);
+                });
+
+                if(startChatUser && !currentChatUser) {
+                    const target = chats.find(c => c.username === startChatUser);
+                    if(target) loadChat(target);
+                }
+
+            } catch(e) { console.error(e); }
+        }
+
+        // 2. Load Chat (Mark as Read)
+        async function loadChat(targetUser) {
+            currentChatUser = targetUser;
+            emptyState.style.display = "none";
+            activeContainer.style.display = "flex";
+            
+            // 🔥 MARK AS READ
+            fetch("/api/messages/markRead", {
+                method: "POST", 
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ me: user.username, other: targetUser.username })
+            }).then(() => {
+                // Refresh sidebar to remove the red dot
+                loadConversations();
+            });
+
+            // Header Update
+            document.getElementById("chatHeaderName").textContent = targetUser.name;
+            document.getElementById("chatHeaderPhoto").src = targetUser.photo || 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+            
+            // MOBILE LOGIC
+            const isMobile = window.innerWidth <= 768 || document.body.classList.contains('mobile-view');
+            if(isMobile) {
+                document.getElementById("inboxSidebar").style.display = "none";
+                document.getElementById("inboxChatArea").style.display = "flex";
+            }
+
+            fetchMessages();
+            if(chatPollInterval) clearInterval(chatPollInterval);
+            chatPollInterval = setInterval(fetchMessages, 3000);
+        }
+
+        async function fetchMessages() {
+            if(!currentChatUser) return;
+            try {
+                const res = await fetch(`/getMessages?user1=${user.username}&user2=${currentChatUser.username}`);
+                const msgs = await res.json();
+                
+                if(messagesArea.children.length !== msgs.length) {
+                    messagesArea.innerHTML = "";
+                    msgs.forEach(m => {
+                        const isMe = m.sender_username === user.username;
+                        const bubble = document.createElement("div");
+                        bubble.className = `msg-bubble ${isMe ? 'me' : 'them'}`;
+                        bubble.textContent = m.message_text;
+                        messagesArea.appendChild(bubble);
+                    });
+                    messagesArea.scrollTop = messagesArea.scrollHeight;
+                }
+            } catch(e) { console.error(e); }
+        }
+
+        async function sendMessage() {
+            const text = chatInput.value.trim();
+            if(!text || !currentChatUser) return;
+            
+            const bubble = document.createElement("div");
+            bubble.className = "msg-bubble me";
+            bubble.textContent = text;
+            messagesArea.appendChild(bubble);
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+            chatInput.value = "";
+
+            await fetch("/sendMessage", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ sender: user.username, receiver: currentChatUser.username, text: text })
+            });
+            fetchMessages(); 
+            loadConversations(); 
+        }
+
+        document.getElementById("inboxSendBtn").onclick = sendMessage;
+        chatInput.onkeypress = (e) => { if(e.key === 'Enter') sendMessage(); };
+
+        // 3. EXIT CHAT BUTTON
+        document.getElementById("backToInbox").onclick = () => {
+            document.getElementById("inboxSidebar").style.display = "block";
+            const isMobile = window.innerWidth <= 768 || document.body.classList.contains('mobile-view');
+            if(isMobile) {
+                document.getElementById("inboxChatArea").style.display = "none";
+            } else {
+                emptyState.style.display = "flex";
+                activeContainer.style.display = "none";
+            }
+            
+            currentChatUser = null;
+            if(chatPollInterval) clearInterval(chatPollInterval);
+            loadConversations();
+        };
+
+        // Initial Load
+        loadConversations();
+        
+        // Listen for View Toggle
+        document.getElementById("mobileToggle")?.addEventListener("change", () => {
+             setTimeout(loadConversations, 100);
+        });
+    });
+  </script>
+
+</body>
+</html>

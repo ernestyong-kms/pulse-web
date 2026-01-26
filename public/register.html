@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account - Pulse</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+        --brand-color: #d90429;
+        --bg-page: #ffffff;
+        --bg-panel: #f8fafc;
+        --text-main: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+        --input-bg: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+    
+    body, html { height: 100%; background-color: var(--bg-page); color: var(--text-main); overflow: hidden; }
+
+    /* --- ANIMATION --- */
+    #intro-overlay {
+        position: fixed; inset: 0; background: var(--bg-page); z-index: 9999;
+        display: flex; align-items: center; justify-content: center;
+        animation: curtainReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.5s;
+    }
+    @keyframes curtainReveal { to { opacity: 0; visibility: hidden; } }
+
+    /* --- LAYOUT --- */
+    .wrapper {
+        display: grid; grid-template-columns: 1fr 1fr; height: 100vh; width: 100%;
+        opacity: 0; animation: fadeIn 0.8s ease forwards 0.6s;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    /* LEFT: FORM */
+    .register-pane {
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        padding: 4rem; overflow-y: auto; /* Allow scroll if form is tall */
+    }
+    .form-container { width: 100%; max-width: 400px; }
+
+    .brand-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; }
+    .brand-header svg { width: 24px; height: 24px; stroke: var(--brand-color); }
+    .brand-header h2 { font-size: 18px; font-weight: 700; }
+
+    h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.03em; }
+    .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 2rem; }
+
+    /* INPUTS */
+    .input-grid { display: grid; gap: 1rem; margin-bottom: 1.5rem; }
+    
+    .input-field {
+        width: 100%; padding: 12px 16px;
+        background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px;
+        color: var(--text-main); font-size: 14px; transition: all 0.2s;
+    }
+    .input-field:focus { outline: none; border-color: var(--brand-color); box-shadow: 0 0 0 4px rgba(217, 4, 41, 0.05); }
+
+    .btn-submit {
+        width: 100%; padding: 14px; background: var(--text-main); color: white;
+        border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-submit:hover { background: var(--brand-color); transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.7; cursor: wait; }
+
+    .footer-link { text-align: center; margin-top: 1.5rem; font-size: 13px; color: var(--text-muted); }
+    .footer-link a { color: var(--text-main); font-weight: 600; text-decoration: none; }
+
+    /* RIGHT: VISUAL */
+    .visual-pane {
+        background-color: var(--bg-panel); position: relative; overflow: hidden;
+        display: flex; flex-direction: column; justify-content: center; padding: 4rem;
+        border-left: 1px solid var(--border-color);
+    }
+    .pattern-grid {
+        position: absolute; inset: 0; opacity: 0.6;
+        background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+        background-size: 24px 24px;
+        mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 100%);
+    }
+    .visual-content { position: relative; z-index: 2; max-width: 440px; }
+    .visual-content h3 { font-size: 32px; font-weight: 800; line-height: 1.1; margin-bottom: 1rem; letter-spacing: -0.03em; }
+    .visual-content span { color: var(--brand-color); }
+    .visual-content p { color: var(--text-muted); line-height: 1.6; }
+
+    /* --- RESPONSIVE & MOBILE SIMULATOR --- */
+    
+    /* 1. Real Mobile Device */
+    @media (max-width: 900px) {
+        .wrapper { grid-template-columns: 1fr; }
+        .visual-pane { display: none; }
+        .register-pane { padding: 2rem; }
+    }
+
+    /* 2. Manual Mobile Simulator (Added this!) */
+    body.mobile-view .wrapper { grid-template-columns: 1fr; }
+    body.mobile-view .visual-pane { display: none; }
+    body.mobile-view .register-pane { padding: 30px; }
+    body.mobile-view #intro-overlay { position: absolute; } 
+
+  </style>
+</head>
+<body>
+
+  <div id="intro-overlay"></div>
+
+  <div class="wrapper">
+    <div class="register-pane">
+      <div class="form-container">
+        <div class="brand-header">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            <h2>Pulse.</h2>
+        </div>
+
+        <h1>Create Account</h1>
+        <p class="subtitle">Join the professional ecosystem today.</p>
+
+        <form id="registerForm">
+          <div class="input-grid">
+             <input type="text" id="fullname" class="input-field" placeholder="Full Name" required>
+             <input type="email" id="email" class="input-field" placeholder="Email Address" required>
+             <input type="text" id="username" class="input-field" placeholder="Username" required>
+             <input type="password" id="password" class="input-field" placeholder="Password" required>
+             <input type="text" id="adminCode" class="input-field" placeholder="Admin Code (Optional)">
+          </div>
+
+          <button type="submit" class="btn-submit" id="signupBtn">Sign Up &rarr;</button>
+        </form>
+
+        <div class="footer-link">
+            Already have an account? <a href="index.html">Log In</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="visual-pane">
+        <div class="pattern-grid"></div>
+        <div class="visual-content">
+            <h3>Start your <br>journey with <span>Pulse.</span></h3>
+            <p>Access exclusive events, connect with industry leaders, and manage your professional growth in one place.</p>
+        </div>
+    </div>
+  </div>
+
+  <script src="js/toggle.js"></script>
+  <script>
+    // Wait for animation to finish before removing overlay AND initializing toggle
+    setTimeout(() => { 
+        document.getElementById('intro-overlay').style.display = 'none'; 
+        
+        // Initialize the mobile toggle logic now that the page is ready
+        if (window.initToggleLogic) {
+            window.initToggleLogic();
+        }
+    }, 1500);
+
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      
+      const btn = document.getElementById("signupBtn");
+      const originalText = btn.innerText;
+      btn.innerText = "Creating...";
+      btn.disabled = true;
+      btn.style.opacity = "0.7";
+
+      const fullname = document.getElementById("fullname").value;
+      const email = document.getElementById("email").value;
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const adminCode = document.getElementById("adminCode").value;
+
+      try {
+        const res = await fetch("/createUser", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password, fullname, email, adminCode })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          btn.innerText = "Success!";
+          btn.style.background = "#10b981";
+          setTimeout(() => { window.location.href = "index.html"; }, 1000);
+        } else {
+          alert("Error: " + data.message);
+          btn.innerText = originalText;
+          btn.disabled = false;
+          btn.style.opacity = "1";
+        }
+      } catch (err) {
+        console.error(err);
+        btn.innerText = originalText;
+        btn.disabled = false;
+        btn.style.opacity = "1";
+      }
+    });
+  </script>
+</body>
+</html>

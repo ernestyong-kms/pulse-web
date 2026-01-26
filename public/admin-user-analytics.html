@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Insights - Pulse Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* 1. LAYOUT CONTAINERS */
+        .analytics-container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+            transition: all 0.3s ease; 
+        }
+
+        .analytics-hero { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 30px; 
+        }
+
+        /* 2. KPI GRID (Fixes the vertical text list) */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* Forces 4 items per row */
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .kpi-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            border: 1px solid #f1f5f9;
+            transition: transform 0.2s;
+        }
+        .kpi-card:hover { transform: translateY(-5px); }
+        .kpi-value { font-size: 32px; font-weight: 700; color: #1a1a1a; margin-bottom: 5px; }
+        .kpi-label { font-size: 13px; color: #64748b; font-weight: 600; text-transform: uppercase; }
+
+        /* 3. RANK BANNER STYLING */
+        .rank-banner {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border: 1px solid #f1f5f9;
+            border-left: 6px solid #d90429;
+        }
+        .rank-info h2 { margin: 0; font-size: 24px; color: #d90429; }
+
+        /* 4. CHARTS GRID (Fixes the chart slumping) */
+        .charts-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            min-height: 350px;
+        }
+        .chart-card.full-width { grid-column: span 2; }
+
+        /* 5. MOBILE & SIMULATOR TOGGLE SUPPORT */
+        /* This handles both real mobile and your "Switch to User" toggle */
+        @media (max-width: 1024px) {
+            html body main { margin-left: 0 !important; width: 100% !important; padding-top: 80px !important; }
+            .kpi-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .charts-row { grid-template-columns: 1fr !important; }
+            .chart-card.full-width { grid-column: span 1 !important; }
+        }
+
+        body.mobile-view .kpi-grid { grid-template-columns: 1fr 1fr !important; }
+        body.mobile-view .charts-row { grid-template-columns: 1fr !important; }
+        body.mobile-view main { margin-left: 0 !important; width: 100% !important; }
+    </style>
+</head>
+<body>
+    <div id="navPlaceholder"></div>
+
+    <main>
+        <div class="analytics-container">
+            <div class="analytics-hero">
+                <div>
+                    <h1 id="userAnalyticTitle">User Analytics</h1>
+                    <p id="userAnalyticSubtitle">Networking performance and growth metrics.</p>
+                </div>
+                <button class="admin-back-btn" onclick="window.history.back()">
+                    ← Back to Logs
+                </button>
+            </div>
+
+            <div class="rank-banner">
+                <div class="rank-info">
+                    <span>Community Status</span>
+                    <h2 id="kpiRank">Loading...</h2> 
+                </div>
+                <div class="rank-badge">🏆 Rank</div>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-value" id="kpiPoints">0</div>
+                    <div class="kpi-label">Networking Score</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-value" id="kpiConnections">0</div>
+                    <div class="kpi-label">Total Connections</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-value" id="kpiEvents">0</div>
+                    <div class="kpi-label">Events Attended</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-value" id="kpiUpcoming">0</div>
+                    <div class="kpi-label">Upcoming Events</div>
+                </div>
+            </div>
+
+            <div class="charts-row">
+                <div class="chart-card full-width">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">Network Growth</div>
+                            <div class="chart-subtitle">New connections over time</div>
+                        </div>
+                    </div>
+                    <div class="chart-box" style="height: 350px;">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card full-width">
+                    <div class="chart-header">
+                        <div>
+                            <div class="chart-title">Event Impact Matrix</div>
+                            <div class="chart-subtitle">Networking efficiency per event</div>
+                        </div>
+                    </div>
+                    <div class="chart-box" style="height: 400px;">
+                        <canvas id="impactChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title">Network Expertise</div>
+                    </div>
+                    <div class="chart-box">
+                        <canvas id="skillChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title">Interest Profile</div>
+                    </div>
+                    <div class="chart-box">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/navLoader.js"></script>
+    <script src="js/toggle.js"></script>
+    <script src="js/admin-user-analytics.js"></script>
+</body>
+</html>

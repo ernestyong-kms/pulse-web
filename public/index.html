@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Pulse Network</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           1. THEME VARIABLES
+           ========================================= */
+        :root {
+            --brand-color: #d90429;
+            --bg-page: #ffffff;
+            --bg-panel: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --input-bg: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+        
+        body, html {
+            height: 100%;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            overflow: hidden; /* Prevent scroll */
+        }
+
+        /* =========================================
+           2. INTRO ANIMATION
+           ========================================= */
+        #intro-overlay {
+            position: fixed; inset: 0; background: var(--bg-page); z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            animation: curtainReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.5s;
+        }
+        .intro-logo-svg {
+            width: 60px; height: 60px; stroke: var(--brand-color);
+            opacity: 0; animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
+        }
+        @keyframes fadeUp { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes curtainReveal { to { opacity: 0; visibility: hidden; } }
+
+        /* =========================================
+           3. SPLIT LAYOUT
+           ========================================= */
+        .wrapper {
+            display: grid; grid-template-columns: 1fr 1fr; height: 100vh; width: 100%;
+            opacity: 0; animation: fadeInContent 1s ease forwards 1.7s;
+        }
+        @keyframes fadeInContent { to { opacity: 1; } }
+
+        /* --- LEFT: LOGIN FORM --- */
+        .login-pane {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 4rem; background: var(--bg-page);
+        }
+
+        .form-container { width: 100%; max-width: 360px; }
+
+        .brand-header { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; }
+        .brand-header svg { width: 28px; height: 28px; stroke: var(--brand-color); stroke-width: 2.5; }
+        .brand-header h2 { font-size: 20px; font-weight: 700; color: var(--text-main); letter-spacing: -0.5px; }
+
+        .welcome-text { margin-bottom: 2.5rem; }
+        .welcome-text h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.03em; }
+        .welcome-text p { color: var(--text-muted); font-size: 15px; }
+
+        .input-group { margin-bottom: 1.25rem; }
+        .input-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-main); margin-bottom: 6px; }
+        
+        .input-field {
+            width: 100%; padding: 14px 16px;
+            background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px;
+            color: var(--text-main); font-size: 15px; transition: all 0.2s;
+        }
+        .input-field:focus { outline: none; border-color: var(--brand-color); box-shadow: 0 0 0 4px rgba(217, 4, 41, 0.1); }
+
+        .btn-primary {
+            width: 100%; padding: 14px; margin-top: 1rem;
+            background: var(--text-main); color: white; border: none; border-radius: 8px;
+            font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-primary:hover { background: var(--brand-color); transform: translateY(-1px); }
+        
+        .footer-links { text-align: center; font-size: 14px; color: var(--text-muted); margin-top: 1.5rem; }
+        .footer-links a { color: var(--text-main); text-decoration: none; font-weight: 600; }
+
+        .error-banner {
+            background: #fef2f2; border: 1px solid #fee2e2; color: #ef4444;
+            padding: 10px; border-radius: 6px; font-size: 13px; margin-bottom: 1.5rem;
+            display: none; align-items: center; gap: 6px;
+        }
+
+        /* --- RIGHT: PATTERN PANEL --- */
+        .visual-pane {
+            background-color: var(--bg-panel);
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column; 
+            justify-content: center; /* FIXED: Now Centered */
+            padding: 4rem;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .pattern-grid {
+            position: absolute; inset: 0;
+            background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+            background-size: 24px 24px; opacity: 0.6;
+            mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 100%);
+        }
+
+        .brand-statement { position: relative; z-index: 2; max-width: 440px; }
+        .brand-statement h3 {
+            font-size: 36px; font-weight: 800; letter-spacing: -0.03em;
+            color: var(--text-main); line-height: 1.1; margin-bottom: 1rem;
+        }
+        .brand-statement span { color: var(--brand-color); }
+        .brand-statement p { color: var(--text-muted); font-size: 16px; line-height: 1.6; }
+
+        /* =========================================
+           4. RESPONSIVE & MOBILE TOGGLE FIX
+           ========================================= */
+        
+        /* Standard Mobile Response */
+        @media (max-width: 900px) {
+            .wrapper { grid-template-columns: 1fr; }
+            .visual-pane { display: none; }
+            .login-pane { padding: 2rem; }
+        }
+
+        /* FIXED: Manual Simulator Support */
+        /* If body has class 'mobile-view', force these styles regardless of screen size */
+        body.mobile-view .wrapper { grid-template-columns: 1fr; }
+        body.mobile-view .visual-pane { display: none; }
+        body.mobile-view .login-pane { padding: 30px; }
+        body.mobile-view #intro-overlay { position: absolute; } /* Keeps intro inside frame */
+
+    </style>
+</head>
+<body>
+
+    <div id="intro-overlay">
+        <svg class="intro-logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+    </div>
+
+    <div class="wrapper">
+        <div class="login-pane">
+            <div class="form-container">
+                <div class="brand-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    <h2>Pulse.</h2>
+                </div>
+                
+                <div class="welcome-text">
+                    <h1>Welcome back</h1>
+                    <p>Please enter your details to sign in.</p>
+                </div>
+
+                <form id="loginForm">
+                    <div class="error-banner" id="errorMessage">
+                        <span>●</span> Invalid credentials.
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label" for="username">Username</label>
+                        <input type="text" id="username" class="input-field" placeholder="ex. johndoe" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label" for="password">Password</label>
+                        <input type="password" id="password" class="input-field" placeholder="••••••••" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Sign In</button>
+                </form>
+
+                <div class="footer-links">
+                    Don't have an account? <a href="register.html">Sign up</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="visual-pane">
+            <div class="pattern-grid"></div>
+            <div class="brand-statement">
+                <h3>The professional<br>network for <span>tomorrow.</span></h3>
+                <p>Connect, collaborate, and scale your potential with an ecosystem designed for modern teams.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/toggle.js"></script>
+    <script>
+        if (window.initToggleLogic) window.initToggleLogic();
+        setTimeout(() => { document.getElementById('intro-overlay').style.display = 'none'; }, 2500);
+
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = document.querySelector(".btn-primary");
+            const originalText = btn.innerText;
+            const errorMsg = document.getElementById("errorMessage");
+
+            btn.innerText = "Verifying...";
+            btn.style.opacity = "0.7";
+            errorMsg.style.display = "none";
+
+            // Simulating a delay so you can see the loading state
+            try {
+                // NOTE: Replace this mock fetch with your real endpoint
+                const res = await fetch("/login", { 
+                    method: "POST", 
+                    headers: { "Content-Type": "application/json" }, 
+                    body: JSON.stringify({ 
+                        username: document.getElementById("username").value, 
+                        password: document.getElementById("password").value 
+                    }) 
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    btn.innerText = "Success";
+                    btn.style.background = "#10b981"; 
+                    localStorage.setItem("loggedInUser", JSON.stringify(data.user)); 
+                    setTimeout(() => { window.location.href = "home.html"; }, 800);
+                } else {
+                    throw new Error("Invalid");
+                }
+            } catch (err) { 
+                // Error Fallback
+                errorMsg.style.display = "flex";
+                btn.innerText = originalText;
+                btn.style.background = ""; 
+                btn.style.opacity = "1";
+            }
+        });
+    </script>
+</body>
+</html>

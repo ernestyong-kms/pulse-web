@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Schedule - Pulse Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="admin-mode">
+    <div id="navPlaceholder"></div>
+
+    <main class="admin-dashboard-container">
+        
+        <div class="admin-header-row">
+            <div class="admin-title">
+                <h1>Master Schedule</h1>
+                <p>Overview of all platform events.</p>
+            </div>
+            <div class="admin-toolbar">
+                <button class="admin-btn-outline" onclick="window.location.href='admin.html'">
+                    Manage Events
+                </button>
+            </div>
+        </div>
+
+        <div class="calendar-widget">
+            <div class="cal-header">
+                <button class="cal-nav-btn" id="prevMonthBtn">&lt;</button>
+                <div class="cal-month-name" id="calMonthYear">Loading...</div>
+                <button class="cal-nav-btn" id="nextMonthBtn">&gt;</button>
+            </div>
+
+            <div class="cal-legend">
+                <div class="legend-item"><span class="legend-dot dot-red"></span> Scheduled</div>
+                <div class="legend-item"><span class="legend-dot dot-teal"></span> Completed</div>
+            </div>
+            
+            <div class="cal-grid-header">
+                <span class="cal-day-name">Sun</span>
+                <span class="cal-day-name">Mon</span>
+                <span class="cal-day-name">Tue</span>
+                <span class="cal-day-name">Wed</span>
+                <span class="cal-day-name">Thu</span>
+                <span class="cal-day-name">Fri</span>
+                <span class="cal-day-name">Sat</span>
+            </div>
+            
+            <div class="cal-grid-days" id="calGrid"></div>
+        </div>
+
+    </main>
+
+    <script src="js/navLoader.js"></script>
+    <script src="js/toggle.js"></script>
+    <script src="js/admin-schedule.js"></script>
+</body>
+</html>

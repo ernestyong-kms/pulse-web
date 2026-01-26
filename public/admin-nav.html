@@ -1,0 +1,176 @@
+<style>
+    /* --- 1. BASE STATES (Hidden/Visible) --- */
+    .admin-only { display: flex !important; }
+    .user-only { display: none !important; }
+    .logo-tag-admin { display: inline; }
+
+    /* --- 2. DESKTOP LOGIC (Screens WIDER than 1200px) --- */
+    @media (min-width: 1200px) {
+        /* Admin Mode (Default): Show Admin Links */
+        body:not(.participant-view) .center-nav .admin-only,
+        body:not(.participant-view) .desktop-links .admin-only { 
+            display: flex !important; 
+        }
+        
+        /* User Mode: Show User Links */
+        body.participant-view .center-nav .user-only,
+        body.participant-view .desktop-links .user-only { 
+            display: flex !important; 
+        }
+        
+        /* Hide opposites */
+        body:not(.participant-view) .user-only { display: none !important; }
+        body.participant-view .admin-only { display: none !important; }
+
+        /* Ensure container is visible */
+        .desktop-links { display: flex !important; }
+    }
+
+    /* --- 3. MOBILE/TABLET LOGIC (Screens NARROWER than 1200px) --- */
+    @media (max-width: 1199px) {
+        /* FORCE HIDE all center nav items on mobile (Prevents Overflow) */
+        .center-nav .admin-only, 
+        .center-nav .user-only { 
+            display: none !important; 
+        }
+
+        /* Hide Desktop Action Buttons on mobile */
+        .desktop-links { display: none !important; }
+
+        /* --- MOBILE MENU DROPDOWN ITEMS --- */
+        /* Admin Mode: Show Admin Links in Menu */
+        body:not(.participant-view) .mobile-menu-dropdown .admin-only { display: block !important; }
+        body:not(.participant-view) .mobile-menu-dropdown .user-only { display: none !important; }
+        
+        /* User Mode: Show User Links in Menu */
+        body.participant-view .mobile-menu-dropdown .user-only { display: block !important; }
+        body.participant-view .mobile-menu-dropdown .admin-only { display: none !important; }
+    }
+    
+    /* Global: Hide "Admin" text in logo when in User Mode */
+    body.participant-view .logo-tag-admin { display: none; }
+</style>
+
+<nav class="global-nav admin-theme">
+    <div class="nav-content">
+        <a href="home.html" class="nav-logo" style="color:white;">
+            Pulse<span style="color:var(--primary);">.</span> <span class="logo-tag-admin" style="color:var(--primary);">Admin</span>
+        </a>
+
+        <ul class="center-nav">
+            <li class="admin-only"><a href="home.html">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+              Dashboard
+            </a></li>
+            
+            <li class="admin-only"><a href="admin.html">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              Manage Events
+            </a></li>
+
+            <li class="admin-only"><a href="admin-schedule.html">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              Master Schedule
+            </a></li>
+
+            <li class="admin-only"><a href="adminusers.html">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              Users
+            </a></li>
+            
+            <li class="admin-only"><a href="admin-analytics.html">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+              Analytics
+            </a></li>
+
+            <li class="user-only"><a href="events.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                Events
+            </a></li>
+            <li class="user-only"><a href="schedule.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                Schedule
+            </a></li>
+            <li class="user-only"><a href="scan.html"> 
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"></rect><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path></svg>
+                Scan/Upload
+            </a></li>
+            <li class="user-only"><a href="network.html">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+              Network
+            </a></li>
+            <li class="user-only"><a href="messages.html" style="position: relative;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              Messages
+            </a></li>
+            <li class="user-only"><a href="my-analytics.html"> 
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15v-4A8 8 0 0 1 12 3a8 8 0 0 1 9 7v4"></path><path d="M21 21v-4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4"></path><path d="M17 11v10"></path></svg>
+                Analytics
+            </a></li>
+        </ul>
+
+        <div class="right-actions">
+            <div class="desktop-links" style="align-items:center; gap:15px;">
+                
+                <a href="defaultprofile.html" class="user-only" style="color: white; font-weight: 500; font-size:13px; display:flex; align-items:center; gap:6px;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  My Profile
+                </a>
+
+                <a href="#" id="roleSwitchBtn" style="color: #ccc; font-weight: 600; font-size:13px; display:flex; align-items:center; gap:6px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    Switch to User
+                </a>
+
+                <a href="#" onclick="localStorage.removeItem('loggedInUser'); window.location.href='index.html';" style="color: #ff4d4d; font-weight: 600; font-size:13px; display:flex; align-items:center; gap:6px;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                  Logout
+                </a>
+            </div>
+
+            <div class="toggle-container" style="display:flex; align-items:center; gap:8px; margin-left:15px;">
+                <span style="font-size: 11px; color: #888;">View</span>
+                <label class="switch">
+                    <input type="checkbox" id="mobileToggle" onchange="toggleMobileMode()">
+                    <span class="slider"></span>
+                    <span class="knob"></span>
+                </label>
+            </div>
+
+            <div class="hamburger-icon" onclick="toggleDropdown()">
+                <span style="background:white;"></span><span style="background:white;"></span><span style="background:white;"></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="mobileMenu" class="mobile-menu-dropdown">
+        <div style="padding: 10px 15px; border-bottom: 1px solid #f0f0f0; margin-bottom: 5px;">
+            <span style="font-size: 11px; color: #999; text-transform: uppercase; font-weight: 700;">Menu</span>
+        </div>
+        
+        <a href="home.html" class="admin-only">Dashboard</a>
+        <a href="admin.html" class="admin-only">Manage Events</a>
+        <a href="admin-schedule.html" class="admin-only">Master Schedule</a>
+        <a href="adminusers.html" class="admin-only">Users</a>
+        <a href="admin-analytics.html" class="admin-only">Analytics</a>
+
+        <a href="defaultprofile.html" class="user-only" style="color: #0071e3;">My Profile</a>
+        <a href="events.html" class="user-only">Events</a>
+        <a href="schedule.html" class="user-only">Schedule</a>
+        <a href="scan.html" class="user-only">Scan/Upload</a>
+        <a href="network.html" class="user-only">Network</a>
+        <a href="messages.html" class="user-only">Messages</a>
+        <a href="my-analytics.html" class="user-only">Analytics</a>
+        
+        <div style="height: 1px; background: #eee; margin: 5px 0;"></div>
+        
+        <div style="display: flex; gap: 10px; padding: 10px 15px;">
+            <a href="#" id="roleSwitchBtnMobile" style="flex: 1; text-align: center; background: white; color: #4361ee; border: 1px solid #4361ee; padding: 10px; border-radius: 8px; font-weight: 600; font-size: 13px; text-decoration: none;">
+                Switch View
+            </a>
+            <a href="#" onclick="localStorage.removeItem('loggedInUser'); window.location.href='index.html';" style="flex: 1; text-align: center; background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; padding: 10px; border-radius: 8px; font-weight: 600; font-size: 13px; text-decoration: none;">
+                Logout
+            </a>
+        </div>
+    </div>
+</nav>
