@@ -336,59 +336,59 @@ h2::after {
 .center-nav a:hover { opacity: 1; color: var(--primary); }
 
 /* =========================================
-   MODE 1: DESKTOP SIDEBAR 
+   MODE 1: DESKTOP SIDEBAR - FLUID HEIGHT
    ========================================= */
-/* 1. Fix the Sidebar Width */
 body:not(.mobile-view) .global-nav {
   top: 0; left: 0; 
-  width: 280px;       /* STOP using vw here. Stick to a standard fixed width */
+  width: 280px;
   height: 100vh;
   border-right: 1px solid rgba(0,0,0,0.1); 
-  padding: 40px 0;
+  
+  /* FLUID PADDING: Scales with screen height */
+  padding: 2vh 0;       
+  
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: fixed;    /* Ensure it stays put */
+  position: fixed;
   z-index: 1000;
+  overflow: hidden; 
 }
 
-body:not(.mobile-view) .nav-content {
-  flex-direction: column; align-items: flex-start; height: 100%; padding: 0 20px; gap: 30px;
-}
+/* FLUID LOGO */
 body:not(.mobile-view) .nav-logo { 
-  font-size: clamp(32px, 2.5vw, 42px); /* Scales from 32px up to 42px */
-  margin-bottom: 40px; 
-  padding-left: 15px;
-  font-weight: 800; /* Extra bold for impact */
+  font-size: clamp(24px, 2.5vw, 32px); 
+  margin-bottom: 4vh;   /* Gap scales with height */
+  padding-left: 20px;
+  font-weight: 800;
 }
 
-/* Desktop Navigation Links */
+/* FLUID NAV CONTAINER - Fills empty space */
+body:not(.mobile-view) .nav-content {
+  flex-direction: column; align-items: flex-start; height: 100%; padding: 0 20px; gap: 0;
+}
+
 body:not(.mobile-view) .center-nav { 
   display: flex; 
   flex-direction: column; 
-  gap: clamp(10px, 2vh, 25px); /* Grows vertically based on screen height */
+  justify-content: center; /* Centers links vertically in the available space */
+  gap: clamp(10px, 2vh, 25px); 
   width: 100%; 
-}
-body:not(.mobile-view) .center-nav a {
-  font-size: clamp(15px, 1.2vw, 20px);
-  font-weight: 500; padding: 10px 15px;
-  border-radius: 10px; opacity: 1; color: var(--text-main);
-  display: flex; align-items: center; gap: 12px;
-}
-body:not(.mobile-view) .center-nav a:hover {
-  background: rgba(141, 8, 1, 0.05); color: var(--primary); transform: translateX(3px);
+  flex-grow: 1; /* Grow to fill space */
 }
 
+/* FLUID BOTTOM SECTION */
 body:not(.mobile-view) .right-actions {
   margin-top: auto; 
   display: flex; 
   flex-direction: column; 
-  gap: 20px;
+  gap: 1.5vh;           /* Dynamic gap */
   width: 100%; 
-  padding-top: 30px; 
-  border-top: 1px solid rgba(0,0,0,0.05); /* Softer line */
-  padding-bottom: 20px; /* Keeps it from touching the very bottom edge */
+  padding-top: 2vh; 
+  padding-bottom: 1vh;  
+  border-top: 1px solid rgba(0,0,0,0.05);
 }
+
 body:not(.mobile-view) .desktop-links { display: flex; flex-direction: column; gap: 8px; width: 100%; }
 body:not(.mobile-view) .desktop-links a {
     font-size: 14px; padding: 8px 15px; border-radius: 8px;
