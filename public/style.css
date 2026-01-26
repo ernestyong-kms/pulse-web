@@ -338,18 +338,20 @@ h2::after {
 /* =========================================
    MODE 1: DESKTOP SIDEBAR 
    ========================================= */
+/* 1. Fix the Sidebar Width */
 body:not(.mobile-view) .global-nav {
   top: 0; left: 0; 
-  width: 22vw;        /* Increased thickness */
-  min-width: 280px;   
-  max-width: 400px;   /* Allows it to get wider on your big monitor */
+  width: 280px;       /* STOP using vw here. Stick to a standard fixed width */
   height: 100vh;
   border-right: 1px solid rgba(0,0,0,0.1); 
-  padding: 40px 0;    /* More breathing room */
+  padding: 40px 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* This fixes the gap between help and profile! */
+  justify-content: space-between;
+  position: fixed;    /* Ensure it stays put */
+  z-index: 1000;
 }
+
 body:not(.mobile-view) .nav-content {
   flex-direction: column; align-items: flex-start; height: 100%; padding: 0 20px; gap: 30px;
 }
@@ -399,10 +401,11 @@ body:not(.mobile-view) .desktop-links .active-profile-link {
 /* Icons */
 body:not(.mobile-view) .global-nav a svg { stroke-width: 2; width: 18px; height: 18px; transition: stroke 0.2s; }
 body:not(.mobile-view) main { 
-  margin-left: 18vw;         /* Matches your sidebar thickness */
-  width: calc(100% - 18vw);  /* Fills exactly the remaining space */
-  max-width: 100% !important; 
-  padding: 40px 4vw;         /* Uses viewport units for padding */
+  margin-left: 280px;         
+  width: calc(100% - 280px);  
+  max-width: 100% !important; /* Force full width override */
+  padding: 40px;              
+  display: block;             /* Ensure it behaves */
 }
 
 /* Admin Theme (Dark Mode) */
@@ -1457,21 +1460,22 @@ body.mobile-view #chatPopup input {
    ========================================= */
 
 /* 1. Base Styles (Desktop Default) */
+/* FIX: Match sidebar width exactly and uncap the container width */
 .inbox-main { 
     padding: 0 !important; 
     overflow: hidden; 
     height: 100vh;
-    /* 櫨 FIX: Push content right to clear the 240px Sidebar */
-    margin-left: 260px !important; 
-    width: calc(100% - 260px) !important;
+    margin-left: 280px !important;  /* CHANGED from 260px to 280px to match sidebar */
+    width: calc(100% - 280px) !important; /* CHANGED to match above */
     background-color: #fff;
 }
 
 .inbox-container {
     display: flex; 
     height: 100%; 
-    max-width: 1200px; 
-    margin: 0 auto; 
+    width: 100%;        /* Force full width */
+    max-width: none;    /* REMOVED 1200px limit so it touches the edges */
+    margin: 0;          /* REMOVED auto margin */
     border-right: 1px solid #eee; 
     border-left: 1px solid #eee;
 }
@@ -1664,9 +1668,8 @@ body.mobile-view #createEventForm {
 
 /* Main Layout Container */
 .analytics-container {
-    max-width: 1400px;
-    margin: 40px auto;
-    padding: 0 30px;
+    max-width: 100% !important; /* Was 1400px */
+    padding: 0; /* Padding is already handled by 'main' now */
 }
 
 .analytics-grid {
@@ -2676,5 +2679,35 @@ body.mobile-view .cal-day-cell {
     content: '✓';
     font-weight: 900;
     font-size: 12px;
+}
+
+/* =========================================
+   LAPTOP OPTIMIZATION (1024px - 1366px)
+   ========================================= */
+@media (max-width: 1366px) and (min-width: 901px) {
+    
+    /* 1. Shrink Sidebar to give content more room */
+    body:not(.mobile-view) .global-nav {
+        width: 220px; 
+    }
+    
+    /* 2. Adjust Main Content to match thinner sidebar */
+    body:not(.mobile-view) main,
+    .inbox-main {
+        margin-left: 220px !important;
+        width: calc(100% - 220px) !important;
+        padding: 25px; /* Slightly less padding on laptop */
+    }
+
+    /* 3. Make Nav Links slightly smaller to fit */
+    body:not(.mobile-view) .nav-logo { font-size: 28px; margin-bottom: 30px; }
+    body:not(.mobile-view) .center-nav a { font-size: 14px; padding: 8px 12px; }
+
+    /* 4. Fix Dashboard Grid Squeeze */
+    /* If the grid gets too tight, drop the sidebar column to the bottom */
+    .dashboard-grid {
+        grid-template-columns: 1fr; /* Stack them */
+        gap: 20px;
+    }
 }
 
