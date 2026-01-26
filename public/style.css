@@ -336,10 +336,14 @@ h2::after {
 /* =========================================
    MODE 1: DESKTOP SIDEBAR 
    ========================================= */
-/* Sidebar Width - Increased to 300px */
 body:not(.mobile-view) .global-nav {
-  top: 0; left: 0; width: 300px; height: 100vh;
-  border-right: 1px solid rgba(0,0,0,0.1); padding: 30px 0;
+  top: 0; left: 0; 
+  width: 18vw;        /* Takes up 18% of the screen width */
+  min-width: 260px;   /* Won't get too skinny on smaller laptops */
+  max-width: 350px;   /* Won't get too fat on giant monitors */
+  height: 100vh;
+  border-right: 1px solid rgba(0,0,0,0.1); 
+  padding: 30px 0;
 }
 body:not(.mobile-view) .nav-content {
   flex-direction: column; align-items: flex-start; height: 100%; padding: 0 20px; gap: 30px;
@@ -349,7 +353,8 @@ body:not(.mobile-view) .nav-logo { font-size: 26px; margin-bottom: 20px; }
 /* Desktop Navigation Links */
 body:not(.mobile-view) .center-nav { display: flex; flex-direction: column; gap: 5px; width: 100%; }
 body:not(.mobile-view) .center-nav a {
-  font-size: 15px; font-weight: 500; padding: 10px 15px;
+  font-size: clamp(15px, 1.2vw, 20px);
+  font-weight: 500; padding: 10px 15px;
   border-radius: 10px; opacity: 1; color: var(--text-main);
   display: flex; align-items: center; gap: 12px;
 }
@@ -373,12 +378,11 @@ body:not(.mobile-view) .desktop-links .active-profile-link {
 }
 /* Icons */
 body:not(.mobile-view) .global-nav a svg { stroke-width: 2; width: 18px; height: 18px; transition: stroke 0.2s; }
-/* Content Offset - Adjusted to match the wider sidebar */
 body:not(.mobile-view) main { 
-  margin-left: 320px; /* Pushes content 320px from the left */
-  max-width: 1600px;  /* Matches your new main width */
-  width: calc(100% - 350px); /* Fills the rest of the screen */
-  padding-top: 20px; 
+  margin-left: 18vw;          /* Matches the 18vw sidebar width */
+  width: calc(100% - 18vw);   /* Fills exactly the remaining space */
+  max-width: 100% !important; 
+  padding: 40px 5%;           /* Responsive padding */
 }
 
 /* Admin Theme (Dark Mode) */
