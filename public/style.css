@@ -66,10 +66,10 @@ body {
    DASHBOARD & LAYOUT
    ========================================= */
 main { 
-  max-width: 1000px; 
-  margin: 0 auto 40px auto; 
-  padding: 20px; 
-  text-align: left; 
+  max-width: 95vw;    /* Takes up 95% of the viewport width */
+  width: 95%;         /* Fallback for older browsers */
+  margin: 0 auto;     /* Centers the content */
+  padding: 40px 2%;   /* Responsive horizontal padding */
 }
 
 h2 {
@@ -86,7 +86,10 @@ h2::after {
    ========================================= */
 .action-grid, #eventContainer, #viewedList {
   display: grid;
-  gap: 20px;
+  /* Automatically adds as many columns as will fit (min 300px wide) */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+  gap: 25px;
+  width: 100%;
 }
 
 .action-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 50px; }
@@ -336,18 +339,37 @@ h2::after {
    MODE 1: DESKTOP SIDEBAR 
    ========================================= */
 body:not(.mobile-view) .global-nav {
-  top: 0; left: 0; width: 240px; height: 100vh;
-  border-right: 1px solid rgba(0,0,0,0.1); padding: 30px 0;
+  top: 0; left: 0; 
+  width: 22vw;        /* Increased thickness */
+  min-width: 280px;   
+  max-width: 400px;   /* Allows it to get wider on your big monitor */
+  height: 100vh;
+  border-right: 1px solid rgba(0,0,0,0.1); 
+  padding: 40px 0;    /* More breathing room */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* This fixes the gap between help and profile! */
 }
 body:not(.mobile-view) .nav-content {
   flex-direction: column; align-items: flex-start; height: 100%; padding: 0 20px; gap: 30px;
 }
-body:not(.mobile-view) .nav-logo { font-size: 26px; margin-bottom: 20px; }
+body:not(.mobile-view) .nav-logo { 
+  font-size: clamp(32px, 2.5vw, 42px); /* Scales from 32px up to 42px */
+  margin-bottom: 40px; 
+  padding-left: 15px;
+  font-weight: 800; /* Extra bold for impact */
+}
 
 /* Desktop Navigation Links */
-body:not(.mobile-view) .center-nav { display: flex; flex-direction: column; gap: 5px; width: 100%; }
+body:not(.mobile-view) .center-nav { 
+  display: flex; 
+  flex-direction: column; 
+  gap: clamp(10px, 2vh, 25px); /* Grows vertically based on screen height */
+  width: 100%; 
+}
 body:not(.mobile-view) .center-nav a {
-  font-size: 15px; font-weight: 500; padding: 10px 15px;
+  font-size: clamp(15px, 1.2vw, 20px);
+  font-weight: 500; padding: 10px 15px;
   border-radius: 10px; opacity: 1; color: var(--text-main);
   display: flex; align-items: center; gap: 12px;
 }
@@ -355,10 +377,15 @@ body:not(.mobile-view) .center-nav a:hover {
   background: rgba(141, 8, 1, 0.05); color: var(--primary); transform: translateX(3px);
 }
 
-/* Bottom Actions (Profile/Logout) */
 body:not(.mobile-view) .right-actions {
-  margin-top: auto; display: flex; flex-direction: column; gap: 15px;
-  width: 100%; padding-top: 20px; border-top: 1px solid #eee;
+  margin-top: auto; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 20px;
+  width: 100%; 
+  padding-top: 30px; 
+  border-top: 1px solid rgba(0,0,0,0.05); /* Softer line */
+  padding-bottom: 20px; /* Keeps it from touching the very bottom edge */
 }
 body:not(.mobile-view) .desktop-links { display: flex; flex-direction: column; gap: 8px; width: 100%; }
 body:not(.mobile-view) .desktop-links a {
@@ -371,8 +398,12 @@ body:not(.mobile-view) .desktop-links .active-profile-link {
 }
 /* Icons */
 body:not(.mobile-view) .global-nav a svg { stroke-width: 2; width: 18px; height: 18px; transition: stroke 0.2s; }
-/* Content Offset */
-body:not(.mobile-view) main { margin-left: 260px; max-width: 1000px; padding-top: 20px; }
+body:not(.mobile-view) main { 
+  margin-left: 18vw;         /* Matches your sidebar thickness */
+  width: calc(100% - 18vw);  /* Fills exactly the remaining space */
+  max-width: 100% !important; 
+  padding: 40px 4vw;         /* Uses viewport units for padding */
+}
 
 /* Admin Theme (Dark Mode) */
 body:not(.mobile-view) .global-nav.admin-theme { background: #111; border-right: 1px solid #333; }
