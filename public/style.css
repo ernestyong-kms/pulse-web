@@ -66,10 +66,10 @@ body {
    DASHBOARD & LAYOUT
    ========================================= */
 main { 
-  max-width: 1000px; 
+  max-width: 1400px; /* Increased from 1000px */
+  width: 90%;        /* Allows it to shrink on smaller screens */
   margin: 0 auto 40px auto; 
   padding: 20px; 
-  text-align: left; 
 }
 
 h2 {
@@ -372,7 +372,12 @@ body:not(.mobile-view) .desktop-links .active-profile-link {
 /* Icons */
 body:not(.mobile-view) .global-nav a svg { stroke-width: 2; width: 18px; height: 18px; transition: stroke 0.2s; }
 /* Content Offset */
-body:not(.mobile-view) main { margin-left: 260px; max-width: 1000px; padding-top: 20px; }
+body:not(.mobile-view) main { 
+  margin-left: 260px; 
+  max-width: 1400px; /* Match the width above */
+  width: calc(100% - 300px); /* Fill the remaining space minus the sidebar */
+  padding-top: 20px; 
+}
 
 /* Admin Theme (Dark Mode) */
 body:not(.mobile-view) .global-nav.admin-theme { background: #111; border-right: 1px solid #333; }
