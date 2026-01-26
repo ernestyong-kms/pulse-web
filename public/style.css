@@ -338,27 +338,58 @@ h2::after {
 /* =========================================
    MODE 1: DESKTOP SIDEBAR 
    ========================================= */
+/* REPLACE WITH THIS BLOCK */
 body:not(.mobile-view) .global-nav {
+  position: fixed;
   top: 0; left: 0; 
-  width: 22vw;        /* Increased thickness */
-  min-width: 280px;   
-  max-width: 400px;   /* Allows it to get wider on your big monitor */
+  width: 280px; 
   height: 100vh;
   border-right: 1px solid rgba(0,0,0,0.1); 
-  padding: 40px 0;    /* More breathing room */
+  padding: 40px 0;
+  
+  /* NEW LAYOUT ENGINE */
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Thiers fixes the gap between help and profile! */
+  justify-content: flex-start; /* Aligns everything to the top */
+  gap: 0; /* We will control spacing manually */
+  
+  background: rgba(255, 255, 255, 0.98);
+  z-index: 1000;
 }
 
 body:not(.mobile-view) .nav-content {
   flex-direction: column; align-items: flex-start; height: 100%; padding: 0 20px; gap: 30px;
 }
+/* 1. LOGO: Give it specific breathing room */
 body:not(.mobile-view) .nav-logo { 
-  font-size: clamp(32px, 3vw, 48px); /* Scales with screen size */
-  margin-bottom: 50px; 
-  padding-left: 20px;
+  font-size: 32px; 
   font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 40px; /* Fixed space between Logo and Links */
+  padding-left: 30px;  /* Align with the links */
+  display: block;
+}
+
+/* 2. LINKS: Remove 'flex-grow' so they don't float in the middle */
+body:not(.mobile-view) .center-nav { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 15px;           /* Tighter spacing between buttons */
+  width: 100%;
+  padding: 0 20px;
+  flex-grow: 0;        /* STOP growing to fill space */
+  margin-bottom: auto; /* This pushes the Profile section to the bottom */
+}
+
+/* 3. PROFILE: Stays at the bottom */
+body:not(.mobile-view) .right-actions {
+  display: flex; 
+  flex-direction: column; 
+  gap: 10px;
+  width: 100%; 
+  padding: 20px; 
+  border-top: 1px solid rgba(0,0,0,0.05);
+  background: #fff; /* Ensures it sits cleanly */
 }
 
 body:not(.mobile-view) .center-nav a {
