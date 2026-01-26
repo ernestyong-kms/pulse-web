@@ -2783,6 +2783,25 @@ body.mobile-view .cal-day-cell {
         grid-template-columns: 1fr;
         gap: 20px;
     }
+
+    /* 5. Fix "Giant Buttons" on Laptop */
+    /* Since the sidebar drops to the bottom, make buttons sit Side-by-Side */
+    .quick-actions-sidebar {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr; /* 50% width each */
+        gap: 15px;
+        width: 100%;
+    }
+    
+    /* Keep the icon and text side-by-side (Horizontal) for laptops */
+    .action-tile {
+        flex-direction: row !important; 
+        align-items: center !important;
+        text-align: left !important;
+        min-height: 80px !important; /* Stop them from being too tall */
+    }
+    
+    .tile-info { margin-top: 0 !important; } /* Reset margins */
 }
 
 /* =========================================
@@ -2835,5 +2854,27 @@ body.mobile-view .cal-day-cell {
     body.mobile-view .hero-content h1 {
         font-size: 24px !important; /* Smaller Title */
     }
+    /* 6. Fix "Too Tall" Banners on Mobile */
+    body.mobile-view .hero-card {
+        min-height: 140px !important; /* Was 220px+ */
+        padding: 20px !important;
+    }
+    
+    body.mobile-view .todays-event-card {
+        min-height: auto !important; /* Remove fixed height */
+        padding-bottom: 20px !important;
+    }
+
+    body.mobile-view .t-card-content { 
+        padding: 15px !important; /* Tighter padding */
+        gap: 10px !important;     /* Closer elements */
+    }
+    
+    body.mobile-view .t-event-title { 
+        font-size: 22px !important; /* Smaller title */
+        margin-bottom: 5px !important;
+    }
 }
+
+
 
