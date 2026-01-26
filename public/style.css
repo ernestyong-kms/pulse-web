@@ -338,60 +338,58 @@ h2::after {
 /* =========================================
    MODE 1: DESKTOP SIDEBAR 
    ========================================= */
-/* REPLACE WITH THIS BLOCK */
+/* REPLACE ONLY THIS BLOCK */
 body:not(.mobile-view) .global-nav {
   position: fixed;
   top: 0; left: 0; 
-  width: 280px; 
-  height: 100vh;
-  border-right: 1px solid rgba(0,0,0,0.1); 
-  padding: 40px 0;
+  /* 1. FORCE WIDTH: No variables, no clamp. Just 280px. */
+  width: 280px !important; 
+  min-width: 280px !important;
   
-  /* NEW LAYOUT ENGINE */
+  /* 2. FORCE HEIGHT & SCROLLING */
+  height: 100vh;
+  padding: 0; 
+  
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Aligns everything to the top */
-  gap: 0; /* We will control spacing manually */
-  
-  background: rgba(255, 255, 255, 0.98);
+  background: #ffffff;
+  border-right: 1px solid rgba(0,0,0,0.1); 
   z-index: 1000;
 }
 
-body:not(.mobile-view) .nav-content {
-  flex-direction: column; align-items: flex-start; height: 100%; padding: 0 20px; gap: 30px;
-}
-/* 1. LOGO: Give it specific breathing room */
+/* Logo stays pinned at the top */
 body:not(.mobile-view) .nav-logo { 
+  flex-shrink: 0; 
+  padding: 40px 30px 20px 30px;
   font-size: 32px; 
   font-weight: 800;
   color: var(--text-main);
-  margin-bottom: 40px; /* Fixed space between Logo and Links */
-  padding-left: 30px;  /* Align with the links */
+  margin: 0;
   display: block;
 }
 
-/* 2. LINKS: Remove 'flex-grow' so they don't float in the middle */
-/* REPLACE YOUR EXISTING 'body:not(.mobile-view) .center-nav' BLOCK WITH THIS */
+/* Links scroll if the screen is too short */
 body:not(.mobile-view) .center-nav { 
+  flex: 1; 
+  overflow-y: auto; /* <--- THIS FIXES THE MISSING LOGOUT BUTTON */
+  padding: 10px 20px;
+  margin: 0;
   display: flex; 
   flex-direction: column; 
-  gap: 15px; 
+  gap: 12px; 
   width: 100%;
-  padding: 0 20px;
-  
-  /* THIS IS THE KEY FIX FOR CLUMPING */
-  margin-bottom: auto; /* Pushes everything else to the bottom */
 }
 
-/* 3. PROFILE: Stays at the bottom */
+/* Logout/Profile stays pinned at the bottom */
 body:not(.mobile-view) .right-actions {
+  flex-shrink: 0; 
   display: flex; 
   flex-direction: column; 
   gap: 10px;
   width: 100%; 
-  padding: 20px; 
+  padding: 20px 30px 30px 30px; 
   border-top: 1px solid rgba(0,0,0,0.05);
-  background: #fff; /* Ensures it sits cleanly */
+  background: #fff; 
 }
 
 body:not(.mobile-view) .center-nav a {
@@ -426,11 +424,10 @@ body:not(.mobile-view) .desktop-links .active-profile-link {
 }
 /* Icons */
 body:not(.mobile-view) .global-nav a svg { stroke-width: 2; width: 18px; height: 18px; transition: stroke 0.2s; }
-/* REPLACE YOUR EXISTING 'body:not(.mobile-view) main' BLOCK WITH THIS */
 body:not(.mobile-view) main { 
-  margin-left: 280px;         /* Must match the 280px sidebar width */
-  width: calc(100% - 280px);  /* Fills the rest of the screen */
-  max-width: 100%;            /* Unlocks the width for big screens */
+  margin-left: 280px !important; 
+  width: calc(100% - 280px) !important;
+  max-width: 100% !important;
   padding: 40px 5%;   
 }
 
