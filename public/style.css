@@ -336,7 +336,7 @@ h2::after {
 .center-nav a:hover { opacity: 1; color: var(--primary); }
 
 /* =========================================
-   MODE 1: DESKTOP SIDEBAR - TIGHT & TIDY
+   MODE 1: DESKTOP SIDEBAR - BIGGER & LIFTED
    ========================================= */
 body:not(.mobile-view) .global-nav {
   top: 0; left: 0; 
@@ -344,22 +344,22 @@ body:not(.mobile-view) .global-nav {
   height: 100vh;
   border-right: 1px solid rgba(0,0,0,0.1); 
   
-  /* Reduced top/bottom padding so it doesn't waste space */
-  padding: 20px 0;       
+  /* PADDING CHANGE: 60px at the bottom lifts the buttons up */
+  padding: 30px 0 60px 0;       
   
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Pushes bottom links to the bottom */
+  justify-content: space-between;
   position: fixed;
   z-index: 1000;
   overflow: hidden; 
   background: rgba(255, 255, 255, 0.95);
 }
 
-/* 1. LOGO - Tighter Spacing */
+/* 1. LOGO */
 body:not(.mobile-view) .nav-logo { 
-  font-size: 28px;      /* Standard size, not huge */
-  margin-bottom: 20px;  /* Fixed, tight margin */
+  font-size: 32px;      /* Slightly bigger for desktop */
+  margin-bottom: 30px;  
   padding-left: 20px;
   font-weight: 800;
   color: #1a1a1a;
@@ -370,31 +370,30 @@ body:not(.mobile-view) .nav-content {
   flex-direction: column; align-items: flex-start; height: 100%; padding: 0 20px; gap: 0;
 }
 
-/* 2. CENTER NAV - THE FIX */
+/* 2. CENTER NAV - BIGGER TEXT */
 body:not(.mobile-view) .center-nav { 
   display: flex; 
   flex-direction: column; 
-  justify-content: flex-start; /* Start from top (don't spread to fill) */
+  justify-content: flex-start; 
   
-  /* TIGHT GAP: Minimum 10px, Maximum 20px. 
-     It won't drift apart on big screens anymore. */
-  gap: clamp(10px, 1.5vh, 20px); 
+  /* Relaxed gap for desktop */
+  gap: 18px; 
   
   width: 100%; 
-  flex-grow: 1; /* Occupy the middle space */
+  flex-grow: 1; 
 }
 
-/* Link Styles (Kept your colors) */
+/* LINK STYLES - BIGGER */
 body:not(.mobile-view) .center-nav a {
-  font-size: 15px;      /* Standard readable size */
-  font-weight: 500;
-  padding: 10px 15px;
-  border-radius: 10px; 
+  font-size: 17px;      /* CHANGED: Bigger text (was 15px) */
+  font-weight: 600;     /* CHANGED: Slightly bolder */
+  padding: 12px 15px;   /* More breathing room */
+  border-radius: 12px; 
   color: var(--text-main); 
   text-decoration: none;
   display: flex; 
   align-items: center; 
-  gap: 12px;
+  gap: 15px;            /* More space between icon and text */
   transition: all 0.2s ease;
 }
 
@@ -404,24 +403,23 @@ body:not(.mobile-view) .center-nav a:hover {
   transform: translateX(5px);
 }
 
-/* 3. BOTTOM ACTIONS - Compact */
+/* 3. BOTTOM ACTIONS */
 body:not(.mobile-view) .right-actions {
   margin-top: auto; 
   display: flex; 
   flex-direction: column; 
-  gap: 10px;            /* Fixed tight gap */
+  gap: 15px;            
   width: 100%; 
   padding-top: 20px; 
-  padding-bottom: 10px;  
   border-top: 1px solid rgba(0,0,0,0.05);
 }
 
-/* Bottom Links */
+/* Bottom Links - Bigger */
 body:not(.mobile-view) .desktop-links a {
-    font-size: 14px; 
-    padding: 8px 15px; 
+    font-size: 15px; /* Increased from 14px */
+    padding: 10px 15px; 
     border-radius: 8px;
-    display: flex; align-items: center; gap: 10px; 
+    display: flex; align-items: center; gap: 12px; 
     color: #0071e3;
     font-weight: 600;
     text-decoration: none;
@@ -430,10 +428,11 @@ body:not(.mobile-view) .desktop-links a:hover {
     background: #f0f0f0; 
 }
 
-body:not(.mobile-view) .global-git add .nav a svg { 
-    stroke-width: 2; 
-    width: 20px; 
-    height: 20px; 
+/* Icons - Bigger */
+body:not(.mobile-view) .global-nav a svg { 
+    stroke-width: 2.2; 
+    width: 22px;  /* Bigger icons */
+    height: 22px; 
     transition: stroke 0.2s; 
     stroke: currentColor; 
 }
