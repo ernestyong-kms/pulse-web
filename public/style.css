@@ -2882,3 +2882,38 @@ body.mobile-view .hero-card {
     flex-direction: column !important;
     justify-content: center !important;
 }
+
+/* =========================================
+   FORCE COMPACT MOBILE HERO & HAPPENING TODAY
+   ========================================= */
+
+/* 1. Make the "Welcome / Unleash Pulse" Banner Shorter */
+body.mobile-view .visual-hero-banner {
+    min-height: 220px !important;    /* Forces it down from 350px */
+    height: auto !important;
+    padding: 30px 20px !important;   /* Reduces top/bottom padding */
+}
+
+/* Optional: Scale down the rings/circles so they fit the new smaller height */
+body.mobile-view .hero-visual-abstract {
+    transform: translate(-50%, -50%) scale(0.6) !important; /* Shrink visual */
+}
+
+
+/* 2. Make the "Happening Today" Card Shorter */
+body.mobile-view .todays-event-card {
+    min-height: 180px !important;    /* Enforce a smaller height */
+    height: auto !important;
+    padding-top: 20px !important;    /* drastic cut from the original 80px */
+    justify-content: flex-end !important;
+}
+
+/* Fix the text so it doesn't bunch up in the smaller space */
+body.mobile-view .t-card-content {
+    padding: 15px !important;
+    gap: 5px !important;             /* Reduce gap between title and buttons */
+}
+
+body.mobile-view .t-event-info {
+    margin-top: 0 !important;        /* Remove extra spacing above title */
+}
