@@ -3200,11 +3200,11 @@ body.mobile-view .grid-event-card button {
 }
 
 /* =========================================
-   FINAL FIX: OVERLAP & TEXT SPACING (V6)
+   FINAL "ID-POWERED" FIX (V7)
    ========================================= */
 
-/* 1. HERO BANNER: Massive Bottom Padding for Safety */
-body.mobile-view .visual-hero-banner {
+/* 1. HERO BANNER: Use ID to force the padding */
+body.mobile-view #userWelcomeBanner {
     width: calc(100% + 34px) !important; 
     margin-left: -17px !important;       
     margin-right: -17px !important;      
@@ -3212,13 +3212,12 @@ body.mobile-view .visual-hero-banner {
     
     border-radius: 0 0 40px 40px !important;
     
-    /* CRITICAL CHANGE: 150px bottom padding creates a huge empty gap 
-       for the card to overlap without touching the text */
-    padding: 50px 20px 150px 20px !important; 
+    /* THE SAFETY ZONE: 160px padding at bottom */
+    /* This forces the blue box to be tall enough */
+    padding: 60px 20px 160px 20px !important; 
     
     background: linear-gradient(180deg, #0f172a 0%, #1e293b 80%, #334155 100%) !important;
     min-height: auto !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
     
     display: flex !important;
     flex-direction: column !important;
@@ -3226,27 +3225,26 @@ body.mobile-view .visual-hero-banner {
     text-align: center !important;
 }
 
-/* 2. TEXT RESTORATION: "Unleash Your Pulse" */
-body.mobile-view .hero-content-wrapper h1 .desktop-only { display: inline !important; }
-body.mobile-view .hero-content-wrapper h1 .mobile-only { display: none !important; }
-
-body.mobile-view .hero-content-wrapper h1 { 
-    font-size: 32px !important; 
-    line-height: 1.2 !important;
-    margin-bottom: 0 !important;
-}
-
-/* 3. DASHBOARD OVERLAP: Controlled Lift */
+/* 2. DASHBOARD: Controlled Lift */
 body.mobile-view #userDashboardWrapper {
-    /* Pulls card up 50px into the 150px empty space we created */
-    margin-top: -50px !important;  
+    /* Only pull up 60px. Since we added 160px padding above, 
+       there is now a 100px gap of safety */
+    margin-top: -60px !important;  
     position: relative;
     z-index: 10;
     padding: 0 5px;
 }
 
-/* 4. HAPPENING TODAY CARD: Clean Internal Layout */
-body.mobile-view .todays-event-card {
+/* 3. HERO TEXT SIZING */
+body.mobile-view #userWelcomeBanner h1 { 
+    font-size: 30px !important; 
+    line-height: 1.2 !important;
+    margin-bottom: 0 !important;
+    width: 100% !important;
+}
+
+/* 4. HAPPENING TODAY CARD: No Overlap Logic */
+body.mobile-view #todaysEventSection .todays-event-card {
     min-height: auto !important;
     background: #1a1a1a !important;
     border: 2px solid white !important;
@@ -3255,7 +3253,6 @@ body.mobile-view .todays-event-card {
     margin-bottom: 25px !important;
     padding-top: 0 !important;
     position: relative !important;
-    overflow: visible !important;
 }
 
 body.mobile-view .t-card-content {
@@ -3266,39 +3263,15 @@ body.mobile-view .t-card-content {
     gap: 10px !important;
 }
 
-/* 5. BADGE FIX: Sits cleanly on top of title */
+/* 5. BADGE FIX: Force it to stay inside the card */
 body.mobile-view .live-badge {
     position: relative !important;
-    top: auto !important; right: auto !important; left: auto !important;
+    top: auto !important; 
+    right: auto !important; 
+    left: auto !important;
     margin-bottom: 5px !important; 
     align-self: flex-start !important;
     display: inline-flex !important;
-    background: rgba(220, 38, 38, 1) !important;
+    background: #d90429 !important; /* Pulse Red */
     border: none !important;
 }
-
-/* 6. UTILITIES */
-body.mobile-view #nextEventCard { display: none !important; } 
-
-body.mobile-view .quick-actions-sidebar {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 15px !important;
-    width: 100% !important;
-    margin-bottom: 30px !important;
-}
-
-body.mobile-view .action-tile {
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
-    text-align: center !important;
-    padding: 20px 10px !important;
-    border-radius: 20px !important;
-    background: white !important;
-    min-height: 110px !important;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
-}
-
-body.mobile-view .hero-visual-abstract, 
-body.mobile-view .hero-actions { display: none !important; }
