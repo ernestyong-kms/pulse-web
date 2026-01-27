@@ -3063,86 +3063,117 @@ section {
 
 
 /* =========================================================
-   OPTION 1: Make the page feel less like "stacked boxes"
-   (Add breathing room + softer surfaces + subtle separators)
-   Place at END of file so it wins.
+   OPTION 1 (APPLE-LIKE) — STRONG OVERRIDES
+   Appended to ensure it wins against earlier rules.
    ========================================================= */
 
-/* 1) Global rhythm: consistent vertical spacing inside main */
-main > * + * {
-  margin-top: 26px !important; /* space between sections/cards */
+/* Design tokens */
+:root{
+  --bg-color: #f5f5f7 !important;
+  --card-bg: #ffffff !important;
+  --text-main: #111111 !important;
+  --text-light: #6b7280 !important;
+  --shadow: none !important;
+  --shadow-hover: none !important;
+  --radius: 16px !important;
 }
 
-/* On real phones, give a little more air */
-@media (max-width: 768px) {
-  main > * + * {
-    margin-top: 22px !important;
-  }
+/* Global background */
+html, body{
+  background: var(--bg-color) !important;
+  background-image: none !important;
+  color: var(--text-main) !important;
 }
 
-/* 2) Softer “surface” treatment for large sections/cards */
-.auth-card,
-.action-card,
-.event-card,
-.grid-event-card,
-.calendar-widget,
-.todays-event-card,
-.profile-card,
-.dashboard-card,
-.network-card,
-.cal-event-card,
-.modal-content,
-.popup-content {
-  border-radius: 24px !important;
-  border: 1px solid rgba(15, 23, 42, 0.06) !important;
-  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08) !important;
-  background: rgba(255, 255, 255, 0.92) !important;
-  backdrop-filter: saturate(140%) blur(10px);
-  -webkit-backdrop-filter: saturate(140%) blur(10px);
+/* Softer typography rhythm */
+main{
+  max-width: 1100px !important;
+  padding-top: 28px !important;
+  padding-bottom: 48px !important;
 }
 
-/* Keep “hero” + cinematic cards dark (don’t wash them out) */
-.visual-hero-banner,
-.todays-event-card {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
-  border: 1px solid rgba(255,255,255,0.10) !important;
-  box-shadow: 0 22px 55px rgba(0,0,0,0.22) !important;
-}
-
-/* 3) Subtle page depth so sections blend (not hard blocks) */
-body {
-  background:
-    radial-gradient(1200px 700px at 10% -10%, rgba(217, 4, 41, 0.10), transparent 60%),
-    radial-gradient(900px 600px at 90% 10%, rgba(15, 23, 42, 0.14), transparent 55%),
-    linear-gradient(180deg, #f5f6f8 0%, #eef0f4 60%, #f5f6f8 100%) !important;
-}
-
-/* 4) Make “Happening Today” and other big cards feel intentional */
-.todays-event-card {
-  overflow: hidden !important;
-}
-.todays-event-card::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: 24px;
-  pointer-events: none;
-  background: radial-gradient(600px 220px at 20% 0%, rgba(217,4,41,0.20), transparent 55%);
-  opacity: 0.75;
-}
-
-/* 5) Avoid “kissing” between banner and first card on mobile */
-@media (max-width: 768px) {
-  #userWelcomeBanner {
-    margin-bottom: 18px !important;
-  }
-  /* If your “Happening Today” is the next block, give it a top gap */
-  .todays-event-card {
-    margin-top: 8px !important;
-  }
-}
-
-/* 6) Small polish: reduce harsh horizontal edges on mobile simulator */
-body.mobile-view main {
+/* Give sections breathing room (prevents “stacked boxes”) */
+#userDashboardWrapper{
   padding-top: 18px !important;
+}
+#todaysEventSection{
+  margin-top: 18px !important;
+}
+section{
+  margin-top: 28px !important;
+}
+
+/* Make most surfaces flat + clean */
+.auth-card, .action-card, .event-card, .modal-content, .popup-content,
+.profile-card, .dashboard-card, .network-card, .grid-event-card,
+.minimal-event-card, .snapshot-card, .cal-event-card, .calendar-widget,
+.admin-table, .admin-table-widget, .user-table{
+  background: #ffffff !important;
+  border: 1px solid rgba(17,17,17,0.08) !important;
+  box-shadow: none !important;
+  border-radius: 16px !important;
+}
+
+/* Kill “lift” interactions that make everything feel like separate tiles */
+.action-card:hover, .event-card:hover, .grid-event-card:hover, .network-card:hover,
+.minimal-event-card:hover, .dashboard-card:hover, .cal-event-card:hover,
+.action-tile:hover{
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Cards: calmer padding */
+.auth-card, .action-card, .event-card, .profile-card, .dashboard-card,
+.network-card, .grid-event-card, .minimal-event-card{
+  padding: 18px !important;
+}
+
+/* Action tiles: remove heavy gradients/glow for Apple-like feel */
+.action-tile, .scan-tile, .upload-tile{
+  background: #ffffff !important;
+  color: #111111 !important;
+  border: 1px solid rgba(17,17,17,0.08) !important;
+  box-shadow: none !important;
+}
+.action-tile .tile-info h3{ color: #111111 !important; }
+.action-tile .tile-info span{ color: rgba(17,17,17,0.6) !important; }
+.tile-icon-bubble{
+  background: rgba(0,0,0,0.04) !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
+  box-shadow: none !important;
+}
+
+/* Buttons: reduce glow, keep crisp */
+.btn-hero-main, .btn-hero-secondary, .btn-checkin, .btn-qr-view, .btn-rate,
+.action-btn, #createEventBtn{
+  box-shadow: none !important;
+}
+
+/* Keep HERO premium but cleaner */
+.visual-hero-banner, #userWelcomeBanner{
+  border-radius: 22px !important;
+  box-shadow: none !important;
+}
+
+/* Happening Today stays featured (one “hero” depth only) */
+.todays-event-card{
+  border: none !important;
+  box-shadow: 0 18px 48px rgba(0,0,0,0.18) !important;
+  border-radius: 24px !important;
+}
+
+/* Reduce density on lists so it feels less “boxy” */
+#eventContainer{
+  gap: 14px !important;
+}
+.minimal-event-card{
+  padding: 14px !important;
+}
+
+/* Mobile: more whitespace + less “glued together” */
+@media (max-width: 768px){
+  main{ padding: 18px 16px 40px 16px !important; }
+  #userDashboardWrapper{ padding-top: 22px !important; }
+  #todaysEventSection{ margin-top: 16px !important; }
+  section{ margin-top: 22px !important; }
 }
