@@ -2973,3 +2973,15 @@ body.mobile-view .cal-day-cell {
     margin-bottom: 16px !important;
   }
 }
+
+/* Force real spacing between hero and dashboard */
+#userDashboardWrapper {
+  margin-top: 32px !important;
+}
+
+@media (max-width: 768px) {
+  #userDashboardWrapper {
+    margin-top: 24px !important;
+  }
+}
+
