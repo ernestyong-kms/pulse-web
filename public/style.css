@@ -1,3 +1,6 @@
+* {  }
+
+html { background: hotpink !important; }
 
 :root {
   /* Temasek Polytechnic Red Theme - Deep & Premium */
@@ -3179,8 +3182,16 @@ section{
   section{ margin-top: 22px !important; }
 }
 
-body { outline: 12px solid hotpink !important; }
-
+body.mobile-view::before{
+  content:"mobile-view ON";
+  position:fixed;
+  top:70px; left:10px;
+  padding:6px 10px;
+  background:hotpink; color:black;
+  z-index:999999;
+  font-weight:800;
+  border-radius:10px;
+}
 
 @media (max-width: 768px){
 
@@ -3226,115 +3237,117 @@ body { outline: 12px solid hotpink !important; }
   }
 }
 
-/* =========================================================
-   NUCLEAR MOBILE APPLE PATCH (STRONGEST PRIORITY)
-   Paste this at the VERY BOTTOM of style.css
-   ========================================================= */
 
-/* 1. FORCE THE HERO BANNER LAYOUT 
-   We use ID selectors (#userWelcomeBanner) because they overpower classes.
-*/
+/* =========================================================
+   FINAL: APPLE-LIKE MOBILE LOCK (wins against earlier rules)
+   Put this at the VERY BOTTOM of style.css
+   ========================================================= */
 @media (max-width: 768px) {
-  
-  /* Reset the container constraints */
-  body.mobile-view #userWelcomeBanner,
-  body.mobile-view .visual-hero-banner {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-    
-    /* Apple-style padding */
-    padding: 34px 16px 24px 16px !important;
-    min-height: auto !important;
-    height: auto !important;
-    margin-top: 0 !important;
+
+  /* Keep the page calm + not "boxed in" */
+  html, body, body.mobile-view {
+    background: #f5f5f7 !important;
+    background-image: none !important;
   }
 
-  /* Force the text wrapper to exist and sit on top */
-  body.mobile-view #userWelcomeBanner .hero-content-wrapper,
-  body.mobile-view .visual-hero-banner .hero-content-wrapper {
-    display: block !important; /* Ensure it's not hidden */
+  /* Ensure main has consistent padding on real phones */
+  body:not(.mobile-view) main,
+  body.mobile-view main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 18px 16px 40px 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* HERO banner: compact + clean */
+  body.mobile-view #userWelcomeBanner.visual-hero-banner,
+  body:not(.mobile-view) #userWelcomeBanner.visual-hero-banner {
+    min-height: auto !important;
+    padding: 34px 16px 18px 16px !important;
+    margin-bottom: 16px !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
     position: relative !important;
-    z-index: 10 !important;
+  }
+
+  /* Content sits ABOVE the animation */
+  body.mobile-view #userWelcomeBanner .hero-content-wrapper,
+  body:not(.mobile-view) #userWelcomeBanner .hero-content-wrapper {
+    position: relative !important;
+    z-index: 2 !important;
     max-width: 100% !important;
     width: 100% !important;
-    margin-bottom: 20px !important;
+    text-align: center !important;
   }
 
-  /* Force the buttons to show and wrap */
+  /* Title sizes for Apple-like balance */
+  body.mobile-view #userWelcomeBanner h1,
+  body:not(.mobile-view) #userWelcomeBanner h1 {
+    font-size: 34px !important;
+    line-height: 1.15 !important;
+    letter-spacing: -1px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* Buttons visible + tidy */
   body.mobile-view #userWelcomeBanner .hero-actions,
-  body.mobile-view .visual-hero-banner .hero-actions {
+  body:not(.mobile-view) #userWelcomeBanner .hero-actions {
     display: flex !important;
-    flex-direction: row !important; /* Side by side buttons */
     justify-content: center !important;
-    gap: 12px !important;
-    width: 100% !important;
+    gap: 10px !important;
     flex-wrap: wrap !important;
-    z-index: 10 !important;
+    margin-top: 12px !important;
+    position: relative !important;
+    z-index: 2 !important;
   }
 
-  /* Style the buttons to fit mobile */
   body.mobile-view #userWelcomeBanner .btn-hero-main,
-  body.mobile-view #userWelcomeBanner .btn-hero-secondary {
-    display: flex !important;
-    width: auto !important;
-    flex: 1 1 140px !important; /* Grow to fill, min 140px */
-    max-width: 48% !important;  /* Don't get too wide */
-    justify-content: center !important;
-    padding: 12px 10px !important;
-    font-size: 14px !important;
+  body.mobile-view #userWelcomeBanner .btn-hero-secondary,
+  body:not(.mobile-view) #userWelcomeBanner .btn-hero-main,
+  body:not(.mobile-view) #userWelcomeBanner .btn-hero-secondary {
+    flex: 1 1 160px !important;
+    max-width: 260px !important;
+    padding: 12px 0 !important;
   }
 
-  /* Push the abstract visual to the background */
+  /* Pulse animation becomes a background layer behind text */
   body.mobile-view #userWelcomeBanner .hero-visual-abstract,
-  body.mobile-view .visual-hero-banner .hero-visual-abstract {
+  body:not(.mobile-view) #userWelcomeBanner .hero-visual-abstract {
+    display: flex !important;
     position: absolute !important;
     top: 50% !important;
     left: 50% !important;
-    transform: translate(-50%, -50%) scale(0.9) !important;
-    width: 100% !important;
-    height: 100% !important;
-    opacity: 0.15 !important; /* Subtle background */
-    z-index: 0 !important;
+    transform: translate(-50%, -50%) scale(0.82) !important;
+    width: 280px !important;
+    height: 280px !important;
+    opacity: 0.20 !important;
+    z-index: 1 !important;
     pointer-events: none !important;
     margin: 0 !important;
-    display: flex !important; /* Ensure it renders */
-    align-items: center;
-    justify-content: center;
+  }
+
+  /* IMPORTANT: stop the dashboard from "kissing" the banner */
+  body.mobile-view #userDashboardWrapper,
+  body:not(.mobile-view) #userDashboardWrapper {
+    margin-top: 0 !important;
+    padding-top: 18px !important;
+  }
+
+  body.mobile-view #todaysEventSection,
+  body:not(.mobile-view) #todaysEventSection {
+    margin-top: 14px !important;
+  }
+
+  /* Make most cards flatter (Apple-ish) on mobile only */
+  body.mobile-view .auth-card, body.mobile-view .action-card, body.mobile-view .event-card,
+  body.mobile-view .profile-card, body.mobile-view .dashboard-card, body.mobile-view .network-card,
+  body.mobile-view .grid-event-card, body.mobile-view .minimal-event-card, body.mobile-view .calendar-widget,
+  body:not(.mobile-view) .auth-card, body:not(.mobile-view) .action-card, body:not(.mobile-view) .event-card,
+  body:not(.mobile-view) .profile-card, body:not(.mobile-view) .dashboard-card, body:not(.mobile-view) .network-card,
+  body:not(.mobile-view) .grid-event-card, body:not(.mobile-view) .minimal-event-card, body:not(.mobile-view) .calendar-widget {
+    box-shadow: none !important;
+    border: 1px solid rgba(17,17,17,0.08) !important;
   }
 }
-
-/* 2. FORCE DASHBOARD GRID TO SINGLE COLUMN 
-   Using ID #userDashboardWrapper to beat class selectors
-*/
-@media (max-width: 768px) {
-    body.mobile-view #userDashboardWrapper .dashboard-grid {
-        display: flex !important;
-        flex-direction: column !important;
-        grid-template-columns: 1fr !important;
-        gap: 16px !important;
-    }
-
-    /* Force Quick Actions to be a horizontal row */
-    body.mobile-view #userDashboardWrapper .quick-actions-sidebar {
-        display: flex !important;
-        flex-direction: row !important;
-        width: 100% !important;
-        gap: 10px !important;
-    }
-
-    body.mobile-view #userDashboardWrapper .action-tile {
-        flex: 1 !important;
-        min-width: 0 !important; /* Allow shrinking */
-    }
-}
-
-/* 3. TOGGLE VISIBILITY UTILITIES */
-@media (max-width: 768px) {
-    .desktop-only { display: none !important; }
-    .mobile-only { display: inline-block !important; }
-}
-
 
