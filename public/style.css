@@ -3198,3 +3198,93 @@ body.mobile-view .card-desc { display: none !important; } /* Hide desc on mobile
 body.mobile-view .grid-event-card button {
     display: none !important; /* Hide "View Details" button, make whole card clickable in JS if needed */
 }
+
+/* =========================================
+   SAFE HOME PAGE OVERRIDE (App Look V4)
+   ========================================= */
+
+/* 1. HERO BANNER: Force Full Bleed using Negative Margins */
+/* This allows us to keep 'padding: 15px' on main for other pages, 
+   but ignore it for this specific banner */
+body.mobile-view .visual-hero-banner {
+    width: calc(100% + 34px) !important; /* Width + Left/Right Padding correction */
+    margin-left: -17px !important;       /* Pull left to edge */
+    margin-right: -17px !important;      /* Pull right to edge */
+    margin-top: -17px !important;        /* Pull up to touch nav */
+    
+    border-radius: 0 0 40px 40px !important; /* The Curve */
+    padding: 50px 20px 70px 20px !important; /* Deep padding for overlap space */
+    
+    /* Design */
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 80%, #334155 100%) !important;
+    min-height: auto !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+    
+    /* Flex Alignment */
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+}
+
+/* 2. DASHBOARD CONTENT: The "Overlap" Lift */
+body.mobile-view #userDashboardWrapper {
+    margin-top: -50px !important;  /* Pulls the cards UP over the blue curve */
+    position: relative;
+    z-index: 10;
+    padding: 0 5px; /* Tiny internal padding */
+}
+
+/* 3. HAPPENING TODAY CARD: Glass Style */
+body.mobile-view .todays-event-card {
+    min-height: auto !important;
+    background: #1a1a1a !important;
+    border: 2px solid white !important; /* Crisp border definition */
+    border-radius: 24px !important;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25) !important;
+    margin-bottom: 25px !important;
+    padding-top: 20px !important;
+}
+
+/* Fix text layout inside the card */
+body.mobile-view .t-card-content {
+    padding: 20px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 15px !important;
+}
+body.mobile-view .t-event-title { font-size: 24px !important; line-height: 1.1 !important; margin-bottom: 5px !important; }
+body.mobile-view .t-event-meta { font-size: 13px !important; margin-bottom: 0 !important; }
+
+/* 4. QUICK ACTIONS: Side-by-Side Grid */
+body.mobile-view #nextEventCard { display: none !important; } /* Hide the red duplicate card */
+
+body.mobile-view .quick-actions-sidebar {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important; /* Force 2 columns */
+    gap: 15px !important;
+    width: 100% !important;
+    margin-bottom: 30px !important;
+}
+
+body.mobile-view .action-tile {
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    padding: 20px 10px !important;
+    border-radius: 20px !important;
+    background: white !important;
+    min-height: 110px !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+}
+
+/* 5. TEXT SWAPPER UTILITY (Keep this!) */
+.mobile-only { display: none !important; }
+body.mobile-view .desktop-only { display: none !important; }
+body.mobile-view .mobile-only { display: inline !important; }
+
+/* 6. CLEAN UP HERO TEXT */
+body.mobile-view .hero-content-wrapper h1 { font-size: 32px !important; white-space: nowrap !important; }
+body.mobile-view .hero-visual-abstract { display: none !important; }
+body.mobile-view .hero-actions { display: none !important; }
