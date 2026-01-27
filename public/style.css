@@ -3059,3 +3059,90 @@ section {
     margin-bottom: 14px !important;
   }
 }
+
+
+
+/* =========================================================
+   OPTION 1: Make the page feel less like "stacked boxes"
+   (Add breathing room + softer surfaces + subtle separators)
+   Place at END of file so it wins.
+   ========================================================= */
+
+/* 1) Global rhythm: consistent vertical spacing inside main */
+main > * + * {
+  margin-top: 26px !important; /* space between sections/cards */
+}
+
+/* On real phones, give a little more air */
+@media (max-width: 768px) {
+  main > * + * {
+    margin-top: 22px !important;
+  }
+}
+
+/* 2) Softer “surface” treatment for large sections/cards */
+.auth-card,
+.action-card,
+.event-card,
+.grid-event-card,
+.calendar-widget,
+.todays-event-card,
+.profile-card,
+.dashboard-card,
+.network-card,
+.cal-event-card,
+.modal-content,
+.popup-content {
+  border-radius: 24px !important;
+  border: 1px solid rgba(15, 23, 42, 0.06) !important;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
+}
+
+/* Keep “hero” + cinematic cards dark (don’t wash them out) */
+.visual-hero-banner,
+.todays-event-card {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  box-shadow: 0 22px 55px rgba(0,0,0,0.22) !important;
+}
+
+/* 3) Subtle page depth so sections blend (not hard blocks) */
+body {
+  background:
+    radial-gradient(1200px 700px at 10% -10%, rgba(217, 4, 41, 0.10), transparent 60%),
+    radial-gradient(900px 600px at 90% 10%, rgba(15, 23, 42, 0.14), transparent 55%),
+    linear-gradient(180deg, #f5f6f8 0%, #eef0f4 60%, #f5f6f8 100%) !important;
+}
+
+/* 4) Make “Happening Today” and other big cards feel intentional */
+.todays-event-card {
+  overflow: hidden !important;
+}
+.todays-event-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 24px;
+  pointer-events: none;
+  background: radial-gradient(600px 220px at 20% 0%, rgba(217,4,41,0.20), transparent 55%);
+  opacity: 0.75;
+}
+
+/* 5) Avoid “kissing” between banner and first card on mobile */
+@media (max-width: 768px) {
+  #userWelcomeBanner {
+    margin-bottom: 18px !important;
+  }
+  /* If your “Happening Today” is the next block, give it a top gap */
+  .todays-event-card {
+    margin-top: 8px !important;
+  }
+}
+
+/* 6) Small polish: reduce harsh horizontal edges on mobile simulator */
+body.mobile-view main {
+  padding-top: 18px !important;
+}
