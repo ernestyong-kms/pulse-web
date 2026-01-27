@@ -381,19 +381,7 @@ body:not(.mobile-view) .center-nav {
   
   width: 100%; 
   flex-grow: 1; 
-
-  /* Allow sidebar menu to scroll (hidden scrollbar) */
-  min-height: 0;            /* critical for flex children */
-  overflow-y: auto;
-  overscroll-behavior: contain;
-
-  /* Hide scrollbar (keep scroll functional) */
-  scrollbar-width: none;    /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge legacy */
-
 }
-body:not(.mobile-view) .center-nav::-webkit-scrollbar { width: 0; height: 0; }
-
 
 /* LINK STYLES - BIGGER */
 body:not(.mobile-view) .center-nav a {
@@ -1088,14 +1076,7 @@ body.mobile-view .hamburger-icon span { width: 22px; height: 2px; background: #3
   display: none; position: absolute; top: 70px; right: 20px; width: 200px;
   background: white; border-radius: 12px; flex-direction: column; padding: 8px 0;
   box-shadow: 0 10px 40px rgba(0,0,0,0.15); border: 1px solid #eee; z-index: 2000;
-
-  max-height: calc(100vh - 90px);
-  overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
 }
-.mobile-menu-dropdown::-webkit-scrollbar { width: 0; height: 0; }
-
 .mobile-menu-dropdown[style*="display: flex"] { display: flex !important; }
 .mobile-menu-dropdown a {
   padding: 10px 20px; text-decoration: none; color: #333; font-size: 14px; font-weight: 500;
@@ -1358,20 +1339,6 @@ body.mobile-view #adminStatsGrid .action-card { width: 100% !important; margin: 
 /* Login Card Entrance */
 .login-card { opacity: 0; animation: cardEntrance 0.8s ease forwards 2.6s; }
 @keyframes cardEntrance { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-/* =========================================
-   RESPONSIVE HELPERS (fix duplicate hero text)
-   ========================================= */
-.mobile-only { display: none; }
-.desktop-only { display: inline; }
-
-@media (max-width: 768px) {
-  .desktop-only { display: none !important; }
-  .mobile-only { display: inline !important; }
-  /* For paragraphs, make sure they behave as blocks */
-  p.mobile-only { display: block !important; }
-  p.desktop-only { display: none !important; }
-}
-
 /* =========================================
    FINAL HERO BANNER (Fixed Layout - Midnight Blue)
    ========================================= */
@@ -2825,7 +2792,7 @@ body.mobile-view .cal-day-cell {
         border-radius: 0 0 40px 40px !important;
         
         /* 160px padding bottom creates the empty blue area */
-        padding: 60px 20px 160px 20px !important;
+        padding: 60px 20px 24px 20px !important;
         
         min-height: auto !important;
         display: flex !important;
@@ -2836,7 +2803,7 @@ body.mobile-view .cal-day-cell {
 
     /* DASHBOARD OVERLAP: Controlled Lift */
     body.mobile-view #userDashboardWrapper {
-        margin-top: -80px !important; /* Pulls UP into the safety zone */
+        margin-top: 0px !important; /* Pulls UP into the safety zone */
         position: relative !important;
         z-index: 10 !important;
         padding: 0 10px !important;
@@ -2882,165 +2849,114 @@ body.mobile-view .cal-day-cell {
         text-align: center !important;
     }
 
-}
+    /* HIDE DESKTOP ELEMENTS */
+    }
 
 /* REAL MOBILE (phones) */
 @media (max-width: 768px) {
-  /* space for fixed top navbar */
+  /* remove any boxed-in feel */
   body {
-    padding-top: 60px;
+    padding-top: 60px; /* space for fixed navbar */
   }
 
-  /* Fix: override DESKTOP sidebar rules on real phones */
-  body:not(.mobile-view) .global-nav{
+  .global-nav{
     position: fixed;
     top: 0; left: 0;
-    width: 100% !important;
-    height: 60px !important;
-    border-right: none !important;
+    width: 100%;
+    height: 60px;
     border-bottom: 1px solid rgba(0,0,0,0.1);
-    padding: 0 !important;
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: center;
-    overflow: visible !important;
   }
 
-  body:not(.mobile-view) .nav-content{
-    width: 100% !important;
-    height: 60px !important;
-    padding: 0 20px !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-  }
-
-  /* Hide desktop sidebar links in top-nav mode */
-  body:not(.mobile-view) .center-nav,
-  body:not(.mobile-view) .desktop-links{
-    display: none !important;
-  }
-
-  /* Keep only the right actions (hamburger / profile etc.) */
-  body:not(.mobile-view) .right-actions{
-    margin-top: 0 !important;
-    border-top: none !important;
-    padding-top: 0 !important;
-  }
-
-  /* Content should not reserve space for the desktop sidebar */
-  body:not(.mobile-view) main{
-    margin-left: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 20px 16px !important;
-  }
-
-  /* Spacing so "Happening Today" doesn't overlap the hero */
-  #userWelcomeBanner{
-    margin-bottom: 20px !important;
-  }
-  #userDashboardWrapper{
-    margin-top: 0 !important;
-  }
-  #todaysEventSection{
-    margin-top: 20px !important;
+  main{
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 20px 16px; /* smaller than desktop */
   }
 }
 
-/* =========================================================
-   HOTFIX (REAL MOBILE): stop "Happening Today" overlapping hero
-   ========================================================= */
+
+/* ================================
+   FIX: desktop-only / mobile-only toggles
+   ================================ */
+.desktop-only { display: inline; }
+.mobile-only  { display: none; }
+
 @media (max-width: 768px) {
-  /* If your JS leaves the simulator class on real phones, this prevents the lift */
-  body.mobile-view #userDashboardWrapper{
-    margin-top: 0 !important;
-  }
-  /* Add a bit more breathing room under the hero */
-  #userWelcomeBanner{
-    padding-bottom: 40px !important;
-  }
-  /* Ensure the section itself always starts below the hero */
-  #todaysEventSection{
-    margin-top: 20px !important;
-  }
+  .desktop-only { display: none; }
+  .mobile-only  { display: inline; }
 }
 
-/* MOBILE HERO: show pulse animation as a background layer */
+
+/* ================================
+   MOBILE HERO: animation behind text + show buttons + compact height
+   ================================ */
 @media (max-width: 768px) {
+
+  /* Compact banner (kills extra empty space) */
+  #userWelcomeBanner,
+  body.mobile-view #userWelcomeBanner,
   .visual-hero-banner {
-    position: relative;
-    overflow: hidden;
+    min-height: auto !important;
+    padding: 60px 16px 24px 16px !important;
   }
 
-  /* animation behind text */
-  .hero-visual-abstract {
-    display: flex !important;
-    position: absolute !important;
-    inset: 0 !important;                 /* fill the banner */
-    margin: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    justify-content: center !important;
-    align-items: center !important;
-    opacity: 0.22;                       /* tweak to taste */
-    z-index: 1 !important;
-    pointer-events: none !important;
-  }
-
-  /* keep text above animation */
+  /* Ensure the content sits above the animation layer */
   .hero-content-wrapper {
     position: relative !important;
     z-index: 2 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    text-align: center !important;
   }
-}
 
-/* MOBILE HERO: show buttons */
-@media (max-width: 768px) {
-  .hero-actions {
+  /* Show the action buttons on mobile */
+  .hero-actions,
+  body.mobile-view .hero-actions {
     display: flex !important;
-    width: 100%;
+    width: 100% !important;
     justify-content: center !important;
-    gap: 10px;
-    flex-wrap: wrap;                     /* allows stacking if needed */
-    position: relative;
-    z-index: 2 !important;               /* above animation */
+    gap: 10px !important;
+    flex-wrap: wrap !important;
+    margin-top: 12px !important;
+    position: relative !important;
+    z-index: 2 !important;
   }
 
   .btn-hero-main,
   .btn-hero-secondary {
-    flex: 1 1 160px;                     /* responsive */
-    max-width: 260px;                    /* prevents ultra-wide pills */
-    padding: 12px 0;
-    font-size: 14px;
-    display: flex;
-    justify-content: center;
+    flex: 1 1 160px !important;
+    max-width: 260px !important;
+    padding: 12px 0 !important;
+    font-size: 14px !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  /* Pulse animation as background behind the words */
+  .hero-visual-abstract,
+  body.mobile-view .hero-visual-abstract {
+    display: flex !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) scale(0.8) !important;
+    width: 300px !important;
+    height: 300px !important;
+    margin: 0 !important;
+    opacity: 0.22 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
   }
 }
 
+
+/* ================================
+   MOBILE: prevent dashboard overlap (real devices)
+   ================================ */
 @media (max-width: 768px) {
-
-  /* shrink overall banner height */
-  .visual-hero-banner {
-    min-height: unset !important;
-    padding: 70px 16px 24px 16px !important;  /* top right bottom left */
-  }
-
-  /* tighten content spacing */
-  .hero-content-wrapper {
-    padding-bottom: 8px !important;
-  }
-
-  /* reduce spacing above buttons */
-  .hero-actions {
-    margin-top: 14px !important;
-  }
-
-  /* keep animation from stretching layout */
-  .hero-visual-abstract {
-    height: 100% !important;
-    max-height: 280px !important;
+  #userDashboardWrapper {
+    margin-top: 0 !important;
+    padding-top: 20px !important;
   }
 }
-
