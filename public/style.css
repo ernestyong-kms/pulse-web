@@ -2868,3 +2868,17 @@ body.mobile-view .cal-day-cell {
         height: 36px !important;
     }
 }
+
+/* FORCE CHANGE WELCOME BANNER HEIGHT */
+body.mobile-view .visual-hero-banner {
+    min-height: 250px !important; /* Change 250px to whatever you want */
+    height: auto !important;
+}
+
+/* FORCE CHANGE EVENT CARD HEIGHT */
+body.mobile-view .hero-card {
+    min-height: 300px !important; /* Forces it to be taller */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+}
