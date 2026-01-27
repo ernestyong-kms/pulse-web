@@ -1,3 +1,5 @@
+* { outline: 6px solid hotpink !important; }
+
 html { background: hotpink !important; }
 
 :root {
