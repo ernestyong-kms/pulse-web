@@ -2971,3 +2971,91 @@ body.mobile-view .cal-day-cell {
 /* Simulator mode uses body.mobile-view overrides, so enforce it there too */
 body.mobile-view #userDashboardWrapper { padding-top: 24px !important; }
 body.mobile-view #todaysEventSection { margin-top: 16px !important; }
+
+/* ================================
+   APPLE-LIKE CLEAN OVERRIDES
+   Paste at VERY BOTTOM of style.css
+   ================================ */
+
+/* 1) Softer page background (no loud textures) */
+body {
+  background: #f5f5f7 !important;
+  background-image: none !important;
+  color: #111 !important;
+}
+
+/* 2) Make most cards flatter + cleaner */
+.auth-card, .action-card, .event-card, .modal-content, .popup-content,
+.profile-card, .dashboard-card, .network-card, .grid-event-card,
+.minimal-event-card, .admin-table, .calendar-widget {
+  background: #fff !important;
+  border: 1px solid rgba(0,0,0,0.08) !important;
+  box-shadow: none !important;
+  border-radius: 16px !important;
+}
+
+/* 3) Remove “boxy hover” lift everywhere except the featured card */
+.action-card:hover, .event-card:hover, .grid-event-card:hover,
+.network-card:hover, .minimal-event-card:hover, .dashboard-card:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  border-color: rgba(0,0,0,0.12) !important;
+}
+
+/* 4) Give the page nicer rhythm (more whitespace between sections) */
+main {
+  padding-top: 24px !important;
+  padding-bottom: 40px !important;
+}
+
+#userDashboardWrapper {
+  padding-top: 18px !important;   /* creates breathing room under hero */
+}
+
+/* If you have section blocks, this helps spacing feel intentional */
+section {
+  margin-top: 28px !important;
+}
+
+/* 5) Make the HERO banner “clean premium” instead of heavy cinematic */
+.visual-hero-banner,
+#userWelcomeBanner {
+  background: #0b1220 !important;          /* clean dark */
+  box-shadow: none !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* 6) Keep ONLY “Happening Today” as the one premium featured card */
+.todays-event-card {
+  border: none !important;
+  box-shadow: 0 18px 50px rgba(0,0,0,0.22) !important; /* single hero depth */
+  border-radius: 24px !important;
+}
+
+/* 7) Buttons: clean, less “pill glow” */
+.btn-hero-main, .btn-checkin, .btn-qr-view, .btn-hero-secondary {
+  box-shadow: none !important;
+}
+
+/* 8) Text: Apple-ish sizing + less cramped */
+.hero-content-wrapper h1 {
+  letter-spacing: -1px !important;
+}
+
+.hero-content-wrapper p {
+  opacity: 0.92 !important;
+}
+
+/* 9) Mobile: keep spacing consistent and avoid stacked-box feel */
+@media (max-width: 768px) {
+  main { padding: 18px 16px 34px 16px !important; }
+
+  /* slightly more space between hero and first card */
+  #userDashboardWrapper { padding-top: 22px !important; }
+
+  /* cards should not feel glued together */
+  .todays-event-card { margin-top: 6px !important; }
+  .minimal-event-card, .grid-event-card, .network-card, .dashboard-card {
+    margin-bottom: 14px !important;
+  }
+}
