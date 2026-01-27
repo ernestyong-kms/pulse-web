@@ -2953,3 +2953,21 @@ body.mobile-view .cal-day-cell {
     margin-top: 20px !important;
   }
 }
+
+/* =========================================================
+   HOTFIX (REAL MOBILE): stop "Happening Today" overlapping hero
+   ========================================================= */
+@media (max-width: 768px) {
+  /* If your JS leaves the simulator class on real phones, this prevents the lift */
+  body.mobile-view #userDashboardWrapper{
+    margin-top: 0 !important;
+  }
+  /* Add a bit more breathing room under the hero */
+  #userWelcomeBanner{
+    padding-bottom: 40px !important;
+  }
+  /* Ensure the section itself always starts below the hero */
+  #todaysEventSection{
+    margin-top: 20px !important;
+  }
+}
