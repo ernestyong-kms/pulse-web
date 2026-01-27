@@ -1,4 +1,3 @@
-// js/admin-analytics.js
 document.addEventListener("DOMContentLoaded", () => {
     if (typeof Chart === 'undefined') { console.error("Chart.js missing!"); return; }
 

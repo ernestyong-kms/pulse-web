@@ -1,7 +1,8 @@
-// js/admin.js
 document.addEventListener("DOMContentLoaded", async () => {
   
-  // 1. SECURITY CHECK
+  // ==========================================
+    //      1. SECURITY CHECK
+    // ==========================================
   const user = JSON.parse(localStorage.getItem("loggedInUser"));
   if (!user || user.role !== 'admin') {
       alert("Access Denied.");
@@ -198,12 +199,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
   };
 
-  // Close Button Logic
+  
   document.getElementById("closeAttendees").onclick = () => {
       document.getElementById("attendeesPopup").style.display = "none";
   };
 
-  // Remove Attendee Function
+  
   window.removeAttendee = async function(regId, btn) {
       if(!confirm("Remove this user from the event?")) return;
       btn.textContent = "...";

@@ -1,5 +1,3 @@
-// js/admin-schedule.js
-
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
 let globalEvents = []; 
@@ -81,8 +79,8 @@ function renderCalendar(month, year) {
         if (dayEvents.length > 0) {
             const isPast = cellDate < today;
 
-            if (isPast) cell.classList.add("has-event-attended"); // Teal for Past
-            else cell.classList.add("has-event-registered"); // Red for Upcoming
+            if (isPast) cell.classList.add("has-event-attended"); 
+            else cell.classList.add("has-event-registered"); 
 
             dayEvents.slice(0, 2).forEach(evt => {
                 const label = document.createElement("div");
