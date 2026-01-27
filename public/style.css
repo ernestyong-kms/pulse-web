@@ -3016,3 +3016,185 @@ body.mobile-view .hero-card {
     box-shadow: 0 15px 40px rgba(0,0,0,0.1) !important; /* Deep soft shadow */
     margin-top: 10px !important;
 }
+
+/* ============================================================
+   MOBILE APP REDESIGN: "CINEMATIC CURVE" THEME
+   ============================================================ */
+
+/* 1. RESET MAIN CONTAINER PADDING FOR FLUID LOOK */
+body.mobile-view main {
+    padding: 0 !important; /* Remove edge padding so Hero touches sides */
+    background-color: #f8f9fa !important; /* Cleaner light gray bg */
+}
+
+/* 2. HERO SECTION: FULL WIDTH & CURVED BOTTOM */
+body.mobile-view .visual-hero-banner {
+    width: 100% !important;
+    margin: 0 !important;
+    border-radius: 0 0 40px 40px !important; /* The "App" Curve */
+    
+    /* Deep Gradient Background */
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 80%, #334155 100%) !important;
+    
+    padding: 80px 20px 80px 20px !important; /* Extra bottom padding for overlap */
+    min-height: auto !important;
+    text-align: center !important;
+    position: relative;
+    z-index: 0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+}
+
+/* Compact Text for Mobile */
+body.mobile-view .hero-content-wrapper h1 {
+    font-size: 32px !important;
+    margin-bottom: 5px !important;
+    white-space: nowrap !important;
+}
+
+body.mobile-view .hero-content-wrapper p {
+    font-size: 13px !important;
+    opacity: 0.8 !important;
+    margin-bottom: 0 !important;
+    display: none !important; /* Hide description to save space, cleaner look */
+}
+
+/* Hide the Desktop Rings/Visuals on Mobile */
+body.mobile-view .hero-visual-abstract { display: none !important; }
+
+/* Hide the Hero Buttons (Explore/Network) - Redundant on Home */
+body.mobile-view .hero-actions { display: none !important; }
+
+
+/* 3. THE "FLOATING" DASHBOARD LAYER */
+body.mobile-view #userDashboardWrapper {
+    margin-top: -50px !important; /* PULLS content up over the Hero */
+    padding: 0 20px 40px 20px !important; /* Add side padding back here */
+    position: relative;
+    z-index: 10;
+}
+
+
+/* 4. REDESIGNED "HAPPENING TODAY" CARD (Glass-like) */
+body.mobile-view .todays-event-card {
+    border-radius: 24px !important;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important;
+    margin-bottom: 25px !important;
+    min-height: auto !important;
+    overflow: hidden !important;
+    background: #1a1a1a !important; /* Fallback */
+    border: 2px solid white !important; /* Crisp border to pop against header */
+}
+
+/* Make text compact */
+body.mobile-view .t-card-content {
+    padding: 20px !important;
+}
+body.mobile-view .t-event-title {
+    font-size: 22px !important;
+    margin-bottom: 5px !important;
+}
+body.mobile-view .t-event-meta {
+    font-size: 12px !important;
+    margin-bottom: 15px !important;
+}
+
+/* 5. REDESIGNED QUICK ACTIONS (Scan/Upload) */
+/* Hide the "Upcoming Event" placeholder card to reduce clutter */
+body.mobile-view #nextEventCard { display: none !important; }
+
+body.mobile-view .quick-actions-sidebar {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important; /* 2 Columns */
+    gap: 15px !important;
+    margin-bottom: 30px !important;
+}
+
+body.mobile-view .action-tile {
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 20px 10px !important;
+    border-radius: 20px !important;
+    background: white !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+    border: 1px solid rgba(0,0,0,0.05) !important;
+    min-height: 110px !important;
+}
+
+/* Make icons bigger and centered */
+body.mobile-view .tile-icon-bubble {
+    width: 40px !important;
+    height: 40px !important;
+    margin-bottom: 10px !important;
+    background: rgba(217, 4, 41, 0.1) !important; /* Light Red bg */
+    border-radius: 50% !important;
+}
+body.mobile-view .tile-icon-bubble svg {
+    stroke: #d90429 !important; /* Red Icon */
+}
+
+/* Text Styling */
+body.mobile-view .tile-info h3 {
+    color: #1a1a1a !important;
+    font-size: 14px !important;
+    margin-bottom: 2px !important;
+}
+body.mobile-view .tile-info span {
+    color: #888 !important;
+    font-size: 11px !important;
+}
+
+
+/* 6. UPCOMING EVENTS LIST (Clean) */
+body.mobile-view #userEventsWrapper h2 {
+    font-size: 18px !important;
+    margin-bottom: 15px !important;
+    padding-left: 5px !important;
+    color: #333 !important;
+}
+
+/* Force events to look like horizontal list items, not big cards */
+body.mobile-view .grid-event-card {
+    display: flex !important;
+    flex-direction: row !important;
+    height: 100px !important;
+    padding: 10px !important;
+    align-items: center !important;
+    gap: 15px !important;
+    border: none !important;
+    background: white !important;
+    border-radius: 16px !important;
+    margin-bottom: 15px !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03) !important;
+}
+
+/* Thumbnail Image */
+body.mobile-view .card-image-placeholder {
+    width: 80px !important;
+    height: 80px !important;
+    border-radius: 12px !important;
+    flex-shrink: 0 !important;
+}
+
+/* Content */
+body.mobile-view .card-content {
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+}
+
+body.mobile-view .card-title {
+    font-size: 15px !important;
+    margin-bottom: 4px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+body.mobile-view .card-desc { display: none !important; } /* Hide desc on mobile list */
+
+body.mobile-view .grid-event-card button {
+    display: none !important; /* Hide "View Details" button, make whole card clickable in JS if needed */
+}
