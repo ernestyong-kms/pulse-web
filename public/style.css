@@ -3297,3 +3297,5 @@ body.mobile-view .grid-event-card button {
         display: none !important; 
     }
 }
+
+body { background: hotpink !important; }
