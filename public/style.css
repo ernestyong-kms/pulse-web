@@ -2917,3 +2917,44 @@ body.mobile-view .t-card-content {
 body.mobile-view .t-event-info {
     margin-top: 0 !important;        /* Remove extra spacing above title */
 }
+
+/* =========================================
+   TEXT SWAPPER (Desktop vs Mobile)
+   ========================================= */
+
+/* DEFAULT (DESKTOP): Hide the short mobile text */
+.mobile-only {
+    display: none !important;
+}
+
+/* MOBILE SIMULATOR: Switch them! */
+body.mobile-view .desktop-only {
+    display: none !important; /* Hide long text */
+}
+
+body.mobile-view .mobile-only {
+    display: inline !important; /* Show short text */
+}
+
+/* =========================================
+   MOBILE FONT SIZING FIXES
+   ========================================= */
+body.mobile-view .visual-hero-banner {
+    min-height: auto !important;    /* Allow height to shrink */
+    padding: 30px 20px !important;  /* Tighter padding */
+}
+
+/* Make the mobile headline smaller so it fits on one line */
+body.mobile-view .hero-content-wrapper h1 {
+    font-size: 32px !important;     /* Smaller font (was 56px) */
+    line-height: 1.1 !important;
+    white-space: nowrap !important; /* Force "Unleash Pulse" to 1 line */
+    margin-bottom: 10px !important;
+}
+
+/* Make the mobile description smaller */
+body.mobile-view .hero-content-wrapper p.mobile-only {
+    font-size: 13px !important;
+    margin-bottom: 20px !important;
+    opacity: 0.9;
+}
