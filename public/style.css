@@ -2961,27 +2961,13 @@ body.mobile-view .cal-day-cell {
   }
 }
 
-/* Add breathing room under the hero banner */
-#userWelcomeBanner,
-.visual-hero-banner {
-  margin-bottom: 18px !important;
-}
-
+/* ------------------------------------------------------------ */
+/* === PATCH: add breathing room between hero banner and "Happening Today" (real + simulator) === */
 @media (max-width: 768px) {
-  #userWelcomeBanner,
-  .visual-hero-banner {
-    margin-bottom: 16px !important;
-  }
+  /* Force an actual gap that won't collapse */
+  #userDashboardWrapper { padding-top: 24px !important; }
+  #todaysEventSection { margin-top: 16px !important; }
 }
-
-/* Force real spacing between hero and dashboard */
-#userDashboardWrapper {
-  margin-top: 32px !important;
-}
-
-@media (max-width: 768px) {
-  #userDashboardWrapper {
-    margin-top: 24px !important;
-  }
-}
-
+/* Simulator mode uses body.mobile-view overrides, so enforce it there too */
+body.mobile-view #userDashboardWrapper { padding-top: 24px !important; }
+body.mobile-view #todaysEventSection { margin-top: 16px !important; }
