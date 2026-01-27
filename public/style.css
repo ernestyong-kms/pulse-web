@@ -3351,3 +3351,110 @@ body.mobile-view::before{
   }
 }
 
+/* =========================================================
+   REAL MOBILE OVERRIDE (For actual phones)
+   Paste at the VERY BOTTOM of style.css
+   ========================================================= */
+
+@media screen and (max-width: 900px) {
+
+    /* 1. FORCE HERO BANNER TO STACK 
+       We use 'html body ...' to overpower any previous settings.
+    */
+    html body #userWelcomeBanner,
+    html body .visual-hero-banner {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        
+        /* Reset height & spacing */
+        height: auto !important;
+        min-height: auto !important;
+        margin-top: 0 !important;
+        padding: 40px 20px 30px 20px !important;
+        
+        /* Apple-style look */
+        border-radius: 0 0 32px 32px !important;
+    }
+
+    /* 2. FORCE TEXT ON TOP */
+    html body #userWelcomeBanner .hero-content-wrapper,
+    html body .visual-hero-banner .hero-content-wrapper {
+        position: relative !important;
+        z-index: 10 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 20px !important;
+        display: block !important;
+    }
+
+    /* 3. SHOW BUTTONS & STACK THEM */
+    html body #userWelcomeBanner .hero-actions,
+    html body .visual-hero-banner .hero-actions {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 12px !important;
+        width: 100% !important;
+        position: relative !important;
+        z-index: 10 !important;
+    }
+
+    html body .btn-hero-main,
+    html body .btn-hero-secondary {
+        flex: 1 1 140px !important;
+        max-width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    /* 4. PUSH VISUAL BACKGROUND BACK */
+    html body #userWelcomeBanner .hero-visual-abstract,
+    html body .visual-hero-banner .hero-visual-abstract {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) scale(0.9) !important;
+        width: 100% !important;
+        height: 100% !important;
+        opacity: 0.15 !important;
+        z-index: 0 !important;
+        pointer-events: none !important;
+        margin: 0 !important;
+    }
+
+    /* 5. FIX DASHBOARD GRID (Quick Actions) */
+    html body .dashboard-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+    }
+    
+    html body .quick-actions-sidebar {
+        display: flex !important;
+        flex-direction: row !important; /* Side-by-side tiles */
+        gap: 10px !important;
+    }
+    
+    html body .action-tile {
+        flex: 1 !important;
+        min-width: 0 !important;
+    }
+
+    /* 6. FIX "HAPPENING TODAY" CARD overlap */
+    html body #todaysEventSection {
+        margin-top: 20px !important;
+    }
+    
+    html body .todays-event-card {
+        height: auto !important;
+        min-height: auto !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        padding-top: 30px !important;
+    }
+}
+
