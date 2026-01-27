@@ -3199,79 +3199,101 @@ body.mobile-view .grid-event-card button {
     display: none !important; /* Hide "View Details" button, make whole card clickable in JS if needed */
 }
 
-/* =========================================
-   FINAL "ID-POWERED" FIX (V7)
-   ========================================= */
+/* ============================================================
+   MOBILE HOME PAGE OVERRIDES
+   (Fixes Banner Overlap & Text Spacing for Mobile View)
+   ============================================================ */
 
-/* 1. HERO BANNER: Use ID to force the padding */
-body.mobile-view #userWelcomeBanner {
-    width: calc(100% + 34px) !important; 
-    margin-left: -17px !important;       
-    margin-right: -17px !important;      
-    margin-top: -17px !important;        
+@media (max-width: 768px) {
+
+    /* 1. HERO BANNER LAYOUT
+       Create a large empty space at the bottom (180px) to allow
+       the dashboard card to overlap without covering the text. */
+    body.mobile-view #userWelcomeBanner {
+        width: calc(100% + 34px);       /* Stretch full width */
+        margin: -17px -17px 0 -17px;    /* Pull to edges */
+        border-radius: 0 0 40px 40px;   /* Curve bottom */
+        
+        /* The Magic Number: 180px padding at bottom */
+        padding: 60px 20px 180px 20px !important;
+        
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 80%, #334155 100%);
+        min-height: auto;
+        
+        /* Centering Content */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    /* 2. TEXT SIZING 
+       Ensure the main title fits nicely. */
+    body.mobile-view #userWelcomeBanner h1 {
+        font-size: 30px !important;
+        line-height: 1.2;
+        margin-bottom: 0;
+        width: 100%;
+    }
+
+    /* 3. DASHBOARD LIFT (The Overlap)
+       Pull the dashboard up by 80px. Since we added 180px of padding above,
+       this leaves 100px of safe "blue space" between text and card. */
+    body.mobile-view #userDashboardWrapper {
+        margin-top: -80px !important;
+        position: relative;
+        z-index: 10;
+        padding: 0 5px;
+    }
+
+    /* 4. HAPPENING TODAY CARD (Structure) 
+       Reset height to auto so it grows with content. */
+    body.mobile-view #todaysEventSection .todays-event-card {
+        min-height: auto !important;
+        height: auto !important;
+        background: #1a1a1a;
+        border: 2px solid white;
+        border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        margin-bottom: 25px;
+        
+        /* Flex column ensures badge sits ON TOP of title, not over it */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 25px; /* Internal spacing */
+    }
+
+    /* 5. BADGE POSITIONING (Fixing the Overlap)
+       Force the "Happening Today" badge to be a block element
+       that pushes the title down. */
+    body.mobile-view .live-badge {
+        position: relative !important;
+        top: auto; right: auto; left: auto; /* Reset absolute positioning */
+        align-self: flex-start;             /* Align to left */
+        margin-left: 20px;                  /* Match card padding */
+        margin-bottom: 10px;                /* Push title down */
+        display: inline-block;
+        background: #d90429;
+        border: none;
+    }
+
+    /* Adjust content padding inside the card */
+    body.mobile-view .t-card-content {
+        padding: 0 20px 25px 20px !important; /* Remove top padding since badge handles it */
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
     
-    border-radius: 0 0 40px 40px !important;
-    
-    /* THE SAFETY ZONE: 160px padding at bottom */
-    /* This forces the blue box to be tall enough */
-    padding: 60px 20px 160px 20px !important; 
-    
-    background: linear-gradient(180deg, #0f172a 0%, #1e293b 80%, #334155 100%) !important;
-    min-height: auto !important;
-    
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
-}
+    body.mobile-view .t-event-title {
+        margin-top: 0 !important;
+    }
 
-/* 2. DASHBOARD: Controlled Lift */
-body.mobile-view #userDashboardWrapper {
-    /* Only pull up 60px. Since we added 160px padding above, 
-       there is now a 100px gap of safety */
-    margin-top: -60px !important;  
-    position: relative;
-    z-index: 10;
-    padding: 0 5px;
-}
-
-/* 3. HERO TEXT SIZING */
-body.mobile-view #userWelcomeBanner h1 { 
-    font-size: 30px !important; 
-    line-height: 1.2 !important;
-    margin-bottom: 0 !important;
-    width: 100% !important;
-}
-
-/* 4. HAPPENING TODAY CARD: No Overlap Logic */
-body.mobile-view #todaysEventSection .todays-event-card {
-    min-height: auto !important;
-    background: #1a1a1a !important;
-    border: 2px solid white !important;
-    border-radius: 24px !important;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.25) !important;
-    margin-bottom: 25px !important;
-    padding-top: 0 !important;
-    position: relative !important;
-}
-
-body.mobile-view .t-card-content {
-    padding: 20px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 10px !important;
-}
-
-/* 5. BADGE FIX: Force it to stay inside the card */
-body.mobile-view .live-badge {
-    position: relative !important;
-    top: auto !important; 
-    right: auto !important; 
-    left: auto !important;
-    margin-bottom: 5px !important; 
-    align-self: flex-start !important;
-    display: inline-flex !important;
-    background: #d90429 !important; /* Pulse Red */
-    border: none !important;
+    /* 6. HIDE DESKTOP ELEMENTS
+       Clean up the UI by hiding unused desktop visuals. */
+    body.mobile-view .hero-visual-abstract, 
+    body.mobile-view .hero-actions { 
+        display: none !important; 
+    }
 }
