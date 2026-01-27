@@ -3018,3 +3018,29 @@ body.mobile-view .cal-day-cell {
     justify-content: center;
   }
 }
+
+@media (max-width: 768px) {
+
+  /* shrink overall banner height */
+  .visual-hero-banner {
+    min-height: unset !important;
+    padding: 70px 16px 24px 16px !important;  /* top right bottom left */
+  }
+
+  /* tighten content spacing */
+  .hero-content-wrapper {
+    padding-bottom: 8px !important;
+  }
+
+  /* reduce spacing above buttons */
+  .hero-actions {
+    margin-top: 14px !important;
+  }
+
+  /* keep animation from stretching layout */
+  .hero-visual-abstract {
+    height: 100% !important;
+    max-height: 280px !important;
+  }
+}
+
