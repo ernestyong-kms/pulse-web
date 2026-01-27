@@ -2958,3 +2958,61 @@ body.mobile-view .hero-content-wrapper p.mobile-only {
     margin-bottom: 20px !important;
     opacity: 0.9;
 }
+
+/* =========================================
+   "APP-LIKE" MAKEOVER (Bleed & Overlap)
+   ========================================= */
+
+/* 1. HERO: Full Width & Curved Bottom */
+body.mobile-view .visual-hero-banner {
+    /* Stretch to edges to kill the "Box" look */
+    width: calc(100% + 30px) !important; 
+    margin-left: -15px !important;
+    margin-right: -15px !important;
+    margin-top: -15px !important; /* Remove gap between navbar and hero */
+    
+    /* Curve ONLY the bottom */
+    border-radius: 0 0 40px 40px !important;
+    
+    /* Add extra padding at bottom to make room for the overlap */
+    padding-bottom: 70px !important; 
+    
+    /* Clean up borders/shadows */
+    box-shadow: none !important;
+    border: none !important;
+}
+
+/* 2. CONTENT: Pull it UP to overlap the Hero */
+body.mobile-view #userDashboardWrapper {
+    margin-top: -50px !important; /* THIS IS KEY: Pulls cards up -50px */
+    position: relative;
+    z-index: 10;                  /* Ensures cards float ON TOP of hero */
+    padding: 0 10px;              /* Keep slight side padding for cards */
+}
+
+/* 3. BUTTONS: Make them sleek & equal width */
+body.mobile-view .hero-actions {
+    display: flex !important;
+    gap: 10px !important;
+    width: 100% !important;
+    justify-content: center !important;
+}
+
+body.mobile-view .btn-hero-main,
+body.mobile-view .btn-hero-secondary {
+    flex: 1 !important;             /* Force equal width */
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 12px 0 !important;
+    border-radius: 16px !important; /* Modern "Squircle" shape */
+    font-size: 13px !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important; /* Lift them up */
+}
+
+/* 4. OPTIONAL: Soften the "Upcoming Events" Card */
+/* The red gradient was looking very heavy/blocky. This softens it. */
+body.mobile-view .hero-card {
+    border-radius: 24px !important;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1) !important; /* Deep soft shadow */
+    margin-top: 10px !important;
+}
