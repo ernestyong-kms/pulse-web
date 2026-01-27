@@ -3199,103 +3199,88 @@ body.mobile-view .grid-event-card button {
     display: none !important; /* Hide "View Details" button, make whole card clickable in JS if needed */
 }
 
-/* ============================================================
-   MOBILE HOME PAGE OVERRIDES
-   (Fixes Banner Overlap & Text Spacing for Mobile View)
-   ============================================================ */
+/* =========================================
+   FINAL FIX: OVERLAP & BADGE (V8)
+   ========================================= */
 
 @media (max-width: 768px) {
 
-    /* 1. HERO BANNER LAYOUT
-       Create a large empty space at the bottom (180px) to allow
-       the dashboard card to overlap without covering the text. */
+    /* 1. HERO BANNER: The "Safety Zone"
+       We add 160px padding at the bottom. This extends the blue background 
+       down so the black card has something to sit on without covering text. */
     body.mobile-view #userWelcomeBanner {
-        width: calc(100% + 34px);       /* Stretch full width */
-        margin: -17px -17px 0 -17px;    /* Pull to edges */
-        border-radius: 0 0 40px 40px;   /* Curve bottom */
+        width: calc(100% + 34px) !important;
+        margin: -17px -17px 0 -17px !important;
+        border-radius: 0 0 40px 40px !important;
         
-        /* The Magic Number: 180px padding at bottom */
-        padding: 60px 20px 180px 20px !important;
+        /* 160px padding bottom = Space for the card overlap */
+        padding: 50px 20px 160px 20px !important;
         
-        background: linear-gradient(180deg, #0f172a 0%, #1e293b 80%, #334155 100%);
-        min-height: auto;
-        
-        /* Centering Content */
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 80%, #334155 100%) !important;
+        min-height: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
     }
 
-    /* 2. TEXT SIZING 
-       Ensure the main title fits nicely. */
-    body.mobile-view #userWelcomeBanner h1 {
-        font-size: 30px !important;
-        line-height: 1.2;
-        margin-bottom: 0;
-        width: 100%;
-    }
-
-    /* 3. DASHBOARD LIFT (The Overlap)
-       Pull the dashboard up by 80px. Since we added 180px of padding above,
-       this leaves 100px of safe "blue space" between text and card. */
+    /* 2. DASHBOARD LIFT: The Overlap
+       We pull the dashboard UP by 80px. Since we made 160px of space above,
+       there is still 80px of clear blue space for your text. */
     body.mobile-view #userDashboardWrapper {
         margin-top: -80px !important;
-        position: relative;
-        z-index: 10;
-        padding: 0 5px;
+        position: relative !important;
+        z-index: 10 !important;
+        padding: 0 5px !important;
     }
 
-    /* 4. HAPPENING TODAY CARD (Structure) 
-       Reset height to auto so it grows with content. */
-    body.mobile-view #todaysEventSection .todays-event-card {
+    /* 3. HAPPENING TODAY CARD: Layout Reset */
+    body.mobile-view .todays-event-card {
         min-height: auto !important;
         height: auto !important;
-        background: #1a1a1a;
-        border: 2px solid white;
-        border-radius: 24px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-        margin-bottom: 25px;
+        background: #1a1a1a !important;
+        border: 2px solid white !important;
+        border-radius: 24px !important;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.25) !important;
+        margin-bottom: 25px !important;
         
-        /* Flex column ensures badge sits ON TOP of title, not over it */
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        padding-top: 25px; /* Internal spacing */
+        /* This fixes the Badge Overlap: */
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        padding-top: 25px !important;
+        position: relative !important;
     }
 
-    /* 5. BADGE POSITIONING (Fixing the Overlap)
-       Force the "Happening Today" badge to be a block element
-       that pushes the title down. */
+    /* 4. BADGE FIX: Stop Floating
+       We tell the badge to stop being 'absolute' and just sit normally 
+       at the top of the list. This pushes the title down automatically. */
     body.mobile-view .live-badge {
         position: relative !important;
-        top: auto; right: auto; left: auto; /* Reset absolute positioning */
-        align-self: flex-start;             /* Align to left */
-        margin-left: 20px;                  /* Match card padding */
-        margin-bottom: 10px;                /* Push title down */
-        display: inline-block;
-        background: #d90429;
-        border: none;
+        top: auto !important; 
+        right: auto !important; 
+        left: auto !important;
+        
+        align-self: flex-start !important;
+        margin-left: 20px !important;
+        margin-bottom: 10px !important; /* Pushes the title down */
+        
+        display: inline-block !important;
+        background: #d90429 !important;
+        border: none !important;
     }
 
-    /* Adjust content padding inside the card */
+    /* 5. TITLE SPACING */
     body.mobile-view .t-card-content {
-        padding: 0 20px 25px 20px !important; /* Remove top padding since badge handles it */
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-    
-    body.mobile-view .t-event-title {
-        margin-top: 0 !important;
+        padding: 0 20px 25px 20px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 5px !important;
     }
 
-    /* 6. HIDE DESKTOP ELEMENTS
-       Clean up the UI by hiding unused desktop visuals. */
+    /* 6. CLEANUP */
     body.mobile-view .hero-visual-abstract, 
     body.mobile-view .hero-actions { 
         display: none !important; 
     }
 }
-
-body { background: hotpink !important; }
