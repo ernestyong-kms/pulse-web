@@ -3195,3 +3195,48 @@ body.mobile-view::before{
   border-radius:10px;
 }
 
+@media (max-width: 768px){
+
+  #userWelcomeBanner.visual-hero-banner{
+    padding: 34px 16px 18px 16px !important;
+    min-height: 0 !important;
+  }
+
+  #userWelcomeBanner .hero-content-wrapper{
+    position: relative !important;
+    z-index: 2 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  #userWelcomeBanner .hero-actions{
+    display: flex !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    flex-wrap: wrap !important;
+    margin-top: 12px !important;
+  }
+
+  #userWelcomeBanner .btn-hero-main,
+  #userWelcomeBanner .btn-hero-secondary{
+    flex: 1 1 160px !important;
+    max-width: 260px !important;
+    padding: 12px 0 !important;
+  }
+
+  #userWelcomeBanner .hero-visual-abstract{
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) scale(0.8) !important;
+    width: 280px !important;
+    height: 280px !important;
+    opacity: 0.22 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+  }
+}
+
+
