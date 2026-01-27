@@ -3183,3 +3183,15 @@ section{
 }
 
 body { outline: 12px solid hotpink !important; }
+
+body.mobile-view::before{
+  content:"mobile-view ON";
+  position:fixed;
+  top:70px; left:10px;
+  padding:6px 10px;
+  background:hotpink; color:black;
+  z-index:999999;
+  font-weight:800;
+  border-radius:10px;
+}
+
