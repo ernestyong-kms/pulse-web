@@ -2960,3 +2960,16 @@ body.mobile-view .cal-day-cell {
     padding-top: 20px !important;
   }
 }
+
+/* Add breathing room under the hero banner */
+#userWelcomeBanner,
+.visual-hero-banner {
+  margin-bottom: 18px !important;
+}
+
+@media (max-width: 768px) {
+  #userWelcomeBanner,
+  .visual-hero-banner {
+    margin-bottom: 16px !important;
+  }
+}
