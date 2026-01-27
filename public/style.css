@@ -3177,3 +3177,5 @@ section{
   #todaysEventSection{ margin-top: 16px !important; }
   section{ margin-top: 22px !important; }
 }
+
+body { outline: 12px solid hotpink !important; }
