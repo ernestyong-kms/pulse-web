@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulse Admin | Documentation</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body class="admin-mode"> <nav class="global-nav">
+        <a href="home.html" class="nav-logo">Pulse<span style="color: var(--primary);">.</span></a>
+        
+        <div class="center-nav">
+            <a href="home.html"><i data-feather="calendar"></i> Dashboard</a>
+            <a href="schedule.html"><i data-feather="clipboard"></i> Manage Events</a>
+            <a href="scan.html"><i data-feather="maximize"></i> Scanner</a>
+            <a href="network.html"><i data-feather="users"></i> Students</a>
+            <a href="analytics.html"><i data-feather="bar-chart-2"></i> Reports</a>
+            <a href="admin-help.html" style="background: rgba(217, 4, 41, 0.05); color: var(--primary); font-weight: 700;">
+                <i data-feather="help-circle"></i> Admin Guide
+            </a>
+        </div>
+
+        <div class="right-actions">
+            <div class="desktop-links">
+                <a href="profile.html"><i data-feather="user"></i> Admin Profile</a>
+                <a href="/logout" style="color: var(--primary);"><i data-feather="log-out"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="visual-hero-banner" style="min-height: 250px; margin-bottom: 40px; background: linear-gradient(135deg, #1e1e1e 0%, #000 100%);">
+            <div class="hero-content-wrapper">
+                <h1>Command Center<span style="color: var(--primary);">.</span></h1>
+                <p style="color: #bbb;">Documentation for Event Organizers and Administrators. Learn how to manage the Pulse ecosystem.</p>
+                <div class="hero-actions">
+                    <button class="btn-hero-main" onclick="document.getElementById('admin-faq').scrollIntoView({behavior: 'smooth'})">Admin FAQs</button>
+                </div>
+            </div>
+            <div class="hero-visual-abstract">
+                <div class="core-circle" style="background: linear-gradient(270deg, #333, #555); box-shadow: 0 0 40px rgba(255,255,255,0.1);">
+                    <div class="ring ring-1" style="border-color: rgba(255,255,255,0.2);"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-grid">
+            
+            <section class="dashboard-card">
+                <div class="card-header">
+                    <span>Management</span>
+                    <i data-feather="plus-square" style="width: 16px; color: var(--primary);"></i>
+                </div>
+                <h2 style="font-size: 20px; margin-bottom: 10px;">Creating Events</h2>
+                <p style="color: #666; font-size: 14px; line-height: 1.6;">
+                    <strong>1. The Floating Button:</strong> On the Dashboard, click the red "+" button in the bottom right corner.<br><br>
+                    <strong>2. Event Details:</strong> Ensure you set a valid "Date" and "Capacity". Events default to "Upcoming" status automatically.
+                </p>
+            </section>
+
+            <section class="dashboard-card">
+                <div class="card-header">
+                    <span>Tracking</span>
+                    <i data-feather="check-circle" style="width: 16px; color: var(--primary);"></i>
+                </div>
+                <h2 style="font-size: 20px; margin-bottom: 10px;">Verifying Attendance</h2>
+                <p style="color: #666; font-size: 14px; line-height: 1.6;">
+                    <strong>• Scan Mode:</strong> Use the "Scanner" page to scan student QR codes at the door. This logs them as "Attended" in real-time.<br><br>
+                    <strong>• Manual Entry:</strong> You can also manually mark students as present via the "Manage Events" table.
+                </p>
+            </section>
+
+             <section class="dashboard-card">
+                <div class="card-header">
+                    <span>Reporting</span>
+                    <i data-feather="download" style="width: 16px; color: var(--primary);"></i>
+                </div>
+                <h2 style="font-size: 20px; margin-bottom: 10px;">Exporting Data</h2>
+                <p style="color: #666; font-size: 14px; line-height: 1.6;">
+                    <strong>• Analytics Tab:</strong> Navigate to "Reports" to view school-wide engagement stats.<br><br>
+                    <strong>• CSV Export:</strong> Click the "Export" button on any event card to download a .CSV file of the attendee list for grading purposes.
+                </p>
+            </section>
+        </div>
+
+        <div id="admin-faq" class="dashboard-card" style="margin-top: 40px; margin-bottom: 40px;">
+            <div class="card-header">System Administration</div>
+            <h2 style="margin-bottom: 25px;">Admin Support</h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                
+                <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">How do I revoke a student's access?</h3>
+                    <p style="color: #666; font-size: 14px;">Go to the "Students" tab, search for the User ID, and click the "Edit" (Pencil) icon. Toggle their status to "Suspended".</p>
+                </div>
+
+                <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">An event QR code isn't working.</h3>
+                    <p style="color: #666; font-size: 14px;">If a QR code is damaged or invalid, you can regenerate it in the "Manage Events" edit screen. The old code will immediately expire.</p>
+                </div>
+
+                <div>
+                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Can I edit an event after it has started?</h3>
+                    <p style="color: #666; font-size: 14px;">Yes, but be careful modifying the "Location" or "Time" if students have already checked in, as this may confuse the attendance logs.</p>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

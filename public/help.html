@@ -40,7 +40,6 @@
                 <p>Master the platform. From networking efficiently to managing complex events, we've got you covered.</p>
                 <div class="hero-actions">
                     <button class="btn-hero-main" onclick="document.getElementById('faq-section').scrollIntoView({behavior: 'smooth'})">View FAQs</button>
-                    <button class="btn-hero-secondary" onclick="window.location.href='messages.html'">Contact Support</button>
                 </div>
             </div>
             <div class="hero-visual-abstract">
@@ -57,8 +56,8 @@
                 </div>
                 <h2 style="font-size: 20px; margin-bottom: 10px;">How to Connect</h2>
                 <p style="color: #666; font-size: 14px; line-height: 1.6;">
-                    <strong>1. Scan QR:</strong> Go to the "Scan/Upload" page to scan another student's digital badge. This instantly saves them to your network.<br><br>
-                    <strong>2. Share Profile:</strong> Tap "My Profile" to show your own QR code. Let others scan you to share your socials and portfolio.
+                    <strong>1. Scan QR:</strong> Use the Scan tool to capture a student's digital badge. This instantly saves them to your network.<br><br>
+                    <strong>2. Share Profile:</strong> Tap "My Profile" to reveal your own QR code. Let others scan you to exchange details.
                 </p>
             </section>
 
@@ -69,8 +68,8 @@
                 </div>
                 <h2 style="font-size: 20px; margin-bottom: 10px;">Events & Schedule</h2>
                 <p style="color: #666; font-size: 14px; line-height: 1.6;">
-                    <strong>• Registering:</strong> Browse the "Events" feed. Click "Register" to add an event to your personal schedule.<br><br>
-                    <strong>• Check-in:</strong> When you arrive at a venue, use the Scan tool to scan the <em>Event's</em> QR code to mark yourself as "Attended."
+                    <strong>• Registering:</strong> Click "Register" on any event to add it to your personal schedule.<br><br>
+                    <strong>• Check-in:</strong> When you arrive, scan the <em>Event's</em> QR code to mark yourself as "Attended" and earn engagement points.
                 </p>
             </section>
 
@@ -81,13 +80,37 @@
                 </div>
                 <h2 style="font-size: 20px; margin-bottom: 10px;">Understanding Data</h2>
                 <p style="color: #666; font-size: 14px; line-height: 1.6;">
-                    <strong>• Engagement Score:</strong> This number rises as you attend events and make new connections.<br><br>
-                    <strong>• Network Growth:</strong> View the "Analytics" tab to see a timeline of your connections and which events gave you the most value.
+                    <strong>• Engagement Score:</strong> This metric tracks your activity across campus events.<br><br>
+                    <strong>• Network Growth:</strong> View the "Analytics" tab to visualize your connections and see which events expanded your network the most.
+                </p>
+            </section>
+
+            <section class="dashboard-card">
+                <div class="card-header">
+                    <span>Guidelines</span>
+                    <i data-feather="shield" style="width: 16px; color: var(--primary);"></i>
+                </div>
+                <h2 style="font-size: 20px; margin-bottom: 10px;">Community Standards</h2>
+                <p style="color: #666; font-size: 14px; line-height: 1.6;">
+                    <strong>• Professionalism:</strong> Pulse is a Temasek Polytechnic platform. Keep profile bios and messages appropriate for a school setting.<br><br>
+                    <strong>• Respect:</strong> Zero tolerance for harassment. Admins can revoke access for violations.
+                </p>
+            </section>
+
+            <section class="dashboard-card">
+                <div class="card-header">
+                    <span>Privacy</span>
+                    <i data-feather="lock" style="width: 16px; color: var(--primary);"></i>
+                </div>
+                <h2 style="font-size: 20px; margin-bottom: 10px;">Safety & Privacy</h2>
+                <p style="color: #666; font-size: 14px; line-height: 1.6;">
+                    <strong>• Your Data:</strong> Only students you allow to scan your QR code will see your contact details.<br><br>
+                    <strong>• Revoke Access:</strong> You can remove a connection from your "Network" page at any time to stop sharing updates.
                 </p>
             </section>
         </div>
 
-        <div id="faq-section" class="dashboard-card" style="margin-top: 40px;">
+        <div id="faq-section" class="dashboard-card" style="margin-top: 40px; margin-bottom: 40px;">
             <div class="card-header">Troubleshooting</div>
             <h2 style="margin-bottom: 25px;">Frequently Asked Questions</h2>
             
@@ -95,20 +118,29 @@
                 
                 <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
                     <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">My camera isn't opening for scanning.</h3>
-                    <p style="color: #666; font-size: 14px;">Ensure you have allowed browser permissions for the camera. On iOS/Android, go to Settings > Safari/Chrome > Camera and set it to "Allow".</p>
+                    <p style="color: #666; font-size: 14px;">Ensure you have allowed browser permissions for the camera. On mobile, go to Settings > Safari/Chrome > Camera and set it to "Allow". Refresh the page after changing settings.</p>
                 </div>
 
                 <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
-                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">I can't see the "Logout" button on my laptop.</h3>
-                    <p style="color: #666; font-size: 14px;">We recently updated the sidebar layout! You can now scroll inside the navigation menu on the left to reveal the bottom buttons.</p>
+                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">How do I create an event?</h3>
+                    <p style="color: #666; font-size: 14px;">Only accounts with <strong>Organizer</strong> or <strong>Admin</strong> privileges can create events. If you are a student leader, please request access from your CCA advisor.</p>
+                </div>
+
+                <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Where is the Logout button?</h3>
+                    <p style="color: #666; font-size: 14px;">It is located at the bottom of the sidebar. If you are on a smaller laptop screen, you can <strong>scroll down inside the sidebar</strong> to reveal it.</p>
                 </div>
 
                 <div>
-                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">How do I edit my profile photo?</h3>
-                    <p style="color: #666; font-size: 14px;">Go to "My Profile" and click the small camera icon on your avatar. You can upload a new JPG or PNG file (max 5MB).</p>
+                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Can I edit my profile photo?</h3>
+                    <p style="color: #666; font-size: 14px;">Yes. Go to "My Profile" and click the camera icon on your avatar to upload a new image.</p>
                 </div>
 
             </div>
+        </div>
+
+        <div style="text-align: center; color: #999; font-size: 12px; margin-bottom: 20px;">
+            <p>Pulse v1.2.0 • Temasek Polytechnic</p>
         </div>
 
     </main>
