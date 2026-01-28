@@ -329,78 +329,105 @@ window.closeAudienceExplorer = function() {
 }
 
 // ==========================================
-//      5. CONNECTIVITY MATRIX (UPDATED)
+//      5. CONNECTIVITY MATRIX (FIXED)
 // ==========================================
 
-// A. Load Events for Dropdown
+// A. Load Events for BOTH Dropdowns (Dashboard & Explorer)
 async function loadMatrixEventOptions() {
     try {
-        const res = await fetch('/api/admin/event-stats?limit=50'); // Re-using stats endpoint to get event list
+        const res = await fetch('/api/admin/event-stats?limit=50'); 
         const data = await res.json();
-        const filter = document.getElementById('matrixEventFilter');
-        if (!filter) return;
+        
+        // Target both the Dashboard filter AND the Explorer filter
+        const filters = [
+            document.getElementById('matrixEventFilter'), 
+            document.getElementById('matrixExplorerFilter')
+        ];
 
-        filter.innerHTML = '<option value="">All Events</option>';
-        data.forEach(event => {
-            const opt = document.createElement('option');
-            opt.value = event.id; // Ensure API returns 'id'
-            opt.textContent = event.name || event.events;
-            filter.appendChild(opt);
+        filters.forEach(filter => {
+            if (!filter) return;
+            filter.innerHTML = '<option value="">All Events</option>';
+            data.forEach(event => {
+                const opt = document.createElement('option');
+                opt.value = event.id; 
+                opt.textContent = event.name || event.events;
+                filter.appendChild(opt);
+            });
         });
 
-        // Add Change Listener
-        filter.addEventListener('change', (e) => {
-            loadConnectionMatrix(e.target.value);
-        });
+        // Add Listener specifically for the Dashboard Widget
+        const dashFilter = document.getElementById('matrixEventFilter');
+        if(dashFilter) {
+            dashFilter.addEventListener('change', (e) => loadConnectionMatrix(e.target.value));
+        }
+
     } catch (e) { console.error("Event Filter Error:", e); }
 }
 
-// B. Load Matrix Data (Supports Filtering)
+// B. Shared Data Fetcher
+async function fetchMatrixData(eventId) {
+    let url = '/api/admin/roles';
+    if (eventId) url += `?eventId=${encodeURIComponent(eventId)}`;
+    
+    // Debug log to check if ID is sending
+    console.log(`Fetching matrix for Event ID: ${eventId || 'ALL'}`); 
+
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Failed to fetch roles");
+    return await res.json();
+}
+
+// C. Load Dashboard Widget Matrix
 async function loadConnectionMatrix(eventId = '') {
     try {
-        let url = '/api/admin/roles';
-        if (eventId) {
-            url += `?eventId=${encodeURIComponent(eventId)}`;
-        }
-
-        const res = await fetch(url);
-        if (!res.ok) throw new Error("Failed to fetch roles");
-        
-        const rawRoles = await res.json();
+        const rawRoles = await fetchMatrixData(eventId);
         const container = document.getElementById('connectionMatrixContainer');
 
         if (!rawRoles || rawRoles.length === 0) {
-            if(container) {
-                container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding:20px; font-size:12px; color:#94a3b8;">No connections found for this event.</div>';
-            }
+            if(container) container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding:20px; font-size:12px; color:#94a3b8;">No connections found for this event.</div>';
             return;
         }
 
         const rolesData = normalizeAndAggregate(rawRoles).slice(0, 5); 
         renderMatrix(rolesData, 'connectionMatrixContainer');
-    } catch (e) { console.error("Matrix Error:", e); }
+    } catch (e) { console.error("Matrix Widget Error:", e); }
 }
 
 // ==========================================
-//      6. MATRIX EXPLORER
+//      6. MATRIX EXPLORER (FIXED)
 // ==========================================
+
+// A. Open Modal & Sync Filter
 window.openMatrixExplorer = function() {
     const modal = document.getElementById('matrixExplorerModal');
     if (!modal) return;
     modal.style.display = 'flex';
-    setTimeout(async () => {
-        try {
-            const [rolesRes] = await Promise.all([fetch('/api/admin/roles')]);
-            const rawRoles = await rolesRes.json();
-            const rolesData = normalizeAndAggregate(rawRoles).slice(0, 15); 
-            renderMatrix(rolesData, 'fullMatrixContainer');
-        } catch (e) { console.error("Matrix Explorer Error:", e); }
-    }, 50);
+
+    // 1. Sync: Get value from dashboard filter and set it in modal filter
+    const dashVal = document.getElementById('matrixEventFilter')?.value || '';
+    const modalFilter = document.getElementById('matrixExplorerFilter');
+    if (modalFilter) modalFilter.value = dashVal;
+
+    // 2. Load data using that value
+    setTimeout(() => loadExplorerMatrix(dashVal), 50);
 }
 
-window.closeMatrixExplorer = function() { document.getElementById('matrixExplorerModal').style.display = 'none'; }
+// B. Load Explorer Matrix (Triggered by open or dropdown change)
+window.loadExplorerMatrix = async function(eventId = '') {
+    try {
+        const rawRoles = await fetchMatrixData(eventId);
+        const rolesData = normalizeAndAggregate(rawRoles).slice(0, 15); // Show more rows in explorer
+        renderMatrix(rolesData, 'fullMatrixContainer');
+    } catch (e) { console.error("Matrix Explorer Error:", e); }
+}
 
-// Helper to Render Matrix
+window.closeMatrixExplorer = function() { 
+    document.getElementById('matrixExplorerModal').style.display = 'none'; 
+}
+
+// ==========================================
+//      RENDERER (VISUAL FIX)
+// ==========================================
 function renderMatrix(rolesData, containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -408,9 +435,12 @@ function renderMatrix(rolesData, containerId) {
     const labels = rolesData.map(d => d.position);
     container.innerHTML = '';
     
+    // VISUAL FIX: Added width: 100% to force expansion
+    container.style.width = '100%'; 
     container.style.gridTemplateColumns = `80px repeat(${labels.length}, 1fr)`;
 
-    container.appendChild(document.createElement('div'));
+    // 1. Render Header Row
+    container.appendChild(document.createElement('div')); // Empty top-left corner
     labels.forEach(label => {
         const th = document.createElement('div');
         th.className = 'matrix-header';
@@ -418,17 +448,21 @@ function renderMatrix(rolesData, containerId) {
         container.appendChild(th);
     });
 
+    // 2. Render Rows
     labels.forEach((rowLabel, rowIndex) => {
+        // Row Label
         const rowHeader = document.createElement('div');
         rowHeader.className = 'matrix-row-label';
         rowHeader.innerText = rowLabel.split(' ')[0];
         container.appendChild(rowHeader);
 
+        // Cells
         labels.forEach((colLabel, colIndex) => {
             const cell = document.createElement('div');
             cell.className = 'matrix-cell';
             if (rowIndex === colIndex) cell.classList.add('diagonal');
 
+            // Calculate Logic (Simulation)
             const countA = rolesData[rowIndex].count;
             const countB = rolesData[colIndex].count;
             let baseProb = (countA * countB) / 10;
@@ -436,6 +470,7 @@ function renderMatrix(rolesData, containerId) {
 
             const val = Math.floor(Math.max(0, baseProb));
             
+            // Color Logic
             let bg = '#f8fafc'; let text = '#94a3b8'; // None
             if (val >= 1)   { bg = '#e0f2fe'; text = '#0ea5e9'; } // Trace
             if (val >= 10)  { bg = '#7dd3fc'; text = '#0369a1'; } // Low

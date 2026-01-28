@@ -308,12 +308,10 @@
                             </select>
                             <div style="font-size:10px; background:#f0f9ff; color:#0369a1; padding:4px 8px; border-radius:6px; font-weight:700;" onclick="openMatrixExplorer()">EXPAND</div>
                         </div>
-                        </div>
+                    </div>
                     
                     <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch;" onclick="openMatrixExplorer()">
                         <div id="connectionMatrixContainer" class="matrix-grid"></div>
-                    </div>
-                    
                     </div>
                     
                     <div style="margin-top: 15px; display:flex; gap:10px; justify-content: center; font-size: 10px; font-weight: 600; color: #64748b; flex-wrap: wrap;">
@@ -425,6 +423,10 @@
                     <div class="explorer-header">
                         <h2>Full Matrix</h2>
                         <div class="explorer-controls">
+                            <select id="matrixExplorerFilter" class="timeframe-select" onchange="loadExplorerMatrix(this.value)">
+                                <option value="">All Events</option>
+                                <option disabled>Loading...</option>
+                            </select>
                             <button onclick="closeMatrixExplorer()" class="close-btn">
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
                                 Close
