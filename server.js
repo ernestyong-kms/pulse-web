@@ -2,6 +2,7 @@
 
 const Sentiment = require('sentiment');
 const sentiment = new Sentiment();
+const natural = require('natural');
 const express = require("express");
 const bodyParser = require("body-parser");
 const mysql = require("mysql2/promise");
@@ -1713,14 +1714,15 @@ app.get('/api/admin/event-feedback/:id', async (req, res) => {
     }
 });
 
-// 🔥 SMART MATCH: SKILLS & INTERESTS (FIXED)
+// ==========================================
+//      🔥 SMART MATCH: VECTOR LOGIC (TF-IDF)
+// ==========================================
 app.get('/api/event/:eventId/smart-matches', async (req, res) => {
     const { eventId } = req.params;
     const { username } = req.query;
 
     try {
         // 1. Get MY profile
-        // 🔴 FIX 1: Changed 'interests' to 'special_interests' here
         const [me] = await pool.execute(
             'SELECT skills, special_interests FROM users WHERE username = ?', 
             [username]
@@ -1728,12 +1730,10 @@ app.get('/api/event/:eventId/smart-matches', async (req, res) => {
         
         if (me.length === 0) return res.json([]);
 
-        // Parse my tags (using special_interests)
-        const mySkills = me[0].skills ? me[0].skills.split(',').map(s => s.trim().toLowerCase()) : [];
-        const myInterests = me[0].special_interests ? me[0].special_interests.split(',').map(s => s.trim().toLowerCase()) : [];
+        // Prepare MY document string
+        const myText = ((me[0].skills || '') + ' ' + (me[0].special_interests || '')).toLowerCase();
 
         // 2. Get OTHER attendees
-        // 🔴 FIX 2: Changed 'u.interests' to 'u.special_interests' here
         const [attendees] = await pool.execute(`
             SELECT u.username, u.fullname, u.position, u.company, u.photo_url, u.skills, u.special_interests
             FROM registrations r
@@ -1742,25 +1742,39 @@ app.get('/api/event/:eventId/smart-matches', async (req, res) => {
             [eventId, username]
         );
 
-        // 3. Calculate Score
-        const scoredAttendees = attendees.map(p => {
-            const theirSkills = p.skills ? p.skills.split(',').map(s => s.trim().toLowerCase()) : [];
-            // 🔴 FIX 3: Read from 'p.special_interests'
-            const theirInterests = p.special_interests ? p.special_interests.split(',').map(s => s.trim().toLowerCase()) : [];
+        // 3. Initialize NLP Vectorizer
+        const TfIdf = natural.TfIdf;
+        const tfidf = new TfIdf();
 
-            const commonSkills = mySkills.filter(s => theirSkills.includes(s));
-            const commonInterests = myInterests.filter(i => theirInterests.includes(i));
+        // Add MY profile as the first document (Index 0)
+        tfidf.addDocument(myText);
+
+        // 🔥 FIX: Add a dummy document so keywords don't get a 0 score
+        tfidf.addDocument('__corpus_padding__'); 
+
+        // 4. Score Each Attendee
+        const scoredAttendees = attendees.map(p => {
+            const theirText = ((p.skills || '') + ' ' + (p.special_interests || '')).toLowerCase();
             
-            const score = (commonSkills.length * 10) + (commonInterests.length * 5);
+            let similarity = 0;
+            
+            tfidf.tfidfs(theirText, function(i, measure) {
+                // Only count relevance to Document 0 (Me)
+                if (i === 0) similarity += measure; 
+            });
+
+            const uiScore = Math.round(similarity * 10);
 
             return { 
                 ...p, 
-                match_score: score,
-                common_tags: [...commonSkills, ...commonInterests]
+                match_score: uiScore,
+                common_tags: (p.skills || '').split(',').filter(s => 
+                    s.trim().length > 0 && myText.includes(s.trim().toLowerCase())
+                )
             };
         });
 
-        // 4. Sort by highest score and take top 3
+        // 5. Sort & Return
         const topMatches = scoredAttendees
             .filter(p => p.match_score > 0)
             .sort((a, b) => b.match_score - a.match_score)

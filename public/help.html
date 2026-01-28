@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulse | Help & Support</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    
+    <nav class="global-nav">
+        <a href="home.html" class="nav-logo">Pulse<span style="color: var(--primary);">.</span></a>
+        
+        <div class="center-nav">
+            <a href="home.html"><i data-feather="calendar"></i> Events</a>
+            <a href="schedule.html"><i data-feather="clipboard"></i> Schedule</a>
+            <a href="scan.html"><i data-feather="maximize"></i> Scan/Upload</a>
+            <a href="network.html"><i data-feather="users"></i> Network</a>
+            <a href="messages.html"><i data-feather="message-square"></i> Messages</a>
+            <a href="analytics.html"><i data-feather="bar-chart-2"></i> Analytics</a>
+            <a href="help.html" style="background: rgba(217, 4, 41, 0.05); color: var(--primary); font-weight: 700;">
+                <i data-feather="help-circle"></i> Help
+            </a>
+        </div>
+
+        <div class="right-actions">
+            <div class="desktop-links">
+                <a href="profile.html"><i data-feather="user"></i> My Profile</a>
+                <a href="/logout" style="color: var(--primary);"><i data-feather="log-out"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="visual-hero-banner" style="min-height: 250px; margin-bottom: 40px;">
+            <div class="hero-content-wrapper">
+                <h1>Pulse Support<span style="color: var(--primary);">.</span></h1>
+                <p>Master the platform. From networking efficiently to managing complex events, we've got you covered.</p>
+                <div class="hero-actions">
+                    <button class="btn-hero-main" onclick="document.getElementById('faq-section').scrollIntoView({behavior: 'smooth'})">View FAQs</button>
+                    <button class="btn-hero-secondary" onclick="window.location.href='messages.html'">Contact Support</button>
+                </div>
+            </div>
+            <div class="hero-visual-abstract">
+                <div class="core-circle"><div class="ring ring-1"></div></div>
+            </div>
+        </div>
+
+        <div class="action-grid">
+            
+            <section class="dashboard-card">
+                <div class="card-header">
+                    <span>Networking</span>
+                    <i data-feather="maximize" style="width: 16px; color: var(--primary);"></i>
+                </div>
+                <h2 style="font-size: 20px; margin-bottom: 10px;">How to Connect</h2>
+                <p style="color: #666; font-size: 14px; line-height: 1.6;">
+                    <strong>1. Scan QR:</strong> Go to the "Scan/Upload" page to scan another student's digital badge. This instantly saves them to your network.<br><br>
+                    <strong>2. Share Profile:</strong> Tap "My Profile" to show your own QR code. Let others scan you to share your socials and portfolio.
+                </p>
+            </section>
+
+            <section class="dashboard-card">
+                <div class="card-header">
+                    <span>Participation</span>
+                    <i data-feather="calendar" style="width: 16px; color: var(--primary);"></i>
+                </div>
+                <h2 style="font-size: 20px; margin-bottom: 10px;">Events & Schedule</h2>
+                <p style="color: #666; font-size: 14px; line-height: 1.6;">
+                    <strong>• Registering:</strong> Browse the "Events" feed. Click "Register" to add an event to your personal schedule.<br><br>
+                    <strong>• Check-in:</strong> When you arrive at a venue, use the Scan tool to scan the <em>Event's</em> QR code to mark yourself as "Attended."
+                </p>
+            </section>
+
+             <section class="dashboard-card">
+                <div class="card-header">
+                    <span>Insights</span>
+                    <i data-feather="bar-chart-2" style="width: 16px; color: var(--primary);"></i>
+                </div>
+                <h2 style="font-size: 20px; margin-bottom: 10px;">Understanding Data</h2>
+                <p style="color: #666; font-size: 14px; line-height: 1.6;">
+                    <strong>• Engagement Score:</strong> This number rises as you attend events and make new connections.<br><br>
+                    <strong>• Network Growth:</strong> View the "Analytics" tab to see a timeline of your connections and which events gave you the most value.
+                </p>
+            </section>
+        </div>
+
+        <div id="faq-section" class="dashboard-card" style="margin-top: 40px;">
+            <div class="card-header">Troubleshooting</div>
+            <h2 style="margin-bottom: 25px;">Frequently Asked Questions</h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                
+                <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">My camera isn't opening for scanning.</h3>
+                    <p style="color: #666; font-size: 14px;">Ensure you have allowed browser permissions for the camera. On iOS/Android, go to Settings > Safari/Chrome > Camera and set it to "Allow".</p>
+                </div>
+
+                <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
+                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">I can't see the "Logout" button on my laptop.</h3>
+                    <p style="color: #666; font-size: 14px;">We recently updated the sidebar layout! You can now scroll inside the navigation menu on the left to reveal the bottom buttons.</p>
+                </div>
+
+                <div>
+                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">How do I edit my profile photo?</h3>
+                    <p style="color: #666; font-size: 14px;">Go to "My Profile" and click the small camera icon on your avatar. You can upload a new JPG or PNG file (max 5MB).</p>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>
