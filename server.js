@@ -1471,25 +1471,52 @@ app.delete('/api/admin/user/:id', async (req, res) => {
     }
 });
 
-// server.js - ADMIN ANALYTICS ENDPOINTS
+// ==========================================
+//      🔥 FIXED: SMART ROLE MATRIX
+// ==========================================
 
-// 2. ADMIN ROLES (Job Distribution)
+// REPLACES ALL PREVIOUS '/api/admin/roles' ENDPOINTS
 app.get('/api/admin/roles', async (req, res) => {
+    const { eventId } = req.query;
     try {
-        const [rows] = await pool.execute(`
-            SELECT position, COUNT(*) as count 
-            FROM users 
-            WHERE position IS NOT NULL AND position != '' 
-            GROUP BY position 
-            ORDER BY count DESC 
-            LIMIT 5`
-        );
+        let sql, params;
+
+        if (eventId && eventId !== "undefined" && eventId !== "") {
+            // 🔥 CASE 1: Filter by Event (Active Attendees)
+            sql = `
+                SELECT 
+                    COALESCE(u.position, 'Unknown') as position, 
+                    COUNT(*) as count 
+                FROM registrations r
+                JOIN users u ON r.username = u.username
+                WHERE r.eventId = ?
+                AND u.position IS NOT NULL AND u.position != ''
+                GROUP BY position
+                ORDER BY count DESC
+            `;
+            params = [eventId];
+        } else {
+            // 🔥 CASE 2: All Time (Total Userbase)
+            sql = `
+                SELECT 
+                    COALESCE(position, 'Unknown') as position, 
+                    COUNT(*) as count 
+                FROM users 
+                WHERE position IS NOT NULL AND position != ''
+                GROUP BY position
+                ORDER BY count DESC
+            `;
+            params = [];
+        }
+
+        const [rows] = await pool.execute(sql, params);
         res.json(rows);
     } catch (err) {
-        console.error(err);
+        console.error("Roles API Error:", err);
         res.status(500).json([]);
     }
 });
+
 
 // 3. ADMIN EVENT PERFORMANCE (Table Data)
 // Note: This endpoint actually already exists as '/api/admin/event-stats' in your code!
@@ -1511,32 +1538,6 @@ app.get('/api/admin/growth', async (req, res) => {
         res.json(rows);
     } catch (err) {
         console.error("Growth API Error:", err);
-        res.status(500).json([]);
-    }
-});
-
-// 2. JOB ROLES: Group users by their 'position'
-app.get('/api/admin/roles', async (req, res) => {
-    try {
-        const [rows] = await pool.execute(`
-            SELECT 
-                CASE 
-                    WHEN position LIKE '%Student%' THEN 'Student'
-                    WHEN position LIKE '%Intern%' THEN 'Student'
-                    WHEN position LIKE '%Engineer%' OR position LIKE '%Developer%' THEN 'Tech'
-                    WHEN position LIKE '%Designer%' OR position LIKE '%Creative%' THEN 'Creative'
-                    WHEN position LIKE '%Founder%' OR position LIKE '%Manager%' OR position LIKE '%Director%' THEN 'Business'
-                    WHEN position LIKE '%Lecturer%' THEN 'Staff'
-                    ELSE 'Other'
-                END as role_group,
-                COUNT(*) as count
-            FROM users 
-            WHERE role != 'admin'
-            GROUP BY role_group
-        `);
-        res.json(rows);
-    } catch (err) {
-        console.error("Roles API Error:", err);
         res.status(500).json([]);
     }
 });
