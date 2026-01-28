@@ -9,7 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
     loadAdminKPIs();
     loadNetworkDensityChart(30); 
     loadRealJobChart();
+    
+    // 🔥 NEW: Load Filter Options & Matrix
+    loadMatrixEventOptions(); 
     loadConnectionMatrix(); 
+    
     loadRegistrationChart(); 
     loadFeedbackChart(); 
 });
@@ -110,7 +114,6 @@ async function loadNetworkDensityChart(days = 30) {
         densityChartInstance = new Chart(ctx, {
             type: 'line',
             data: {
-                // ✅ WIDGET AXIS = DATE (Keep this as requested)
                 labels: data.map(d => new Date(d.date).toLocaleDateString(undefined, {month:'short', day:'numeric'})),
                 datasets: [{
                     label: 'Density %', data: data.map(d => d.density),
@@ -138,7 +141,6 @@ async function loadNetworkDensityChart(days = 30) {
                         bodyFont: { size: 13, weight: '500' },
                         padding: 12,
                         callbacks: {
-                            // Tooltip shows event name if available
                             title: (context) => {
                                 const d = data[context[0].dataIndex];
                                 return d.events && d.events !== 'No Event' ? d.events : 'Community Scan';
@@ -245,7 +247,7 @@ async function loadRealJobChart() {
 }
 
 // ==========================================
-//      4. AUDIENCE EXPLORERR
+//      4. AUDIENCE EXPLORER
 // ==========================================
 let audienceExplorerInstance = null;
 window.openAudienceExplorer = async function() {
@@ -327,12 +329,53 @@ window.closeAudienceExplorer = function() {
 }
 
 // ==========================================
-//      4. CONNECTIVITY MATRIX
+//      5. CONNECTIVITY MATRIX (UPDATED)
 // ==========================================
-async function loadConnectionMatrix() {
+
+// A. Load Events for Dropdown
+async function loadMatrixEventOptions() {
     try {
-        const [rolesRes] = await Promise.all([fetch('/api/admin/roles')]);
-        const rawRoles = await rolesRes.json();
+        const res = await fetch('/api/admin/event-stats?limit=50'); // Re-using stats endpoint to get event list
+        const data = await res.json();
+        const filter = document.getElementById('matrixEventFilter');
+        if (!filter) return;
+
+        filter.innerHTML = '<option value="">All Events</option>';
+        data.forEach(event => {
+            const opt = document.createElement('option');
+            opt.value = event.id; // Ensure API returns 'id'
+            opt.textContent = event.name || event.events;
+            filter.appendChild(opt);
+        });
+
+        // Add Change Listener
+        filter.addEventListener('change', (e) => {
+            loadConnectionMatrix(e.target.value);
+        });
+    } catch (e) { console.error("Event Filter Error:", e); }
+}
+
+// B. Load Matrix Data (Supports Filtering)
+async function loadConnectionMatrix(eventId = '') {
+    try {
+        let url = '/api/admin/roles';
+        if (eventId) {
+            url += `?eventId=${encodeURIComponent(eventId)}`;
+        }
+
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("Failed to fetch roles");
+        
+        const rawRoles = await res.json();
+        const container = document.getElementById('connectionMatrixContainer');
+
+        if (!rawRoles || rawRoles.length === 0) {
+            if(container) {
+                container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding:20px; font-size:12px; color:#94a3b8;">No connections found for this event.</div>';
+            }
+            return;
+        }
+
         const rolesData = normalizeAndAggregate(rawRoles).slice(0, 5); 
         renderMatrix(rolesData, 'connectionMatrixContainer');
     } catch (e) { console.error("Matrix Error:", e); }
@@ -413,7 +456,6 @@ function renderMatrix(rolesData, containerId) {
 // ==========================================
 let explorerChartInstance = null;
 
-// 🔥 RESTORED MISSING FUNCTION
 window.openExplorer = function() { 
     const modal = document.getElementById('chartExplorerModal');
     if (modal) {
@@ -426,16 +468,12 @@ window.closeExplorer = function() {
     document.getElementById('chartExplorerModal').style.display = 'none'; 
 };
 
-// 🔥 UPDATED: Fix for Missing Event Names
 window.updateExplorerChart = async function(days) {
     try {
         const queryDays = days === '0' || days === 0 ? 1825 : days;
         const res = await fetch(`/api/admin/density-history?days=${queryDays}`);
         const data = await res.json();
         
-        // DEBUG: Check console to see if event name is present
-        console.log("Density Data Payload:", data); 
-
         const canvas = document.getElementById('fullDensityChart');
         if (!canvas) return; 
         const ctx = canvas.getContext('2d');
@@ -444,17 +482,11 @@ window.updateExplorerChart = async function(days) {
         const existingChart = Chart.getChart(canvas);
         if (existingChart) existingChart.destroy();
 
-        // 🔥 ROBUST LABEL HELPER
         const getLabel = (d) => {
-            // Check all possible name fields that backend might send
             const possibleName = d.events || d.event_name || d.name;
-            
-            // If valid name exists (not null, not 'No Event'), use it
             if (possibleName && possibleName !== 'No Event' && possibleName !== 'null') {
                 return possibleName;
             }
-            
-            // Fallback: Date
             return new Date(d.date).toLocaleDateString(undefined, {month:'short', day:'numeric'});
         };
 
@@ -489,7 +521,7 @@ window.updateExplorerChart = async function(days) {
         explorerChartInstance = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: data.map(d => getLabel(d)), // 🔥 Uses new logic
+                labels: data.map(d => getLabel(d)),
                 datasets: [{
                     label: 'Density', data: data.map(d => d.density),
                     borderColor: '#d90429', borderWidth: 3, fill: true, backgroundColor: gradient,
