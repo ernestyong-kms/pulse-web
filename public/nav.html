@@ -1,111 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pulse | Help & Support</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/feather-icons"></script>
-</head>
-<body>
-    
-    <div id="navPlaceholder"></div>
+<nav class="global-nav">
+    <div class="nav-content">
+        <a href="home.html" class="nav-logo">Pulse<span style="color:var(--primary);">.</span></a>
 
-    <main>
-        <div class="visual-hero-banner" style="min-height: 250px; margin-bottom: 40px;">
-            <div class="hero-content-wrapper">
-                <h1>Pulse Support<span style="color: var(--primary);">.</span></h1>
-                <p>Master the platform. From networking efficiently to managing complex events, we've got you covered.</p>
-                <div class="hero-actions">
-                    <button class="btn-hero-main" onclick="document.getElementById('faq-section').scrollIntoView({behavior: 'smooth'})">View FAQs</button>
-                </div>
-            </div>
-            <div class="hero-visual-abstract">
-                <div class="core-circle"><div class="ring ring-1"></div></div>
-            </div>
-        </div>
-
-        <div class="action-grid">
+        <ul class="center-nav">
+            <li><a href="events.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                Events
+            </a></li>
             
-            <section class="dashboard-card">
-                <div class="card-header">
-                    <span>Networking</span>
-                    <i data-feather="maximize" style="width: 16px; color: var(--primary);"></i>
-                </div>
-                <h2 style="font-size: 20px; margin-bottom: 10px;">How to Connect</h2>
-                <p style="color: #666; font-size: 14px; line-height: 1.6;">
-                    <strong>1. Scan QR:</strong> Use the Scan tool to capture a student's digital badge. This instantly saves them to your network.<br><br>
-                    <strong>2. Share Profile:</strong> Tap "My Profile" to reveal your own QR code. Let others scan you to exchange details.
-                </p>
-            </section>
+            <li><a href="schedule.html">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                Schedule
+            </a></li>
 
-            <section class="dashboard-card">
-                <div class="card-header">
-                    <span>Participation</span>
-                    <i data-feather="calendar" style="width: 16px; color: var(--primary);"></i>
-                </div>
-                <h2 style="font-size: 20px; margin-bottom: 10px;">Events & Schedule</h2>
-                <p style="color: #666; font-size: 14px; line-height: 1.6;">
-                    <strong>• Registering:</strong> Click "Register" on any event to add it to your personal schedule.<br><br>
-                    <strong>• Check-in:</strong> When you arrive, scan the <em>Event's</em> QR code to mark yourself as "Attended".
-                </p>
-            </section>
-
-             <section class="dashboard-card">
-                <div class="card-header">
-                    <span>Insights</span>
-                    <i data-feather="bar-chart-2" style="width: 16px; color: var(--primary);"></i>
-                </div>
-                <h2 style="font-size: 20px; margin-bottom: 10px;">Understanding Data</h2>
-                <p style="color: #666; font-size: 14px; line-height: 1.6;">
-                    <strong>• Engagement Score:</strong> This metric tracks your activity across campus events.<br><br>
-                    <strong>• Network Growth:</strong> View the "Analytics" tab to visualize your connections.
-                </p>
-            </section>
-
-            <section class="dashboard-card">
-                <div class="card-header">
-                    <span>Guidelines</span>
-                    <i data-feather="shield" style="width: 16px; color: var(--primary);"></i>
-                </div>
-                <h2 style="font-size: 20px; margin-bottom: 10px;">Community Standards</h2>
-                <p style="color: #666; font-size: 14px; line-height: 1.6;">
-                    <strong>• Professionalism:</strong> Keep profile bios and messages appropriate for a school setting.<br><br>
-                    <strong>• Respect:</strong> Zero tolerance for harassment. Admins can revoke access for violations.
-                </p>
-            </section>
-        </div>
-
-        <div id="faq-section" class="dashboard-card" style="margin-top: 40px; margin-bottom: 40px;">
-            <div class="card-header">Troubleshooting</div>
-            <h2 style="margin-bottom: 25px;">Frequently Asked Questions</h2>
+            <li><a href="scan.html"> 
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="1"></rect><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path></svg>
+                Scan/Upload
+            </a></li>
+            <li><a href="network.html">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+              Network
+            </a></li>
             
-            <div style="display: flex; flex-direction: column; gap: 20px;">
-                <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
-                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">My camera isn't opening.</h3>
-                    <p style="color: #666; font-size: 14px;">Ensure you have allowed browser permissions for the camera. Refresh the page after changing settings.</p>
-                </div>
-                <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
-                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Where is the Logout button?</h3>
-                    <p style="color: #666; font-size: 14px;">If you are on a smaller laptop screen, you can <strong>scroll down inside the sidebar</strong> to reveal it.</p>
-                </div>
-                <div>
-                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Can I edit my profile photo?</h3>
-                    <p style="color: #666; font-size: 14px;">Yes. Go to "My Profile" and click the camera icon on your avatar.</p>
-                </div>
+            <li><a href="messages.html" style="position: relative;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              Messages
+            </a></li>
+
+            <li><a href="my-analytics.html"> 
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15v-4A8 8 0 0 1 12 3a8 8 0 0 1 9 7v4"></path><path d="M21 21v-4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4"></path><path d="M17 11v10"></path></svg>
+                Analytics
+            </a></li>
+            
+            <li><a href="help.html">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              Help
+            </a></li>
+        </ul>
+
+        <div class="right-actions">
+            <div class="desktop-links">
+                <a href="defaultprofile.html" style="color: #0071e3; font-weight: 500;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  My Profile
+                </a>
+                <a href="#" onclick="localStorage.removeItem('loggedInUser'); window.location.href='index.html';" style="color: #d90429; font-weight: 600;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                  Logout
+                </a>
+            </div>
+
+            <div class="hamburger-icon" onclick="toggleDropdown()">
+                <span></span><span></span><span></span>
             </div>
         </div>
+    </div>
 
-        <div style="text-align: center; color: #999; font-size: 12px; margin-bottom: 20px;">
-            <p>Pulse v1.2.0 • Temasek Polytechnic</p>
+    <div id="mobileMenu" class="mobile-menu-dropdown">
+        <div style="padding: 10px 15px; border-bottom: 1px solid #f0f0f0; margin-bottom: 5px;">
+            <span style="font-size: 11px; color: #999; text-transform: uppercase; font-weight: 700;">Menu</span>
         </div>
-
-    </main>
-
-    <script src="js/navLoader.js"></script>
-    <script>
-        feather.replace();
-    </script>
-</body>
-</html>
+        <a href="defaultprofile.html" style="color: #0071e3;">My Profile</a>
+        <a href="events.html">Events</a>
+        <a href="schedule.html">Schedule</a>
+        <a href="scan.html">Scan/Upload</a>
+        <a href="network.html">Network</a>
+        <a href="messages.html">Messages</a>
+        <a href="my-analytics.html">Analytics</a>
+        <a href="help.html">Help</a>
+        <div style="height: 1px; background: #eee; margin: 5px 0;"></div>
+        <a href="#" onclick="localStorage.removeItem('loggedInUser'); window.location.href='index.html';" style="color: #d90429;">Logout</a>
+    </div>
+    <script src="js/mobile-check.js"></script>
+</nav>
