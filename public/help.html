@@ -10,28 +10,7 @@
 </head>
 <body>
     
-    <nav class="global-nav">
-        <a href="home.html" class="nav-logo">Pulse<span style="color: var(--primary);">.</span></a>
-        
-        <div class="center-nav">
-            <a href="home.html"><i data-feather="calendar"></i> Events</a>
-            <a href="schedule.html"><i data-feather="clipboard"></i> Schedule</a>
-            <a href="scan.html"><i data-feather="maximize"></i> Scan/Upload</a>
-            <a href="network.html"><i data-feather="users"></i> Network</a>
-            <a href="messages.html"><i data-feather="message-square"></i> Messages</a>
-            <a href="analytics.html"><i data-feather="bar-chart-2"></i> Analytics</a>
-            <a href="help.html" style="background: rgba(217, 4, 41, 0.05); color: var(--primary); font-weight: 700;">
-                <i data-feather="help-circle"></i> Help
-            </a>
-        </div>
-
-        <div class="right-actions">
-            <div class="desktop-links">
-                <a href="profile.html"><i data-feather="user"></i> My Profile</a>
-                <a href="/logout" style="color: var(--primary);"><i data-feather="log-out"></i> Logout</a>
-            </div>
-        </div>
-    </nav>
+    <div id="navPlaceholder"></div>
 
     <main>
         <div class="visual-hero-banner" style="min-height: 250px; margin-bottom: 40px;">
@@ -69,7 +48,7 @@
                 <h2 style="font-size: 20px; margin-bottom: 10px;">Events & Schedule</h2>
                 <p style="color: #666; font-size: 14px; line-height: 1.6;">
                     <strong>• Registering:</strong> Click "Register" on any event to add it to your personal schedule.<br><br>
-                    <strong>• Check-in:</strong> When you arrive, scan the <em>Event's</em> QR code to mark yourself as "Attended" and earn engagement points.
+                    <strong>• Check-in:</strong> When you arrive, scan the <em>Event's</em> QR code to mark yourself as "Attended".
                 </p>
             </section>
 
@@ -81,7 +60,7 @@
                 <h2 style="font-size: 20px; margin-bottom: 10px;">Understanding Data</h2>
                 <p style="color: #666; font-size: 14px; line-height: 1.6;">
                     <strong>• Engagement Score:</strong> This metric tracks your activity across campus events.<br><br>
-                    <strong>• Network Growth:</strong> View the "Analytics" tab to visualize your connections and see which events expanded your network the most.
+                    <strong>• Network Growth:</strong> View the "Analytics" tab to visualize your connections.
                 </p>
             </section>
 
@@ -92,20 +71,8 @@
                 </div>
                 <h2 style="font-size: 20px; margin-bottom: 10px;">Community Standards</h2>
                 <p style="color: #666; font-size: 14px; line-height: 1.6;">
-                    <strong>• Professionalism:</strong> Pulse is a Temasek Polytechnic platform. Keep profile bios and messages appropriate for a school setting.<br><br>
+                    <strong>• Professionalism:</strong> Keep profile bios and messages appropriate for a school setting.<br><br>
                     <strong>• Respect:</strong> Zero tolerance for harassment. Admins can revoke access for violations.
-                </p>
-            </section>
-
-            <section class="dashboard-card">
-                <div class="card-header">
-                    <span>Privacy</span>
-                    <i data-feather="lock" style="width: 16px; color: var(--primary);"></i>
-                </div>
-                <h2 style="font-size: 20px; margin-bottom: 10px;">Safety & Privacy</h2>
-                <p style="color: #666; font-size: 14px; line-height: 1.6;">
-                    <strong>• Your Data:</strong> Only students you allow to scan your QR code will see your contact details.<br><br>
-                    <strong>• Revoke Access:</strong> You can remove a connection from your "Network" page at any time to stop sharing updates.
                 </p>
             </section>
         </div>
@@ -115,27 +82,18 @@
             <h2 style="margin-bottom: 25px;">Frequently Asked Questions</h2>
             
             <div style="display: flex; flex-direction: column; gap: 20px;">
-                
                 <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
-                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">My camera isn't opening for scanning.</h3>
-                    <p style="color: #666; font-size: 14px;">Ensure you have allowed browser permissions for the camera. On mobile, go to Settings > Safari/Chrome > Camera and set it to "Allow". Refresh the page after changing settings.</p>
+                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">My camera isn't opening.</h3>
+                    <p style="color: #666; font-size: 14px;">Ensure you have allowed browser permissions for the camera. Refresh the page after changing settings.</p>
                 </div>
-
-                <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
-                    <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">How do I create an event?</h3>
-                    <p style="color: #666; font-size: 14px;">Only accounts with <strong>Organizer</strong> or <strong>Admin</strong> privileges can create events. If you are a student leader, please request access from your CCA advisor.</p>
-                </div>
-
                 <div style="border-bottom: 1px solid #eee; padding-bottom: 20px;">
                     <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Where is the Logout button?</h3>
-                    <p style="color: #666; font-size: 14px;">It is located at the bottom of the sidebar. If you are on a smaller laptop screen, you can <strong>scroll down inside the sidebar</strong> to reveal it.</p>
+                    <p style="color: #666; font-size: 14px;">If you are on a smaller laptop screen, you can <strong>scroll down inside the sidebar</strong> to reveal it.</p>
                 </div>
-
                 <div>
                     <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">Can I edit my profile photo?</h3>
-                    <p style="color: #666; font-size: 14px;">Yes. Go to "My Profile" and click the camera icon on your avatar to upload a new image.</p>
+                    <p style="color: #666; font-size: 14px;">Yes. Go to "My Profile" and click the camera icon on your avatar.</p>
                 </div>
-
             </div>
         </div>
 
@@ -145,6 +103,7 @@
 
     </main>
 
+    <script src="js/navLoader.js"></script>
     <script>
         feather.replace();
     </script>
