@@ -20,8 +20,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   const createEventPopup = document.getElementById("createEventPopup");
   const createEventForm = document.getElementById("createEventForm");
   const cancelEvent = document.getElementById("cancelEvent");
-  const popupTitle = createEventPopup.querySelector("h3");
-  const submitBtn = createEventPopup.querySelector("button[type='submit']");
+  const popupTitle = createEventPopup ? createEventPopup.querySelector("h3") : null;
+  const submitBtn = createEventPopup ? createEventPopup.querySelector("button[type='submit']") : null;
   
   // Hidden input for Edit Mode ID
   let editModeId = null; 
@@ -38,7 +38,8 @@ document.addEventListener("DOMContentLoaded", async () => {
               reader.onload = (ev) => {
                   previewImg.src = ev.target.result;
                   previewImg.style.display = "block";
-                  document.querySelector("#eventPhotoPreview span").style.display = "none"; 
+                  const span = document.querySelector("#eventPhotoPreview span");
+                  if(span) span.style.display = "none"; 
               };
               reader.readAsDataURL(file);
           }
@@ -49,80 +50,125 @@ document.addEventListener("DOMContentLoaded", async () => {
   if(openCreateEvent) {
       openCreateEvent.addEventListener("click", () => {
         resetForm();
-        createEventPopup.style.display = "flex";
+        if(createEventPopup) createEventPopup.style.display = "flex";
       });
   }
 
   if(cancelEvent) {
       cancelEvent.addEventListener("click", () => {
-        createEventPopup.style.display = "none";
+        if(createEventPopup) createEventPopup.style.display = "none";
         resetForm();
       });
   }
 
   function resetForm() {
-      createEventForm.reset();
+      if(createEventForm) createEventForm.reset();
       editModeId = null;
-      popupTitle.textContent = "Create New Event";
-      submitBtn.textContent = "Create Event";
-      previewImg.style.display = "none";
-      document.querySelector("#eventPhotoPreview span").style.display = "block";
-      if(previewImg) previewImg.src = "";
+      if(popupTitle) popupTitle.textContent = "Create New Event";
+      if(submitBtn) submitBtn.textContent = "Create Event";
+      if(previewImg) {
+          previewImg.style.display = "none";
+          previewImg.src = "";
+      }
+      const span = document.querySelector("#eventPhotoPreview span");
+      if(span) span.style.display = "block";
   }
 
-  // 5. 🔥 EXPOSE EDIT FUNCTION
+  // 5. 🔥 EXPOSE EDIT FUNCTION (ROBUST VERSION)
   window.editEvent = function(id) {
-      const event = window.EventsModule.allEvents.find(e => e.id === id);
-      if (!event) return;
+      console.log("Edit clicked for ID:", id); // Debug Log
+
+      if (!window.EventsModule || !window.EventsModule.allEvents) {
+          console.error("EventsModule not loaded");
+          alert("Error: Events data not loaded.");
+          return;
+      }
+
+      // Use loose equality (==) to handle string vs number ID mismatch
+      const event = window.EventsModule.allEvents.find(e => e.id == id);
+      
+      if (!event) {
+          console.error("Event not found for ID:", id);
+          alert("Event not found.");
+          return;
+      }
 
       editModeId = id;
-      popupTitle.textContent = "Edit Event";
-      submitBtn.textContent = "Save Changes";
+      if(popupTitle) popupTitle.textContent = "Edit Event";
+      if(submitBtn) submitBtn.textContent = "Save Changes";
 
-      document.getElementById("eventName").value = event.name;
+      // Safely set values helper
+      const setVal = (domId, val) => {
+          const el = document.getElementById(domId);
+          if(el) el.value = val || "";
+      };
+
+      setVal("eventName", event.name);
+      setVal("eventLocation", event.location);
+      setVal("eventDescription", event.description);
+      setVal("eventCategory", event.category);
 
       // 🔥 FIX: Handle Date Object properly for input[type=date]
-      // Use new Date() to ensure it's an object, then toISOString to get YYYY-MM-DD
       try {
-          const dateObj = new Date(event.date);
-          const yyyyMmDd = dateObj.toISOString().split('T')[0];
-          document.getElementById("eventDate").value = yyyyMmDd;
+          if (event.date) {
+              const dateObj = new Date(event.date);
+              // Check if date is valid
+              if (!isNaN(dateObj.getTime())) {
+                  const yyyyMmDd = dateObj.toISOString().split('T')[0];
+                  setVal("eventDate", yyyyMmDd);
+              } else {
+                  console.warn("Invalid date format:", event.date);
+                  setVal("eventDate", "");
+              }
+          }
       } catch (e) {
           console.error("Date parsing error:", e);
-          document.getElementById("eventDate").value = "";
+          setVal("eventDate", "");
       }
       
-      // Parse Time (Convert "2:30 PM" -> "14:30") for input[type=time]
+      // Parse Time
       const convertTo24 = (timeStr) => {
           if(!timeStr || timeStr === "Time TBD") return "";
           try {
-              const [time, modifier] = timeStr.split(' ');
+              // Handle potential lack of space or weird formatting
+              // Assume format "2:30 PM"
+              const parts = timeStr.trim().split(' ');
+              if(parts.length < 2) return timeStr; // Fallback
+              
+              const [time, modifier] = parts;
               let [hours, minutes] = time.split(':');
+              
               if (hours === '12') hours = '00';
-              if (modifier === 'PM') hours = parseInt(hours, 10) + 12;
-              return `${hours}:${minutes}`;
+              if (modifier && (modifier.toLowerCase() === 'pm')) hours = parseInt(hours, 10) + 12;
+              
+              // Pad with 0 if needed (e.g. 9:30 -> 09:30)
+              const hStr = hours.toString().padStart(2, '0');
+              
+              return `${hStr}:${minutes}`;
           } catch(e) {
+              console.error("Time parse error", e);
               return ""; 
           }
       };
 
-      if(event.time) document.getElementById("eventTime").value = convertTo24(event.time);
-      if(event.end_time) document.getElementById("eventEndTime").value = convertTo24(event.end_time);
+      setVal("eventTime", convertTo24(event.time));
+      setVal("eventEndTime", convertTo24(event.end_time));
 
-      document.getElementById("eventLocation").value = event.location;
-      document.getElementById("eventDescription").value = event.description;
-      document.getElementById("eventCategory").value = event.category;
-
+      // Handle Image Preview
       if (event.photo_url) {
-          previewImg.src = event.photo_url;
-          previewImg.style.display = "block";
-          document.querySelector("#eventPhotoPreview span").style.display = "none";
+          if(previewImg) {
+              previewImg.src = event.photo_url;
+              previewImg.style.display = "block";
+          }
+          const span = document.querySelector("#eventPhotoPreview span");
+          if(span) span.style.display = "none";
       } else {
-          previewImg.style.display = "none";
-          document.querySelector("#eventPhotoPreview span").style.display = "block";
+          if(previewImg) previewImg.style.display = "none";
+          const span = document.querySelector("#eventPhotoPreview span");
+          if(span) span.style.display = "block";
       }
 
-      createEventPopup.style.display = "flex";
+      if(createEventPopup) createEventPopup.style.display = "flex";
   };
 
   // 6. 🔥 HANDLE SUBMIT (CREATE OR UPDATE)
@@ -131,10 +177,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         e.preventDefault();
 
         const formData = new FormData();
-        if (editModeId) formData.append("id", editModeId); // ID required for update
+        if (editModeId) formData.append("id", editModeId); 
 
-        formData.append("name", document.getElementById("eventName").value);
-        formData.append("date", document.getElementById("eventDate").value);
+        const getVal = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.value : "";
+        };
+
+        formData.append("name", getVal("eventName"));
+        formData.append("date", getVal("eventDate"));
         
         // Format Time Back to "2:30 PM"
         const formatTime = (raw) => {
@@ -146,17 +197,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             return `${h12}:${m} ${ampm}`;
         };
 
-        formData.append("time", formatTime(document.getElementById("eventTime").value)); 
-        formData.append("end_time", formatTime(document.getElementById("eventEndTime").value)); 
-        
-        formData.append("location", document.getElementById("eventLocation").value);
-        formData.append("description", document.getElementById("eventDescription").value);
-        formData.append("category", document.getElementById("eventCategory").value);
+        formData.append("time", formatTime(getVal("eventTime"))); 
+        formData.append("end_time", formatTime(getVal("eventEndTime"))); 
+        formData.append("location", getVal("eventLocation"));
+        formData.append("description", getVal("eventDescription"));
+        formData.append("category", getVal("eventCategory"));
 
-        const file = document.getElementById("eventPhotoInput").files[0];
-        if (file) formData.append("eventPhoto", file);
+        const photoInput = document.getElementById("eventPhotoInput");
+        if (photoInput && photoInput.files[0]) {
+            formData.append("eventPhoto", photoInput.files[0]);
+        }
 
-        // DECIDE URL: Create or Update?
         const url = editModeId ? "/updateEvent" : "/createEvent";
 
         try {
@@ -165,7 +216,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (data.success) {
               alert(editModeId ? "✅ Event updated!" : "✅ Event created!");
-              createEventPopup.style.display = "none";
+              if(createEventPopup) createEventPopup.style.display = "none";
               resetForm();
               if (window.EventsModule) EventsModule.loadEvents(user);
             } else {
@@ -178,13 +229,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
   }
 
-  // 7. 🔥 ATTENDEE MANAGEMENT
+  // 7. ATTENDEE MANAGEMENT
   window.openAttendees = async function(eventId, eventName) {
       const popup = document.getElementById("attendeesPopup");
       const list = document.getElementById("attendeeList");
-      const title = popup.querySelector("h2");
+      const title = popup ? popup.querySelector("h2") : null;
       
-      title.textContent = `Attendees: ${eventName}`;
+      if(!popup || !list) return;
+
+      if(title) title.textContent = `Attendees: ${eventName}`;
       list.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px;">Loading...</td></tr>`;
       popup.style.display = "flex";
 
@@ -217,12 +270,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
   };
 
-  
-  document.getElementById("closeAttendees").onclick = () => {
-      document.getElementById("attendeesPopup").style.display = "none";
-  };
+  const closeAtt = document.getElementById("closeAttendees");
+  if(closeAtt) {
+      closeAtt.onclick = () => {
+          const popup = document.getElementById("attendeesPopup");
+          if(popup) popup.style.display = "none";
+      };
+  }
 
-  
   window.removeAttendee = async function(regId, btn) {
       if(!confirm("Remove this user from the event?")) return;
       btn.textContent = "...";
