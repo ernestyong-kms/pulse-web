@@ -3,6 +3,10 @@
 window.EventsModule = {
     allEvents: [],
     userRegistrations: [],
+    
+    // Pagination State
+    adminCurrentPage: 1,
+    rowsPerPage: 10,
 
     init: async function(user) {
         console.log("EventsModule: Initializing...");
@@ -17,7 +21,6 @@ window.EventsModule = {
 
             // Handle UI Views
             if (document.getElementById("eventsGridContainer")) {
-                // 🔥 CRASH FIX: Removed loadPersonalizedMatches call
                 this.loadEventsGrid(user);
                 this.loadPastEventsGrid(user);
             } else if (document.getElementById("eventContainer")) {
@@ -49,7 +52,7 @@ window.EventsModule = {
             if (matches.length === 0) {
                 list.innerHTML = `
                     <div style="padding:30px; text-align:center; background:#f8f9fa; border-radius:20px;">
-                        <div style="font-size:30px; margin-bottom:10px;">🔭</div>
+                        <div style="font-size:30px; margin-bottom:10px;">🤖</div>
                         <p style="font-size:14px; font-weight:700; color:#333; margin-bottom:5px;">Scanning for matches...</p>
                         <p style="font-size:12px; color:#666; line-height:1.4;">No direct compatibility found yet. Try adding more skills to your profile to improve AI detection!</p>
                     </div>`;
@@ -60,7 +63,6 @@ window.EventsModule = {
                 const tags = p.common_tags || [];
                 const tagsDisplay = tags.slice(0, 2).map(t => `<span class="match-tag" style="background:#fff0f3; color:#d90429; padding:3px 8px; border-radius:6px; font-size:10px; font-weight:700; text-transform:capitalize;">${t}</span>`).join(' ');
                 
-                // NO BUTTON (Purely informational)
                 return `
                     <div class="match-item" style="display:flex; align-items:center; background:white; padding:15px; border-radius:18px; gap:15px; border:1px solid #f0f0f0; transition:0.2s;">
                         <img src="${p.photo_url || 'https://cdn-icons-png.flaticon.com/512/847/847969.png'}" style="width:50px; height:50px; border-radius:50%; object-fit:cover; border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
@@ -150,14 +152,13 @@ window.EventsModule = {
         const dateStr = d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
         const timeStr = event.time || d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-        // 🔥 FIX: Clean Badge HTML
         let badgeHtml = isRegistered 
             ? `<div class="badge-registered">Registered</div>` 
             : (isPast ? `<div class="badge-registered" style="background:#64748b;">Ended</div>` : '');
 
         const imageHtml = event.photo_url 
             ? `<img src="${event.photo_url}" class="card-main-img">` 
-            : `<div class="card-img-placeholder" style="background:#f8fafc; display:flex; align-items:center; justify-content:center; color:#cbd5e1; font-weight:700;">No Image</div>`;
+            : `<div class="card-image-placeholder" style="background:#f8fafc; display:flex; align-items:center; justify-content:center; color:#cbd5e1; font-weight:700;">No Image</div>`;
 
         if (isGrid) {
            card.innerHTML = `
@@ -186,7 +187,6 @@ window.EventsModule = {
                   <div class="action-area" style="margin-top:auto; padding-top:10px;"></div>
               </div>`;
         } else {
-           // Minimal list view logic remains same
            card.className = "minimal-event-card"; 
            const imgHtml = event.photo_url ? `<img src="${event.photo_url}" class="minimal-card-img">` : `<div class="minimal-card-img-placeholder"></div>`;
            card.innerHTML = `${imgHtml}<div class="minimal-card-content"><div style="display:flex; justify-content:space-between; align-items:center;"><div class="minimal-date">${dateStr}</div>${isRegistered ? '<span class="status-badge-mini">GOING</span>' : ''}</div><h3 class="minimal-title">${event.name}</h3><p class="minimal-desc">${event.description || ''}</p></div>`;
@@ -212,27 +212,38 @@ window.EventsModule = {
         container.appendChild(card);
     },
 
-    // --- 4. UTILS & ADMIN TABLE (With Delete Button) ---
+    // --- 4. UTILS & ADMIN TABLE (WITH PAGINATION) ---
     renderAdminView: function(container, user, catFilter='All events', search='') {
         let filtered = this.allEvents;
         if (catFilter !== "All events") filtered = filtered.filter(e => e.category === catFilter);
         if (search) filtered = filtered.filter(e => e.name.toLowerCase().includes(search.toLowerCase()));
         
+        // Reset to page 1 if filter changes drastically reduce count
+        const maxPage = Math.ceil(filtered.length / this.rowsPerPage) || 1;
+        if (this.adminCurrentPage > maxPage) this.adminCurrentPage = 1;
+
         container.classList.remove('events-grid');
         container.style.display = 'block'; 
-        this.renderAdminTable(container, filtered, user, () => this.init(user));
+        this.renderAdminTable(container, filtered, user);
     },
 
-    renderAdminTable: function(container, events, user, refreshCallback) {
+    renderAdminTable: function(container, events, user) {
         if (!events.length) { container.innerHTML = `<div style="text-align:center; padding:40px; color:#888;">No events found.</div>`; return; }
+        
+        // PAGINATION LOGIC
+        const totalPages = Math.ceil(events.length / this.rowsPerPage);
+        const start = (this.adminCurrentPage - 1) * this.rowsPerPage;
+        const end = start + this.rowsPerPage;
+        const paginatedEvents = events.slice(start, end);
+
         const table = document.createElement("table"); 
         table.className = "admin-table";
         table.innerHTML = `<thead><tr><th>Event Details</th><th>Date</th><th>Category</th><th>Status</th><th style="text-align: right;">Actions</th></tr></thead><tbody id="adminTableBody"></tbody>`;
         const tbody = table.querySelector("#adminTableBody");
-        events.forEach(event => {
+        
+        paginatedEvents.forEach(event => {
             const tr = document.createElement("tr");
             const isPast = this.isEventPast(event);
-            // 🔥 ADDED DELETE BUTTON BELOW
             tr.innerHTML = `
             <td>
                 <div class="event-title-text">${event.name}</div>
@@ -248,8 +259,58 @@ window.EventsModule = {
             </td>`;
             tbody.appendChild(tr);
         });
+        
         container.innerHTML = '';
         container.appendChild(table);
+
+        // RENDER PAGINATION CONTROLS
+        if (totalPages > 1) {
+            const paginationDiv = document.createElement("div");
+            paginationDiv.className = "pagination-controls";
+
+            // Prev Button
+            const prevBtn = document.createElement("button");
+            prevBtn.className = "page-btn";
+            prevBtn.innerHTML = "&laquo; Prev";
+            prevBtn.disabled = this.adminCurrentPage === 1;
+            prevBtn.onclick = () => {
+                this.adminCurrentPage--;
+                this.renderAdminTable(container, events, user);
+            };
+            paginationDiv.appendChild(prevBtn);
+
+            // Number Buttons
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= this.adminCurrentPage - 1 && i <= this.adminCurrentPage + 1)) {
+                    const btn = document.createElement("button");
+                    btn.className = `page-btn ${i === this.adminCurrentPage ? 'active' : ''}`;
+                    btn.textContent = i;
+                    btn.onclick = () => {
+                        this.adminCurrentPage = i;
+                        this.renderAdminTable(container, events, user);
+                    };
+                    paginationDiv.appendChild(btn);
+                } else if ((i === this.adminCurrentPage - 2 && i > 1) || (i === this.adminCurrentPage + 2 && i < totalPages)) {
+                    const dots = document.createElement("span");
+                    dots.textContent = "...";
+                    dots.style.color = "#999";
+                    paginationDiv.appendChild(dots);
+                }
+            }
+
+            // Next Button
+            const nextBtn = document.createElement("button");
+            nextBtn.className = "page-btn";
+            nextBtn.innerHTML = "Next &raquo;";
+            nextBtn.disabled = this.adminCurrentPage === totalPages;
+            nextBtn.onclick = () => {
+                this.adminCurrentPage++;
+                this.renderAdminTable(container, events, user);
+            };
+            paginationDiv.appendChild(nextBtn);
+
+            container.appendChild(paginationDiv);
+        }
     },
 
     showEventDetails: function(event) {
@@ -272,7 +333,7 @@ window.EventsModule = {
     }
 };
 
-// 🔥 NEW: DELETE EVENT FUNCTION
+// DELETE EVENT FUNCTION
 window.deleteEvent = async function(id) {
     if (!confirm("Are you sure you want to delete this event? This action cannot be undone.")) return;
 
@@ -282,7 +343,6 @@ window.deleteEvent = async function(id) {
 
         if (data.success) {
             alert("Event deleted successfully.");
-            // Reload grid
             const user = JSON.parse(localStorage.getItem("loggedInUser"));
             if (window.EventsModule && user) {
                 window.EventsModule.init(user);

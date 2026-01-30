@@ -3404,5 +3404,50 @@ section{
     }
 }
 
+/* =========================================
+   PAGINATION CONTROLS
+   ========================================= */
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+.page-btn {
+    background: white;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 36px;
+    text-align: center;
+}
+
+.page-btn:hover:not(:disabled) {
+    background: #f1f5f9;
+    color: #1a1a1a;
+    border-color: #cbd5e1;
+}
+
+.page-btn.active {
+    background: #d90429; /* Theme Red */
+    color: white;
+    border-color: #d90429;
+    box-shadow: 0 4px 10px rgba(217, 4, 41, 0.2);
+}
+
+.page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #f8fafc;
+}
+
 
 

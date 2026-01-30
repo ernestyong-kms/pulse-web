@@ -143,6 +143,8 @@
     
     <script>
         let allLogs = [];
+        let currentPage = 1;
+        const rowsPerPage = 10;
 
         document.addEventListener("DOMContentLoaded", async () => {
             try {
@@ -166,13 +168,24 @@
 
         function renderTable(data) {
             const tbody = document.getElementById('connectionsLogBody');
+            const cardContainer = document.querySelector('.admin-card[style*="overflow-x: auto"]');
             
+            // Remove old pagination if exists
+            let existingNav = document.getElementById('connPagination');
+            if(existingNav) existingNav.innerHTML = '';
+
             if (data.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:30px; color:#999;">No logs found.</td></tr>';
                 return;
             }
 
-            tbody.innerHTML = data.map(c => `
+            // PAGINATION SLICE
+            const totalPages = Math.ceil(data.length / rowsPerPage);
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const pageData = data.slice(start, end);
+
+            tbody.innerHTML = pageData.map(c => `
                 <tr>
                     <td data-label="Time" style="padding-left: 25px;">
                         <div class="timestamp-box">
@@ -227,12 +240,30 @@
                     </td>
                 </tr>
             `).join('');
+
+            // RENDER CONTROLS
+            if (totalPages > 1) {
+                if(!existingNav) {
+                    existingNav = document.createElement('div');
+                    existingNav.id = "connPagination";
+                    existingNav.className = "pagination-controls";
+                    cardContainer.parentNode.appendChild(existingNav);
+                }
+
+                existingNav.innerHTML = `
+                    <button class="page-btn" ${currentPage===1?'disabled':''} onclick="currentPage--; renderTable(filteredLogs || allLogs)">Prev</button>
+                    <span style="font-size:13px; font-weight:600; color:#666; margin:0 10px;">Page ${currentPage} of ${totalPages}</span>
+                    <button class="page-btn" ${currentPage===totalPages?'disabled':''} onclick="currentPage++; renderTable(filteredLogs || allLogs)">Next</button>
+                `;
+            }
         }
+
+        let filteredLogs = null;
 
         function filterLogs() {
             const query = document.getElementById('logSearch').value.toLowerCase();
             const eventVal = document.getElementById('eventFilter').value;
-            const filtered = allLogs.filter(l => {
+            filteredLogs = allLogs.filter(l => {
                 const searchMatch = l.scanner_name.toLowerCase().includes(query) || 
                                     l.scanned_name.toLowerCase().includes(query) || 
                                     l.scanner_username.toLowerCase().includes(query) ||
@@ -240,7 +271,8 @@
                 const eventMatch = eventVal === 'all' || l.event_name === eventVal;
                 return searchMatch && eventMatch;
             });
-            renderTable(filtered);
+            currentPage = 1;
+            renderTable(filteredLogs);
         }
     </script>
 <script src="js/mobile-check.js"></script>
