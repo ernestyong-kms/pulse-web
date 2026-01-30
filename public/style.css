@@ -3364,6 +3364,45 @@ section{
     }
 }
 
+/* =======================================================
+   FIX: CONNECTION LOGS NOTES OVERFLOW (Paste at bottom)
+   ======================================================= */
+
+@media (max-width: 900px) {
+    
+    /* 1. Target the specific "Notes" cell in the table */
+    .admin-table-widget td[data-label="Notes"] {
+        flex-direction: column !important; /* Stack Label on top of Content */
+        align-items: flex-start !important; /* Align to left */
+        width: 100% !important;
+        display: flex !important;
+        gap: 10px !important;
+    }
+
+    /* 2. Force the internal container (Scanner/Recipient wrapper) to stack */
+    .note-container {
+        display: flex !important;
+        flex-direction: column !important; /* Stack bubbles vertically */
+        width: 100% !important;
+        min-width: 0 !important; /* Prevents flex items from overflowing */
+        gap: 12px !important;
+    }
+
+    /* 3. Ensure the bubbles themselves fit the card */
+    .note-bubble {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important; /* Keeps padding inside width */
+        white-space: normal !important; /* Forces text to wrap to next line */
+        word-wrap: break-word !important; /* Breaks long words if needed */
+    }
+
+    /* 4. Ensure the internal divs holding the labels/bubbles take full width */
+    .note-container > div {
+        width: 100% !important;
+        flex: none !important;
+    }
+}
 
 
 
