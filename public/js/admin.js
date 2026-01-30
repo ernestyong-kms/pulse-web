@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
   
   // ==========================================
-    //      1. SECURITY CHECK
-    // ==========================================
+  //      1. SECURITY CHECK
+  // ==========================================
   const user = JSON.parse(localStorage.getItem("loggedInUser"));
   if (!user || user.role !== 'admin') {
       alert("Access Denied.");
@@ -67,6 +67,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       submitBtn.textContent = "Create Event";
       previewImg.style.display = "none";
       document.querySelector("#eventPhotoPreview span").style.display = "block";
+      if(previewImg) previewImg.src = "";
   }
 
   // 5. 🔥 EXPOSE EDIT FUNCTION
@@ -79,16 +80,30 @@ document.addEventListener("DOMContentLoaded", async () => {
       submitBtn.textContent = "Save Changes";
 
       document.getElementById("eventName").value = event.name;
-      document.getElementById("eventDate").value = event.date.split('T')[0];
+
+      // 🔥 FIX: Handle Date Object properly for input[type=date]
+      // Use new Date() to ensure it's an object, then toISOString to get YYYY-MM-DD
+      try {
+          const dateObj = new Date(event.date);
+          const yyyyMmDd = dateObj.toISOString().split('T')[0];
+          document.getElementById("eventDate").value = yyyyMmDd;
+      } catch (e) {
+          console.error("Date parsing error:", e);
+          document.getElementById("eventDate").value = "";
+      }
       
       // Parse Time (Convert "2:30 PM" -> "14:30") for input[type=time]
       const convertTo24 = (timeStr) => {
-          if(!timeStr) return "";
-          const [time, modifier] = timeStr.split(' ');
-          let [hours, minutes] = time.split(':');
-          if (hours === '12') hours = '00';
-          if (modifier === 'PM') hours = parseInt(hours, 10) + 12;
-          return `${hours}:${minutes}`;
+          if(!timeStr || timeStr === "Time TBD") return "";
+          try {
+              const [time, modifier] = timeStr.split(' ');
+              let [hours, minutes] = time.split(':');
+              if (hours === '12') hours = '00';
+              if (modifier === 'PM') hours = parseInt(hours, 10) + 12;
+              return `${hours}:${minutes}`;
+          } catch(e) {
+              return ""; 
+          }
       };
 
       if(event.time) document.getElementById("eventTime").value = convertTo24(event.time);
@@ -102,6 +117,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           previewImg.src = event.photo_url;
           previewImg.style.display = "block";
           document.querySelector("#eventPhotoPreview span").style.display = "none";
+      } else {
+          previewImg.style.display = "none";
+          document.querySelector("#eventPhotoPreview span").style.display = "block";
       }
 
       createEventPopup.style.display = "flex";
