@@ -3267,6 +3267,103 @@ section{
   }
 }
 
+/* =======================================================
+   MOBILE ADMIN FIXES (Paste at the bottom of style.css)
+   ======================================================= */
+
+@media (max-width: 900px) {
+
+    /* --- FIX 1: HIDE USER HERO BANNER ON ADMIN MOBILE --- */
+    /* Ensures "Unleash your Pulse" does not show for admins */
+    body.admin-mode #userWelcomeBanner,
+    body.admin-mode .visual-hero-banner {
+        display: none !important;
+    }
+
+    /* --- FIX 2: KPI TILE TEXT VISIBILITY --- */
+    /* Ensures text is visible even if the tile background is white */
+    .action-tile .tile-info h3 {
+        color: #1a1a1a !important; /* Force dark text */
+    }
+    .action-tile .tile-info span {
+        color: #666 !important;
+    }
+    /* Revert text to white ONLY if the tile has a colored gradient class */
+    .scan-tile .tile-info h3, .upload-tile .tile-info h3, 
+    .scan-tile .tile-info span, .upload-tile .tile-info span {
+        color: white !important;
+    }
+
+    /* --- FIX 3: MANAGE EVENTS TABLE CARD LAYOUT --- */
+    /* We add .admin-table (Events) to the existing User Table logic */
+    
+    .admin-table, .admin-table tbody, .admin-table tr, .admin-table td {
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .admin-table thead { display: none !important; }
+
+    .admin-table tr {
+        background: white;
+        margin-bottom: 15px;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+
+    .admin-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: right;
+        padding: 10px 0 !important;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 13px;
+    }
+
+    .admin-table td:last-child {
+        border-bottom: none;
+        padding-top: 15px !important;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    /* --- INJECT LABELS FOR EVENTS TABLE --- */
+    /* Since the JS doesn't add data-labels, we use CSS order to label them */
+    
+    /* Column 1: Event Details */
+    .admin-table td:nth-of-type(1)::before {
+        content: "Event";
+        font-weight: 700; color: #94a3b8; text-transform: uppercase; font-size: 11px;
+    }
+    
+    /* Column 2: Date */
+    .admin-table td:nth-of-type(2)::before {
+        content: "Date";
+        font-weight: 700; color: #94a3b8; text-transform: uppercase; font-size: 11px;
+    }
+
+    /* Column 3: Category */
+    .admin-table td:nth-of-type(3)::before {
+        content: "Category";
+        font-weight: 700; color: #94a3b8; text-transform: uppercase; font-size: 11px;
+    }
+
+    /* Column 4: Status */
+    .admin-table td:nth-of-type(4)::before {
+        content: "Status";
+        font-weight: 700; color: #94a3b8; text-transform: uppercase; font-size: 11px;
+    }
+
+    /* Column 5: Actions (Empty label) */
+    .admin-table td:nth-of-type(5)::before {
+        content: "";
+    }
+}
+
 
 
 
