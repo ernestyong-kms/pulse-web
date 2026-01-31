@@ -153,12 +153,12 @@ window.RegistrationModule = (() => {
                     <div style="text-align: center; margin-top: 30px; margin-bottom: 10px;">
                         <div class="upload-circle" onclick="document.getElementById('regPhoto').click()">
                             <img id="avatarPreview" src="" style="width: 100%; height: 100%; object-fit: cover; display: none;">
-                            <span class="upload-icon" style="font-size: 24px; color: #888;">胴</span>
+                            <span class="upload-icon" style="font-size: 24px; color: #888;">📷</span>
                         </div>
                         <input type="file" id="regPhoto" accept="image/*" style="display: none;">
                     </div>
 
-                    <div class="reg-section-title"><span>側</span> Personal Details</div>
+                    <div class="reg-section-title"><span>👤</span> Personal Details</div>
                     <label class="reg-label">Full Name</label>
                     <input type="text" id="regName" required class="reg-input">
                     <label class="reg-label">Email</label>
@@ -167,14 +167,14 @@ window.RegistrationModule = (() => {
                     <input type="text" id="regNumber" class="reg-input">
 
                     <div id="profSection">
-                        <div class="reg-section-title"><span>直</span> Current Role</div>
+                        <div class="reg-section-title"><span>💼</span> Current Role</div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                             <div><label class="reg-label">Company</label><input type="text" id="regCompany" class="reg-input"></div>
                             <div><label class="reg-label">Position</label><input type="text" id="regPosition" class="reg-input"></div>
                         </div>
                     </div>
 
-                    <div class="reg-section-title"><span>雌</span> Background</div>
+                    <div class="reg-section-title"><span>🎓</span> Background</div>
                     <label class="reg-label">Qualifications</label>
                     <input type="text" id="regQualifications" class="reg-input">
                     <label class="reg-label">LinkedIn</label>
