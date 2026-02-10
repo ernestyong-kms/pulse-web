@@ -12,17 +12,29 @@ window.QRModule = (() => {
     const stopBtn = document.getElementById("stopScanBtn");
     const uploadQRInput = document.getElementById("uploadQRInput");
 
-    // 1. Upload Button
+    // 1. Upload Button (FIXED)
     if (uploadBtn && uploadQRInput) {
         uploadBtn.addEventListener("click", () => uploadQRInput.click());
         uploadQRInput.addEventListener("change", async (e) => {
             if (e.target.files.length === 0) return;
+            
             const html5QrCode = new Html5Qrcode("qr-reader-container");
+            
             try {
+                // Attempt to scan
                 const decodedText = await html5QrCode.scanFile(e.target.files[0], true);
+                console.log("✅ Scan Success:", decodedText);
                 await handleQRDetected(decodedText, user);
             } catch (err) {
-                showErrorPopup("Could not read QR code from image.");
+                // 🔥 LOG THE REAL ERROR HERE
+                console.error("❌ Scan Failed Details:", err);
+                
+                // Show a helpful message based on the error
+                if (err?.toString().includes("No MultiFormat Readers")) {
+                    showErrorPopup("No QR code found. Please crop the image closer to the QR code.");
+                } else {
+                    showErrorPopup("Scan Error: " + err);
+                }
             }
         });
     }
