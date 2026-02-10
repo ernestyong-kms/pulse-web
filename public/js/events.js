@@ -214,9 +214,15 @@ window.EventsModule = {
 
     // --- 4. UTILS & ADMIN TABLE (WITH PAGINATION) ---
     renderAdminView: function(container, user, catFilter='All events', search='') {
-        let filtered = this.allEvents;
+        // 1. Create a shallow copy so we don't mess up the global order
+        let filtered = [...this.allEvents];
+
+        // 2. Apply Filters
         if (catFilter !== "All events") filtered = filtered.filter(e => e.category === catFilter);
         if (search) filtered = filtered.filter(e => e.name.toLowerCase().includes(search.toLowerCase()));
+        
+        // 🔥 FIX: Sort by Date DESCENDING (Newest/Future First)
+        filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
         
         // Reset to page 1 if filter changes drastically reduce count
         const maxPage = Math.ceil(filtered.length / this.rowsPerPage) || 1;
