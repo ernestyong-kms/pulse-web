@@ -3449,5 +3449,30 @@ section{
     background: #f8fafc;
 }
 
+/* =========================================
+   FIX: SCAN PAGE BUTTON VISIBILITY
+   ========================================= */
+
+/* 1. Force Text to be Dark */
+.action-tile.scan-tile .tile-info h3,
+.action-tile.upload-tile .tile-info h3,
+.action-tile.scan-tile .tile-info span,
+.action-tile.upload-tile .tile-info span {
+    color: #1a1a1a !important;
+}
+
+/* 2. Force Icons to be Dark */
+.action-tile.scan-tile svg,
+.action-tile.upload-tile svg {
+    stroke: #1a1a1a !important;
+}
+
+/* 3. Give the Icon Bubbles a subtle border so they stand out on white */
+.action-tile.scan-tile .tile-icon-bubble,
+.action-tile.upload-tile .tile-icon-bubble {
+    background: #f8f9fa !important;
+    border: 1px solid #e5e7eb !important;
+}
+
 
 
