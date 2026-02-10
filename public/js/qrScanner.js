@@ -12,28 +12,49 @@ window.QRModule = (() => {
     const stopBtn = document.getElementById("stopScanBtn");
     const uploadQRInput = document.getElementById("uploadQRInput");
 
-    // 1. Upload Button (FIXED)
+    // 1. Upload Button (Fixed Logic)
     if (uploadBtn && uploadQRInput) {
         uploadBtn.addEventListener("click", () => uploadQRInput.click());
         uploadQRInput.addEventListener("change", async (e) => {
             if (e.target.files.length === 0) return;
-            
-            const html5QrCode = new Html5Qrcode("qr-reader-container");
-            
+            const file = e.target.files[0];
+
+            // FIX: Ensure the container is visible for a split second so the library can render the image
+            const container = document.getElementById("qr-reader-container");
+            if (container) container.style.display = "block";
+
+            // Create a dedicated instance just for the file scan
+            // We use a try/catch block to safely handle if an instance already exists
+            let html5QrCode;
             try {
-                // Attempt to scan
-                const decodedText = await html5QrCode.scanFile(e.target.files[0], true);
+                html5QrCode = new Html5Qrcode("qr-reader-container");
+            } catch (err) {
+                // If instance exists, we might need to clear it or reuse it. 
+                // For simplicity, we just catch the "already exists" error and proceed if possible,
+                // but usually, new Html5Qrcode throws if the ID is in use.
+                console.warn("Scanner instance might already exist:", err);
+                // Try to clear it first if you can't reuse it, or just ignore for this test
+            }
+
+            try {
+                console.log("📂 Analyzing file:", file.name);
+                const decodedText = await html5QrCode.scanFile(file, true);
+                
                 console.log("✅ Scan Success:", decodedText);
+                
+                // Hide container again if it was hidden
+                if (container) container.style.display = "none";
+                
                 await handleQRDetected(decodedText, user);
             } catch (err) {
-                // 🔥 LOG THE REAL ERROR HERE
-                console.error("❌ Scan Failed Details:", err);
-                
-                // Show a helpful message based on the error
+                console.error("❌ Scan Failed. Real Error:", err);
+                if (container) container.style.display = "none";
+
+                // DETAILED ERROR MESSAGES
                 if (err?.toString().includes("No MultiFormat Readers")) {
-                    showErrorPopup("No QR code found. Please crop the image closer to the QR code.");
+                    showErrorPopup("QR Code not detected. \n\nTip: If your QR is white-on-black (Dark Mode), please invert colors to black-on-white.");
                 } else {
-                    showErrorPopup("Scan Error: " + err);
+                    showErrorPopup("Could not read image. \nError: " + err);
                 }
             }
         });
